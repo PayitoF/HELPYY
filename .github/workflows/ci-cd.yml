@@ -1,10 +1,14 @@
 name: CI/CD — Helpyy Hand
 
+# ══════════════════════════════════════════════════════════════
+# Flujo: dev → PR a qa (tests + deploy QA) → PR a main (deploy prod)
+# ══════════════════════════════════════════════════════════════
+
 on:
   pull_request:
-    branches: [main]
+    branches: [qa, main]
   push:
-    branches: [main]
+    branches: [qa, main]
 
 env:
   AWS_REGION: us-east-1
@@ -16,9 +20,9 @@ permissions:
   contents: read
 
 jobs:
-  # ════════════════════════════════════════════════════════════════════
-  # QA — runs on every PR
-  # ════════════════════════════════════════════════════════════════════
+  # ════════════════════════════════════════════════════════════
+  # Tests — runs on every PR to qa or main
+  # ════════════════════════════════════════════════════════════
   test:
     name: Tests
     runs-on: ubuntu-latest
@@ -75,13 +79,13 @@ jobs:
           name: widget-dist
           path: frontend/web-widget/
 
-  # ════════════════════════════════════════════════════════════════════
-  # Deploy QA — on PR (to dev environment)
-  # ════════════════════════════════════════════════════════════════════
+  # ════════════════════════════════════════════════════════════
+  # Deploy QA — when PR is merged to qa
+  # ════════════════════════════════════════════════════════════
   deploy-qa:
     name: Deploy QA
     needs: [test, build-frontend]
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/qa'
     runs-on: ubuntu-latest
     environment: qa
     steps:
@@ -122,9 +126,9 @@ jobs:
             echo "⚠️ App Runner service not found, skipping backend deploy"
           fi
 
-  # ════════════════════════════════════════════════════════════════════
-  # Deploy Prod — on merge to main
-  # ════════════════════════════════════════════════════════════════════
+  # ════════════════════════════════════════════════════════════
+  # Deploy Prod — when PR is merged to main
+  # ════════════════════════════════════════════════════════════
   deploy-prod:
     name: Deploy Production
     needs: [test, build-frontend]
@@ -153,7 +157,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           npm install -g aws-cdk
-          cdk deploy --all --require-approval never -c env=prod
+          CDK_ENV=prod cdk deploy --all --require-approval never
 
       # Deploy frontends
       - uses: actions/download-artifact@v4
@@ -175,10 +179,3 @@ jobs:
         run: |
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_APP_DIST_ID_PROD }} --paths "/*"
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_WIDGET_DIST_ID_PROD }} --paths "/*"
-
-      # Upload ML model to S3
-      - name: Upload ML model
-        run: |
-          cd MLRepo/models/logistic_regression/selected/runs/2026-04-10_163938
-          tar czf model.tar.gz model.pkl
-          aws s3 cp model.tar.gz s3://helpyy-prod-models-${{ secrets.AWS_ACCOUNT_ID }}/models/logistic_regression/model.tar.gz
