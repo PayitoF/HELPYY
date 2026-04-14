@@ -4,14 +4,12 @@ Covers: approved flow with options table, rejected flow with handoff,
 loan simulation math, factor humanization, edge cases.
 """
 
-import math
 from unittest.mock import AsyncMock
 
 import pytest
 
 from backend.agents.credit_evaluator_agent import (
     CreditEvaluatorAgent,
-    MONTHLY_RATE_DEFAULT,
     build_options_table,
     simulate_loan,
     _humanize_factor,
@@ -444,7 +442,6 @@ class TestMLClientIntegration:
     @pytest.mark.asyncio
     async def test_uses_ml_client_when_available(self):
         """When ml_client is provided, it should be called for predictions."""
-        from unittest.mock import MagicMock
         from backend.ml_client.schemas import (
             CreditPrediction, ScoreBand, ProductType, RiskFactor,
         )

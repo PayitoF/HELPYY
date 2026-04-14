@@ -10,7 +10,6 @@ import pytest
 
 from backend.agents.financial_advisor_agent import (
     FinancialAdvisorAgent,
-    LEVEL_THRESHOLDS,
     MISSION_CATALOG,
     build_plan,
     calculate_plan_points,
@@ -508,7 +507,7 @@ class TestAgentGeneral:
             "user_data": {},
         }
 
-        response = await agent.process("Quiero mejorar", ctx)
+        await agent.process("Quiero mejorar", ctx)
 
         # Should have created a plan from rejection factors
         assert "plan" in ctx

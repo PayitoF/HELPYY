@@ -5,7 +5,7 @@ streaming, and structured responses. Concrete agents only need to define
 their name, system_prompt, tools, and optionally override _build_messages.
 """
 
-from abc import ABC, abstractmethod
+from abc import ABC
 import time
 from typing import Any, AsyncIterator, Callable, Coroutine
 
@@ -117,7 +117,10 @@ class BaseAgent(ABC):
 
         return self._make_response(content, context)
 
-    async def process_stream(self, message: str, context: dict, *, original_message: str | None = None) -> AsyncIterator[str]:
+    async def process_stream(
+        self, message: str, context: dict,
+        *, original_message: str | None = None,
+    ) -> AsyncIterator[str]:
         """Stream response tokens. Does NOT support tool calling mid-stream."""
         messages = self._build_messages(message, context)
         async for token in self.llm.generate_stream(messages, temperature=0.7):

@@ -15,7 +15,6 @@ from pydantic import BaseModel
 from backend.agents.orchestrator import Orchestrator
 from backend.api.activation_codes import get_activation_store
 from backend.data.schemas import UserState
-from backend.llm.provider import LLMProvider
 from backend.security.pii_tokenizer import tokenize_pii
 from backend.security.pii_detokenizer import detokenize_response, get_vault
 from backend.security.audit_logger import log_pii_access

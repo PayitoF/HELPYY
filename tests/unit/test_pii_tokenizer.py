@@ -2,9 +2,7 @@
 
 import re
 import time
-import tempfile
-import os
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock
 
 import pytest
 

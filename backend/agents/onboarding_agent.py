@@ -59,7 +59,10 @@ _TOOLS = [
                 "is_banked": {"type": "boolean"},
                 "age": {"type": "integer"},
                 "city_type": {"type": "string", "enum": ["urban", "rural"]},
-                "education_level": {"type": "string", "enum": ["none", "primary", "secondary", "technical", "university"]},
+                "education_level": {
+                    "type": "string",
+                    "enum": ["none", "primary", "secondary", "technical", "university"],
+                },
             },
             "required": ["declared_income"],
         },
@@ -306,7 +309,11 @@ class OnboardingAgent(BaseAgent):
         logger.info("[ONBOARDING] general msg=%.60s", message[:60])
 
         content = await self._llm_respond(message, context, "")
-        return self._respond(content, context, suggested_actions=["Abrir mi cuenta", "Ver productos BBVA", "¿Cómo funciona el microcrédito?"])
+        actions = [
+            "Abrir mi cuenta", "Ver productos BBVA",
+            "¿Cómo funciona el microcrédito?",
+        ]
+        return self._respond(content, context, suggested_actions=actions)
 
     async def process_stream(self, message: str, context: dict, *, original_message: str | None = None):
         # Streaming not supported for stateful agent — fall back to non-stream

@@ -1,6 +1,5 @@
 """FastAPI dependency injection."""
 
-from backend.llm.config import get_llm_provider
 from backend.ml_client.client import MLClient
 from backend.agents.orchestrator import Orchestrator
 

@@ -164,9 +164,17 @@ class MLClient:
         raw = [
             RiskFactor(name="on_time_rate", impact="positive" if req.on_time_rate >= 0.7 else "negative", weight=0.54),
             RiskFactor(name="is_banked", impact="positive" if req.is_banked else "negative", weight=0.35),
-            RiskFactor(name="pct_conversion", impact="positive" if req.pct_conversion >= 0.5 else "negative", weight=0.31),
+            RiskFactor(
+                name="pct_conversion",
+                impact="positive" if req.pct_conversion >= 0.5 else "negative",
+                weight=0.31,
+            ),
             RiskFactor(name="overdue_rate", impact="positive" if req.overdue_rate <= 0.1 else "negative", weight=0.20),
-            RiskFactor(name="declared_income", impact="positive" if req.declared_income >= 1_500_000 else "negative", weight=0.10),
+            RiskFactor(
+                name="declared_income",
+                impact="positive" if req.declared_income >= 1_500_000 else "negative",
+                weight=0.10,
+            ),
         ]
         raw.sort(key=lambda f: f.weight, reverse=True)
         return raw[:5]

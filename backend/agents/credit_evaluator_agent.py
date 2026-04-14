@@ -6,7 +6,6 @@ the Financial Advisor agent along with improvement factor context.
 """
 
 import json
-import math
 
 from backend.agents.base_agent import BaseAgent, AgentResponse, Tool
 from backend.llm.provider import LLMProvider
@@ -189,7 +188,10 @@ class CreditEvaluatorAgent(BaseAgent):
 
         # Build a text table for the LLM to wrap conversationally
         table_lines = [
-            f"| {o['term_months']} meses | ${o['amount']:,.0f} | ${o['monthly_payment']:,.0f}/mes | ${o['total_interest']:,.0f} intereses | TEA {o['effective_annual_rate']:.1%} |"
+            f"| {o['term_months']} meses | ${o['amount']:,.0f} "
+            f"| ${o['monthly_payment']:,.0f}/mes "
+            f"| ${o['total_interest']:,.0f} intereses "
+            f"| TEA {o['effective_annual_rate']:.1%} |"
             for o in options
         ]
         table_text = "\n".join(table_lines)
@@ -233,14 +235,14 @@ class CreditEvaluatorAgent(BaseAgent):
         factor_descriptions = [_humanize_factor(f) for f in negative_factors]
 
         instruction = (
-            f"[ESTADO: AÚN NO califica. "
-            f"Factores principales a mejorar:\n"
+            "[ESTADO: AÚN NO califica. "
+            "Factores principales a mejorar:\n"
             + "\n".join(f"- {d}" for d in factor_descriptions)
             + "\n"
-            f"IMPORTANTE: NUNCA uses la palabra 'rechazado'. Di 'aún no estás listo' "
-            f"o 'todavía no calificas'. Sé empático y motivador. "
-            f"Explica que lo vamos a ayudar a mejorar con un plan personalizado. "
-            f"NUNCA menciones scores ni variables del modelo.]"
+            "IMPORTANTE: NUNCA uses la palabra 'rechazado'. Di 'aún no estás listo' "
+            "o 'todavía no calificas'. Sé empático y motivador. "
+            "Explica que lo vamos a ayudar a mejorar con un plan personalizado. "
+            "NUNCA menciones scores ni variables del modelo.]"
         )
 
         content = await self._llm_respond(message, context, instruction)

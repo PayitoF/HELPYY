@@ -253,7 +253,7 @@ class TestOnboardingHappyPath:
         assert r1.agent_type == "onboarding"
 
         # Step 2: User gives all data at once
-        r2 = await agent.process(
+        await agent.process(
             "soy María García, cédula 1098765432 y gano 3 millones", ctx,
         )
         assert ctx["onboarding_data"]["name"] == "María García"
@@ -262,18 +262,18 @@ class TestOnboardingHappyPath:
         assert ctx["onboarding_state"] == OnboardingState.CONFIRMING
 
         # Step 3: Confirm
-        r3 = await agent.process("sí, todo correcto", ctx)
+        await agent.process("sí, todo correcto", ctx)
         # Should be approved (income 3M > 1.2M threshold in mock)
         assert ctx["prediction_result"]["eligible"] is True
         assert ctx["onboarding_state"] == OnboardingState.ACCOUNT_OPENING
 
         # Step 4: Open account
-        r4 = await agent.process("sí, quiero abrir la cuenta", ctx)
+        await agent.process("sí, quiero abrir la cuenta", ctx)
         assert "account_id" in ctx
         assert ctx["onboarding_state"] == OnboardingState.HELPYY_ACTIVATION
 
         # Step 5: Activate Helpyy
-        r5 = await agent.process("dale, actívalo", ctx)
+        await agent.process("dale, actívalo", ctx)
         assert ctx["onboarding_state"] == OnboardingState.DONE
         assert ctx.get("helpyy_enabled") is True
 
@@ -432,7 +432,7 @@ class TestOnboardingMessyInput:
             "prediction_result": {"eligible": True},
         }
         mock_llm.generate.return_value = "Está bien, vuelve cuando quieras."
-        r = await agent.process("no, ahora no", ctx)
+        await agent.process("no, ahora no", ctx)
         assert ctx["onboarding_state"] == OnboardingState.DONE
 
     @pytest.mark.asyncio
@@ -446,7 +446,7 @@ class TestOnboardingMessyInput:
             "account_id": "ACC-TEST123",
         }
         mock_llm.generate.return_value = "Puedes activarlo después."
-        r = await agent.process("no gracias", ctx)
+        await agent.process("no gracias", ctx)
         assert ctx["onboarding_state"] == OnboardingState.DONE
         assert not ctx.get("helpyy_enabled")
 

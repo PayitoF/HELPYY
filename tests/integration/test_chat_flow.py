@@ -15,7 +15,6 @@ from backend.agents.base_agent import AgentResponse
 from backend.agents.orchestrator import Orchestrator
 from backend.api.main import app
 from backend.api.routers.chat import set_orchestrator
-from backend.data.schemas import UserState
 from backend.llm.provider import LLMProvider
 from backend.security.pii_tokenizer import tokenize_pii
 from backend.security.pii_vault import PIIVault
@@ -251,7 +250,7 @@ class TestMessageStreams:
 
         # Parse SSE events
         lines = resp.text.strip().split("\n")
-        data_lines = [l for l in lines if l.startswith("data: ")]
+        data_lines = [line for line in lines if line.startswith("data: ")]
         assert len(data_lines) >= 2  # at least one token + [DONE]
 
         # Last data line should be [DONE]

@@ -343,7 +343,7 @@ class TestMonitorCycle:
 
         await monitor.run_cycle()
 
-        updated_users = await monitor.user_store.get_pending_users()
+        await monitor.user_store.get_pending_users()
         # If still not eligible, status stays pendiente_mejora
         # and last_p_default is updated
         all_users = list(monitor.user_store._users.values())

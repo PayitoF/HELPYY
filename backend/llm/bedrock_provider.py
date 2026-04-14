@@ -1,6 +1,5 @@
 """AWS Bedrock LLM provider — production with Claude."""
 
-import json
 import logging
 import os
 from typing import AsyncIterator

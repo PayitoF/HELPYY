@@ -11,10 +11,7 @@ Gamification hierarchy:
 from __future__ import annotations
 
 import json
-import math
 import uuid
-from datetime import datetime, timedelta
-from typing import Any
 
 from backend.agents.base_agent import BaseAgent, AgentResponse, Tool
 from backend.llm.provider import LLMProvider
@@ -467,7 +464,7 @@ class FinancialAdvisorAgent(BaseAgent):
             f"En progreso: {[m['title'] for m in in_progress]}\n"
             f"Pendientes: {[m['title'] for m in pending]}\n"
             f"Puntos ganados: {points_info['earned']}/{points_info['total_possible']}\n"
-            f"{'Faltan ' + str(level_info['points_to_next']) + ' pts para el siguiente nivel.' if level_info['points_to_next'] else 'Nivel máximo alcanzado.'}\n"
+            f"{'Faltan ' + str(level_info['points_to_next']) + ' pts para el siguiente nivel.' if level_info['points_to_next'] else 'Nivel máximo alcanzado.'}\n"  # noqa: E501
             f"Celebra lo logrado, motiva a seguir con las pendientes.]"
         )
 

@@ -13,7 +13,6 @@ from backend.agents.helpyy_general_agent import (
     FAQEntry,
     FAQKnowledgeBase,
     HelpyyGeneralAgent,
-    _HANDOFF_MESSAGES,
     _tokenize,
 )
 

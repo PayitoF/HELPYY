@@ -15,12 +15,10 @@ Scenario 3 specifically tests PII isolation through the full WebSocket path.
 """
 
 import json
-import re
 
 import pytest
 from starlette.testclient import TestClient
 
-from backend.agents.base_agent import AgentResponse
 from backend.agents.orchestrator import Orchestrator
 from backend.agents.onboarding_agent import OnboardingAgent
 from backend.agents.credit_evaluator_agent import CreditEvaluatorAgent, build_options_table
@@ -303,7 +301,7 @@ class TestScenario2_RejectionAndGamification:
         await orch.handle_message("Hola", session, user)
         await orch.handle_message("Me llamo Ana Ruiz", session, user)
         await orch.handle_message("Cédula 11223344, gano 250000", session, user)
-        response = await orch.handle_message("Sí", session, user)
+        await orch.handle_message("Sí", session, user)
 
         # Check all LLM system prompts included the restriction
         all_text = spy_llm.all_text_sent_to_llm().lower()

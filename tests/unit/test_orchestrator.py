@@ -3,9 +3,9 @@
 import json
 
 import pytest
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock
 
-from backend.agents.base_agent import BaseAgent, AgentResponse, Tool
+from backend.agents.base_agent import AgentResponse
 from backend.agents.orchestrator import Orchestrator, _IntentCache, VALID_INTENTS
 from backend.agents.helpyy_general_agent import HelpyyGeneralAgent
 from backend.agents.onboarding_agent import OnboardingAgent
@@ -286,7 +286,6 @@ class TestHandoff:
         """The receiving agent should get transition context in its history."""
         captured_messages = []
 
-        original_generate = mock_llm.generate
 
         async def capture_generate(messages, **kwargs):
             captured_messages.extend(messages)
