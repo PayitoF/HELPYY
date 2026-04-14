@@ -1,0 +1,1100 @@
+[
+  {
+    "feature": "digital_sessions__os_mode_macos",
+    "coefficient": 0.8379101690961087,
+    "abs_coefficient": 0.8379101690961087,
+    "rank": 1
+  },
+  {
+    "feature": "approved_count",
+    "coefficient": -0.7875722182376861,
+    "abs_coefficient": 0.7875722182376861,
+    "rank": 2
+  },
+  {
+    "feature": "loan_applications__amount_requested_mean",
+    "coefficient": 0.7729939625555441,
+    "abs_coefficient": 0.7729939625555441,
+    "rank": 3
+  },
+  {
+    "feature": "digital_sessions__os_mode_windows",
+    "coefficient": -0.6954130820402068,
+    "abs_coefficient": 0.6954130820402068,
+    "rank": 4
+  },
+  {
+    "feature": "digital_sessions__steps_completed_sum",
+    "coefficient": -0.660044767581719,
+    "abs_coefficient": 0.660044767581719,
+    "rank": 5
+  },
+  {
+    "feature": "loan_applications__decision_score_sum",
+    "coefficient": 0.6579895391231879,
+    "abs_coefficient": 0.6579895391231879,
+    "rank": 6
+  },
+  {
+    "feature": "loan_applications__amount_requested_min",
+    "coefficient": -0.5182918876193794,
+    "abs_coefficient": 0.5182918876193794,
+    "rank": 7
+  },
+  {
+    "feature": "payments__amount_due_min",
+    "coefficient": 0.4947957569243767,
+    "abs_coefficient": 0.4947957569243767,
+    "rank": 8
+  },
+  {
+    "feature": "payments__amount_due_mean",
+    "coefficient": -0.48106075862117076,
+    "abs_coefficient": 0.48106075862117076,
+    "rank": 9
+  },
+  {
+    "feature": "digital_sessions__conversion_sum",
+    "coefficient": 0.4649725429725307,
+    "abs_coefficient": 0.4649725429725307,
+    "rank": 10
+  },
+  {
+    "feature": "payments__amount_paid_mean",
+    "coefficient": -0.45439544811085125,
+    "abs_coefficient": 0.45439544811085125,
+    "rank": 11
+  },
+  {
+    "feature": "payments__paid_date_max",
+    "coefficient": -0.4448277437994152,
+    "abs_coefficient": 0.4448277437994152,
+    "rank": 12
+  },
+  {
+    "feature": "digital_sessions__connection_type_mode_3G",
+    "coefficient": 0.43474895926444374,
+    "abs_coefficient": 0.43474895926444374,
+    "rank": 13
+  },
+  {
+    "feature": "digital_sessions__marketing_channel_mode_partner",
+    "coefficient": 0.4288664250112815,
+    "abs_coefficient": 0.4288664250112815,
+    "rank": 14
+  },
+  {
+    "feature": "payments__paid_date_min",
+    "coefficient": -0.4024375534701917,
+    "abs_coefficient": 0.4024375534701917,
+    "rank": 15
+  },
+  {
+    "feature": "digital_sessions__referrer_mode_wallet_app",
+    "coefficient": -0.38301268886668494,
+    "abs_coefficient": 0.38301268886668494,
+    "rank": 16
+  },
+  {
+    "feature": "risk_index",
+    "coefficient": 0.3545106388189707,
+    "abs_coefficient": 0.3545106388189707,
+    "rank": 17
+  },
+  {
+    "feature": "loan_applications__decision_mode_rejected",
+    "coefficient": 0.3541692349821197,
+    "abs_coefficient": 0.3541692349821197,
+    "rank": 18
+  },
+  {
+    "feature": "on_time_rate",
+    "coefficient": -0.34565458917620917,
+    "abs_coefficient": 0.34565458917620917,
+    "rank": 19
+  },
+  {
+    "feature": "digital_sessions__marketing_channel_mode_referral",
+    "coefficient": -0.34541676067073773,
+    "abs_coefficient": 0.34541676067073773,
+    "rank": 20
+  },
+  {
+    "feature": "marital_status_single",
+    "coefficient": -0.3334497081314153,
+    "abs_coefficient": 0.3334497081314153,
+    "rank": 21
+  },
+  {
+    "feature": "payments__due_date_max",
+    "coefficient": 0.3321674546553354,
+    "abs_coefficient": 0.3321674546553354,
+    "rank": 22
+  },
+  {
+    "feature": "digital_sessions__conversion_mean",
+    "coefficient": -0.3287984686889927,
+    "abs_coefficient": 0.3287984686889927,
+    "rank": 23
+  },
+  {
+    "feature": "pct_conversion",
+    "coefficient": -0.3287984686889927,
+    "abs_coefficient": 0.3287984686889927,
+    "rank": 24
+  },
+  {
+    "feature": "transactions__balance_mean",
+    "coefficient": 0.3007054418615747,
+    "abs_coefficient": 0.3007054418615747,
+    "rank": 25
+  },
+  {
+    "feature": "transactions__merchant_category_mode_utilities",
+    "coefficient": -0.2993872372911565,
+    "abs_coefficient": 0.2993872372911565,
+    "rank": 26
+  },
+  {
+    "feature": "payments__amount_paid_min",
+    "coefficient": 0.2984808275983503,
+    "abs_coefficient": 0.2984808275983503,
+    "rank": 27
+  },
+  {
+    "feature": "tx_income_pct",
+    "coefficient": 0.2903265298808754,
+    "abs_coefficient": 0.2903265298808754,
+    "rank": 28
+  },
+  {
+    "feature": "digital_sessions__connection_type_mode_5G",
+    "coefficient": -0.28458326115969296,
+    "abs_coefficient": 0.28458326115969296,
+    "rank": 29
+  },
+  {
+    "feature": "marital_status_senior_family",
+    "coefficient": 0.2785458858765414,
+    "abs_coefficient": 0.2785458858765414,
+    "rank": 30
+  },
+  {
+    "feature": "loan_applications__decision_mode_approved",
+    "coefficient": -0.26986600477408407,
+    "abs_coefficient": 0.26986600477408407,
+    "rank": 31
+  },
+  {
+    "feature": "transactions__merchant_category_mode_food",
+    "coefficient": 0.2678811114035067,
+    "abs_coefficient": 0.2678811114035067,
+    "rank": 32
+  },
+  {
+    "feature": "digital_sessions__conversion_max",
+    "coefficient": 0.24599448237716764,
+    "abs_coefficient": 0.24599448237716764,
+    "rank": 33
+  },
+  {
+    "feature": "loan_applications__apply_date_max",
+    "coefficient": 0.23374893888430548,
+    "abs_coefficient": 0.23374893888430548,
+    "rank": 34
+  },
+  {
+    "feature": "marital_status_mid_family",
+    "coefficient": 0.2309536762953634,
+    "abs_coefficient": 0.2309536762953634,
+    "rank": 35
+  },
+  {
+    "feature": "payments__amount_paid_sum",
+    "coefficient": -0.22866282200248675,
+    "abs_coefficient": 0.22866282200248675,
+    "rank": 36
+  },
+  {
+    "feature": "transactions__balance_max",
+    "coefficient": -0.21706248839419925,
+    "abs_coefficient": 0.21706248839419925,
+    "rank": 37
+  },
+  {
+    "feature": "digital_sessions__referrer_mode_facebook",
+    "coefficient": 0.21486141584987942,
+    "abs_coefficient": 0.21486141584987942,
+    "rank": 38
+  },
+  {
+    "feature": "risk_features__base_risk_score",
+    "coefficient": 0.21348480950247842,
+    "abs_coefficient": 0.21348480950247842,
+    "rank": 39
+  },
+  {
+    "feature": "base_risk_score",
+    "coefficient": 0.21348480950247842,
+    "abs_coefficient": 0.21348480950247842,
+    "rank": 40
+  },
+  {
+    "feature": "banked_probability",
+    "coefficient": 0.20880932596681365,
+    "abs_coefficient": 0.20880932596681365,
+    "rank": 41
+  },
+  {
+    "feature": "loan_applications__decision_score_min",
+    "coefficient": -0.2087997728580486,
+    "abs_coefficient": 0.2087997728580486,
+    "rank": 42
+  },
+  {
+    "feature": "transactions__tx_type_mode_expense",
+    "coefficient": 0.20078199974122263,
+    "abs_coefficient": 0.20078199974122263,
+    "rank": 43
+  },
+  {
+    "feature": "digital_sessions__referrer_mode_direct",
+    "coefficient": 0.1890813984229929,
+    "abs_coefficient": 0.1890813984229929,
+    "rank": 44
+  },
+  {
+    "feature": "transactions__balance_min",
+    "coefficient": -0.18137481578837972,
+    "abs_coefficient": 0.18137481578837972,
+    "rank": 45
+  },
+  {
+    "feature": "is_banked",
+    "coefficient": -0.18107842279032113,
+    "abs_coefficient": 0.18107842279032113,
+    "rank": 46
+  },
+  {
+    "feature": "risk_features__is_banked",
+    "coefficient": -0.18107842279032113,
+    "abs_coefficient": 0.18107842279032113,
+    "rank": 47
+  },
+  {
+    "feature": "employment_type_formal",
+    "coefficient": 0.17973170330968286,
+    "abs_coefficient": 0.17973170330968286,
+    "rank": 48
+  },
+  {
+    "feature": "risk_features__employment_type_formal",
+    "coefficient": 0.17973170330968286,
+    "abs_coefficient": 0.17973170330968286,
+    "rank": 49
+  },
+  {
+    "feature": "overdue_rate",
+    "coefficient": 0.1752372816222887,
+    "abs_coefficient": 0.1752372816222887,
+    "rank": 50
+  },
+  {
+    "feature": "loan_applications__decision_score_max",
+    "coefficient": 0.16513086001110006,
+    "abs_coefficient": 0.16513086001110006,
+    "rank": 51
+  },
+  {
+    "feature": "marital_status_mature",
+    "coefficient": -0.16379401465368165,
+    "abs_coefficient": 0.16379401465368165,
+    "rank": 52
+  },
+  {
+    "feature": "payments__due_date_min",
+    "coefficient": 0.16231873255418652,
+    "abs_coefficient": 0.16231873255418652,
+    "rank": 53
+  },
+  {
+    "feature": "demographics__residence_type_other",
+    "coefficient": -0.15871076605410697,
+    "abs_coefficient": 0.15871076605410697,
+    "rank": 54
+  },
+  {
+    "feature": "residence_type_other",
+    "coefficient": -0.15871076605410697,
+    "abs_coefficient": 0.15871076605410697,
+    "rank": 55
+  },
+  {
+    "feature": "loan_applications__apply_date_min",
+    "coefficient": 0.15530177380874083,
+    "abs_coefficient": 0.15530177380874083,
+    "rank": 56
+  },
+  {
+    "feature": "digital_sessions__connection_type_mode_4G",
+    "coefficient": -0.15227214853893786,
+    "abs_coefficient": 0.15227214853893786,
+    "rank": 57
+  },
+  {
+    "feature": "transactions__amount_sum",
+    "coefficient": -0.15181229184371933,
+    "abs_coefficient": 0.15181229184371933,
+    "rank": 58
+  },
+  {
+    "feature": "loan_applications__product_type_mode_micro",
+    "coefficient": 0.14889322444237257,
+    "abs_coefficient": 0.14889322444237257,
+    "rank": 59
+  },
+  {
+    "feature": "digital_sessions__connection_type_nunique",
+    "coefficient": -0.1467314555140657,
+    "abs_coefficient": 0.1467314555140657,
+    "rank": 60
+  },
+  {
+    "feature": "transactions__tx_date_min",
+    "coefficient": 0.1406015379068666,
+    "abs_coefficient": 0.1406015379068666,
+    "rank": 61
+  },
+  {
+    "feature": "digital_sessions__bandwidth_mbps_max",
+    "coefficient": 0.140336894743543,
+    "abs_coefficient": 0.140336894743543,
+    "rank": 62
+  },
+  {
+    "feature": "loan_applications__amount_requested_max",
+    "coefficient": -0.13537720574830228,
+    "abs_coefficient": 0.13537720574830228,
+    "rank": 63
+  },
+  {
+    "feature": "education_level_none",
+    "coefficient": 0.12789528240927323,
+    "abs_coefficient": 0.12789528240927323,
+    "rank": 64
+  },
+  {
+    "feature": "demographics__education_level_none",
+    "coefficient": 0.12789528240927323,
+    "abs_coefficient": 0.12789528240927323,
+    "rank": 65
+  },
+  {
+    "feature": "risk_features__education_level_none",
+    "coefficient": 0.12789528240927323,
+    "abs_coefficient": 0.12789528240927323,
+    "rank": 66
+  },
+  {
+    "feature": "marital_status_pre_mature",
+    "coefficient": 0.1222409948271061,
+    "abs_coefficient": 0.1222409948271061,
+    "rank": 67
+  },
+  {
+    "feature": "digital_sessions__steps_completed_min",
+    "coefficient": -0.11866018846226621,
+    "abs_coefficient": 0.11866018846226621,
+    "rank": 68
+  },
+  {
+    "feature": "transactions__tx_type_mode_income",
+    "coefficient": -0.11647876953315131,
+    "abs_coefficient": 0.11647876953315131,
+    "rank": 69
+  },
+  {
+    "feature": "payments__dpd_mean",
+    "coefficient": 0.11284206461231695,
+    "abs_coefficient": 0.11284206461231695,
+    "rank": 70
+  },
+  {
+    "feature": "avg_steps",
+    "coefficient": 0.11207223570390222,
+    "abs_coefficient": 0.11207223570390222,
+    "rank": 71
+  },
+  {
+    "feature": "digital_sessions__steps_completed_mean",
+    "coefficient": 0.11207223570390222,
+    "abs_coefficient": 0.11207223570390222,
+    "rank": 72
+  },
+  {
+    "feature": "loan_applications__decision_score_count",
+    "coefficient": 0.11103980068020394,
+    "abs_coefficient": 0.11103980068020394,
+    "rank": 73
+  },
+  {
+    "feature": "loan_applications__amount_requested_count",
+    "coefficient": 0.11103980068020394,
+    "abs_coefficient": 0.11103980068020394,
+    "rank": 74
+  },
+  {
+    "feature": "apps_count",
+    "coefficient": 0.11103980068020394,
+    "abs_coefficient": 0.11103980068020394,
+    "rank": 75
+  },
+  {
+    "feature": "demographics__residence_type_owned",
+    "coefficient": 0.09848723201024945,
+    "abs_coefficient": 0.09848723201024945,
+    "rank": 76
+  },
+  {
+    "feature": "residence_type_owned",
+    "coefficient": 0.09848723201024945,
+    "abs_coefficient": 0.09848723201024945,
+    "rank": 77
+  },
+  {
+    "feature": "demographics__residence_type_rented",
+    "coefficient": 0.09663948644123348,
+    "abs_coefficient": 0.09663948644123348,
+    "rank": 78
+  },
+  {
+    "feature": "residence_type_rented",
+    "coefficient": 0.09663948644123348,
+    "abs_coefficient": 0.09663948644123348,
+    "rank": 79
+  },
+  {
+    "feature": "transactions__amount_mean",
+    "coefficient": 0.09353697447675094,
+    "abs_coefficient": 0.09353697447675094,
+    "rank": 80
+  },
+  {
+    "feature": "tx_avg_amount",
+    "coefficient": 0.09353697447673315,
+    "abs_coefficient": 0.09353697447673315,
+    "rank": 81
+  },
+  {
+    "feature": "digital_sessions__device_type_mode_tablet",
+    "coefficient": 0.09341322954308756,
+    "abs_coefficient": 0.09341322954308756,
+    "rank": 82
+  },
+  {
+    "feature": "transactions__merchant_category_mode_transport",
+    "coefficient": 0.09272839812411525,
+    "abs_coefficient": 0.09272839812411525,
+    "rank": 83
+  },
+  {
+    "feature": "transactions__merchant_category_mode_services",
+    "coefficient": 0.09189794410113102,
+    "abs_coefficient": 0.09189794410113102,
+    "rank": 84
+  },
+  {
+    "feature": "transactions__amount_min",
+    "coefficient": -0.09024620228172633,
+    "abs_coefficient": 0.09024620228172633,
+    "rank": 85
+  },
+  {
+    "feature": "digital_sessions__marketing_channel_nunique",
+    "coefficient": 0.08848725238388837,
+    "abs_coefficient": 0.08848725238388837,
+    "rank": 86
+  },
+  {
+    "feature": "digital_sessions__steps_completed_max",
+    "coefficient": 0.08823312132901322,
+    "abs_coefficient": 0.08823312132901322,
+    "rank": 87
+  },
+  {
+    "feature": "digital_sessions__connection_type_mode_wifi",
+    "coefficient": 0.086409680642415,
+    "abs_coefficient": 0.086409680642415,
+    "rank": 88
+  },
+  {
+    "feature": "employment_type_independent",
+    "coefficient": -0.08449494941698676,
+    "abs_coefficient": 0.08449494941698676,
+    "rank": 89
+  },
+  {
+    "feature": "risk_features__employment_type_independent",
+    "coefficient": -0.08449494941698676,
+    "abs_coefficient": 0.08449494941698676,
+    "rank": 90
+  },
+  {
+    "feature": "transactions__balance_count",
+    "coefficient": 0.08225840774626765,
+    "abs_coefficient": 0.08225840774626765,
+    "rank": 91
+  },
+  {
+    "feature": "transactions__amount_count",
+    "coefficient": 0.08225840774626765,
+    "abs_coefficient": 0.08225840774626765,
+    "rank": 92
+  },
+  {
+    "feature": "tx_count",
+    "coefficient": 0.08225840774626765,
+    "abs_coefficient": 0.08225840774626765,
+    "rank": 93
+  },
+  {
+    "feature": "loan_applications__decision_nunique",
+    "coefficient": 0.07937603577324141,
+    "abs_coefficient": 0.07937603577324141,
+    "rank": 94
+  },
+  {
+    "feature": "loan_applications__product_type_nunique",
+    "coefficient": -0.07824977900875611,
+    "abs_coefficient": 0.07824977900875611,
+    "rank": 95
+  },
+  {
+    "feature": "digital_sessions__os_nunique",
+    "coefficient": -0.07813502796751236,
+    "abs_coefficient": 0.07813502796751236,
+    "rank": 96
+  },
+  {
+    "feature": "digital_sessions__session_duration_sec_min",
+    "coefficient": 0.07810764738734237,
+    "abs_coefficient": 0.07810764738734237,
+    "rank": 97
+  },
+  {
+    "feature": "digital_sessions__referrer_nunique",
+    "coefficient": -0.07613307320929323,
+    "abs_coefficient": 0.07613307320929323,
+    "rank": 98
+  },
+  {
+    "feature": "digital_sessions__device_type_mode_desktop",
+    "coefficient": -0.07219289479073618,
+    "abs_coefficient": 0.07219289479073618,
+    "rank": 99
+  },
+  {
+    "feature": "digital_sessions__bandwidth_mbps_min",
+    "coefficient": 0.07210710325225769,
+    "abs_coefficient": 0.07210710325225769,
+    "rank": 100
+  },
+  {
+    "feature": "risk_features__city_type_rural",
+    "coefficient": 0.07078206168165939,
+    "abs_coefficient": 0.07078206168165939,
+    "rank": 101
+  },
+  {
+    "feature": "demographics__city_type_rural",
+    "coefficient": 0.07078206168165939,
+    "abs_coefficient": 0.07078206168165939,
+    "rank": 102
+  },
+  {
+    "feature": "city_type_rural",
+    "coefficient": 0.07078206168165939,
+    "abs_coefficient": 0.07078206168165939,
+    "rank": 103
+  },
+  {
+    "feature": "education_level_primary",
+    "coefficient": -0.07040851888453815,
+    "abs_coefficient": 0.07040851888453815,
+    "rank": 104
+  },
+  {
+    "feature": "demographics__education_level_primary",
+    "coefficient": -0.07040851888453815,
+    "abs_coefficient": 0.07040851888453815,
+    "rank": 105
+  },
+  {
+    "feature": "risk_features__education_level_primary",
+    "coefficient": -0.07040851888453815,
+    "abs_coefficient": 0.07040851888453815,
+    "rank": 106
+  },
+  {
+    "feature": "transactions__merchant_category_mode_retail",
+    "coefficient": -0.06881698612958614,
+    "abs_coefficient": 0.06881698612958614,
+    "rank": 107
+  },
+  {
+    "feature": "sex_F",
+    "coefficient": 0.06707474037984565,
+    "abs_coefficient": 0.06707474037984565,
+    "rank": 108
+  },
+  {
+    "feature": "demographics__sex_F",
+    "coefficient": 0.06707474037984565,
+    "abs_coefficient": 0.06707474037984565,
+    "rank": 109
+  },
+  {
+    "feature": "payments__amount_paid_max",
+    "coefficient": 0.06316689728079165,
+    "abs_coefficient": 0.06316689728079165,
+    "rank": 110
+  },
+  {
+    "feature": "digital_sessions__device_type_mode_mobile",
+    "coefficient": 0.06308289545575504,
+    "abs_coefficient": 0.06308289545575504,
+    "rank": 111
+  },
+  {
+    "feature": "tx_std_amount",
+    "coefficient": 0.06085175603722296,
+    "abs_coefficient": 0.06085175603722296,
+    "rank": 112
+  },
+  {
+    "feature": "digital_sessions__bandwidth_mbps_count",
+    "coefficient": 0.06033878765178869,
+    "abs_coefficient": 0.06033878765178869,
+    "rank": 113
+  },
+  {
+    "feature": "digital_sessions__steps_completed_count",
+    "coefficient": 0.06033878765178869,
+    "abs_coefficient": 0.06033878765178869,
+    "rank": 114
+  },
+  {
+    "feature": "digital_sessions__conversion_count",
+    "coefficient": 0.06033878765178869,
+    "abs_coefficient": 0.06033878765178869,
+    "rank": 115
+  },
+  {
+    "feature": "digital_sessions__session_duration_sec_count",
+    "coefficient": 0.06033878765178869,
+    "abs_coefficient": 0.06033878765178869,
+    "rank": 116
+  },
+  {
+    "feature": "total_sessions",
+    "coefficient": 0.06033878765178869,
+    "abs_coefficient": 0.06033878765178869,
+    "rank": 117
+  },
+  {
+    "feature": "avg_decision_score",
+    "coefficient": -0.059496478518718705,
+    "abs_coefficient": 0.059496478518718705,
+    "rank": 118
+  },
+  {
+    "feature": "loan_applications__decision_score_mean",
+    "coefficient": -0.05949647851871618,
+    "abs_coefficient": 0.05949647851871618,
+    "rank": 119
+  },
+  {
+    "feature": "digital_sessions__referrer_mode_google",
+    "coefficient": 0.05926658735836841,
+    "abs_coefficient": 0.05926658735836841,
+    "rank": 120
+  },
+  {
+    "feature": "payments__amount_due_max",
+    "coefficient": 0.059063496233277134,
+    "abs_coefficient": 0.059063496233277134,
+    "rank": 121
+  },
+  {
+    "feature": "transactions__balance_sum",
+    "coefficient": -0.058856183684069814,
+    "abs_coefficient": 0.058856183684069814,
+    "rank": 122
+  },
+  {
+    "feature": "loan_applications__amount_requested_sum",
+    "coefficient": 0.05198518993949435,
+    "abs_coefficient": 0.05198518993949435,
+    "rank": 123
+  },
+  {
+    "feature": "payments__amount_due_sum",
+    "coefficient": 0.051985189939491576,
+    "abs_coefficient": 0.051985189939491576,
+    "rank": 124
+  },
+  {
+    "feature": "marital_status_young_family",
+    "coefficient": -0.05019360400585718,
+    "abs_coefficient": 0.05019360400585718,
+    "rank": 125
+  },
+  {
+    "feature": "digital_sessions__conversion_min",
+    "coefficient": 0.04895574289519105,
+    "abs_coefficient": 0.04895574289519105,
+    "rank": 126
+  },
+  {
+    "feature": "digital_sessions__marketing_channel_mode_organic",
+    "coefficient": 0.04829039586777666,
+    "abs_coefficient": 0.04829039586777666,
+    "rank": 127
+  },
+  {
+    "feature": "demographics__residence_type_family",
+    "coefficient": 0.04788727781060884,
+    "abs_coefficient": 0.04788727781060884,
+    "rank": 128
+  },
+  {
+    "feature": "residence_type_family",
+    "coefficient": 0.04788727781060884,
+    "abs_coefficient": 0.04788727781060884,
+    "rank": 129
+  },
+  {
+    "feature": "digital_sessions__session_duration_sec_max",
+    "coefficient": -0.047647006938515195,
+    "abs_coefficient": 0.047647006938515195,
+    "rank": 130
+  },
+  {
+    "feature": "digital_sessions__marketing_channel_mode_ads",
+    "coefficient": -0.04743683000014911,
+    "abs_coefficient": 0.04743683000014911,
+    "rank": 131
+  },
+  {
+    "feature": "rejection_rate",
+    "coefficient": -0.0449328156993932,
+    "abs_coefficient": 0.0449328156993932,
+    "rank": 132
+  },
+  {
+    "feature": "transactions__merchant_category_nunique",
+    "coefficient": -0.043402081341378344,
+    "abs_coefficient": 0.043402081341378344,
+    "rank": 133
+  },
+  {
+    "feature": "digital_sessions__os_mode_android",
+    "coefficient": -0.04221776935712988,
+    "abs_coefficient": 0.04221776935712988,
+    "rank": 134
+  },
+  {
+    "feature": "digital_sessions__visit_time_max",
+    "coefficient": -0.040260918491348385,
+    "abs_coefficient": 0.040260918491348385,
+    "rank": 135
+  },
+  {
+    "feature": "loan_applications__product_type_mode_nano",
+    "coefficient": -0.03803859390788252,
+    "abs_coefficient": 0.03803859390788252,
+    "rank": 136
+  },
+  {
+    "feature": "digital_sessions__bandwidth_mbps_sum",
+    "coefficient": -0.037407131487215806,
+    "abs_coefficient": 0.037407131487215806,
+    "rank": 137
+  },
+  {
+    "feature": "transactions__amount_max",
+    "coefficient": -0.03272357145326237,
+    "abs_coefficient": 0.03272357145326237,
+    "rank": 138
+  },
+  {
+    "feature": "payments__amount_due_count",
+    "coefficient": -0.030942827634967193,
+    "abs_coefficient": 0.030942827634967193,
+    "rank": 139
+  },
+  {
+    "feature": "payments__amount_paid_count",
+    "coefficient": -0.030942827634967193,
+    "abs_coefficient": 0.030942827634967193,
+    "rank": 140
+  },
+  {
+    "feature": "payments__dpd_count",
+    "coefficient": -0.030942827634967193,
+    "abs_coefficient": 0.030942827634967193,
+    "rank": 141
+  },
+  {
+    "feature": "payments_count",
+    "coefficient": -0.030942827634967193,
+    "abs_coefficient": 0.030942827634967193,
+    "rank": 142
+  },
+  {
+    "feature": "payments__dpd_max",
+    "coefficient": -0.02974148090872371,
+    "abs_coefficient": 0.02974148090872371,
+    "rank": 143
+  },
+  {
+    "feature": "max_dpd",
+    "coefficient": -0.02974148090872371,
+    "abs_coefficient": 0.02974148090872371,
+    "rank": 144
+  },
+  {
+    "feature": "demographics__age",
+    "coefficient": -0.029439501473475013,
+    "abs_coefficient": 0.029439501473475013,
+    "rank": 145
+  },
+  {
+    "feature": "age",
+    "coefficient": -0.029439501473475013,
+    "abs_coefficient": 0.029439501473475013,
+    "rank": 146
+  },
+  {
+    "feature": "risk_features__age",
+    "coefficient": -0.029439501473475013,
+    "abs_coefficient": 0.029439501473475013,
+    "rank": 147
+  },
+  {
+    "feature": "risk_features__household_size",
+    "coefficient": 0.02885074895558385,
+    "abs_coefficient": 0.02885074895558385,
+    "rank": 148
+  },
+  {
+    "feature": "household_size",
+    "coefficient": 0.02885074895558385,
+    "abs_coefficient": 0.02885074895558385,
+    "rank": 149
+  },
+  {
+    "feature": "demographics__household_size",
+    "coefficient": 0.02885074895558385,
+    "abs_coefficient": 0.02885074895558385,
+    "rank": 150
+  },
+  {
+    "feature": "dependents_count",
+    "coefficient": 0.02885074895557423,
+    "abs_coefficient": 0.02885074895557423,
+    "rank": 151
+  },
+  {
+    "feature": "education_level_university",
+    "coefficient": 0.027293619767812357,
+    "abs_coefficient": 0.027293619767812357,
+    "rank": 152
+  },
+  {
+    "feature": "demographics__education_level_university",
+    "coefficient": 0.027293619767812357,
+    "abs_coefficient": 0.027293619767812357,
+    "rank": 153
+  },
+  {
+    "feature": "risk_features__education_level_university",
+    "coefficient": 0.027293619767812357,
+    "abs_coefficient": 0.027293619767812357,
+    "rank": 154
+  },
+  {
+    "feature": "avg_duration",
+    "coefficient": -0.027063584659326526,
+    "abs_coefficient": 0.027063584659326526,
+    "rank": 155
+  },
+  {
+    "feature": "digital_sessions__session_duration_sec_mean",
+    "coefficient": -0.02706358465932368,
+    "abs_coefficient": 0.02706358465932368,
+    "rank": 156
+  },
+  {
+    "feature": "loan_applications__product_type_mode_reload",
+    "coefficient": -0.026551400326393776,
+    "abs_coefficient": 0.026551400326393776,
+    "rank": 157
+  },
+  {
+    "feature": "digital_sessions__device_type_nunique",
+    "coefficient": -0.026417303744068338,
+    "abs_coefficient": 0.026417303744068338,
+    "rank": 158
+  },
+  {
+    "feature": "digital_sessions__visit_time_min",
+    "coefficient": 0.020395159783517913,
+    "abs_coefficient": 0.020395159783517913,
+    "rank": 159
+  },
+  {
+    "feature": "payments__dpd_min",
+    "coefficient": -0.017518314631797913,
+    "abs_coefficient": 0.017518314631797913,
+    "rank": 160
+  },
+  {
+    "feature": "demographics__sex_M",
+    "coefficient": 0.01722848982824939,
+    "abs_coefficient": 0.01722848982824939,
+    "rank": 161
+  },
+  {
+    "feature": "sex_M",
+    "coefficient": 0.01722848982824939,
+    "abs_coefficient": 0.01722848982824939,
+    "rank": 162
+  },
+  {
+    "feature": "digital_sessions__os_mode_ios",
+    "coefficient": -0.015976087490683234,
+    "abs_coefficient": 0.015976087490683234,
+    "rank": 163
+  },
+  {
+    "feature": "city_type_urban",
+    "coefficient": 0.013521168526493934,
+    "abs_coefficient": 0.013521168526493934,
+    "rank": 164
+  },
+  {
+    "feature": "risk_features__city_type_urban",
+    "coefficient": 0.013521168526493934,
+    "abs_coefficient": 0.013521168526493934,
+    "rank": 165
+  },
+  {
+    "feature": "demographics__city_type_urban",
+    "coefficient": 0.013521168526493934,
+    "abs_coefficient": 0.013521168526493934,
+    "rank": 166
+  },
+  {
+    "feature": "risk_features__employment_type_informal",
+    "coefficient": -0.010933523684529803,
+    "abs_coefficient": 0.010933523684529803,
+    "rank": 167
+  },
+  {
+    "feature": "employment_type_informal",
+    "coefficient": -0.010933523684529803,
+    "abs_coefficient": 0.010933523684529803,
+    "rank": 168
+  },
+  {
+    "feature": "digital_sessions__session_duration_sec_sum",
+    "coefficient": -0.00993439013553179,
+    "abs_coefficient": 0.00993439013553179,
+    "rank": 169
+  },
+  {
+    "feature": "digital_sessions__bandwidth_mbps_mean",
+    "coefficient": 0.009589135011973109,
+    "abs_coefficient": 0.009589135011973109,
+    "rank": 170
+  },
+  {
+    "feature": "transactions__tx_type_nunique",
+    "coefficient": -0.006851185013862845,
+    "abs_coefficient": 0.006851185013862845,
+    "rank": 171
+  },
+  {
+    "feature": "transactions__tx_date_max",
+    "coefficient": -0.0062535563319997415,
+    "abs_coefficient": 0.0062535563319997415,
+    "rank": 172
+  },
+  {
+    "feature": "payments__dpd_sum",
+    "coefficient": 0.0047879133477871936,
+    "abs_coefficient": 0.0047879133477871936,
+    "rank": 173
+  },
+  {
+    "feature": "digital_sessions__referrer_mode_campaign",
+    "coefficient": 0.004106517443493907,
+    "abs_coefficient": 0.004106517443493907,
+    "rank": 174
+  },
+  {
+    "feature": "onboarding_date",
+    "coefficient": 0.003911829260539013,
+    "abs_coefficient": 0.003911829260539013,
+    "rank": 175
+  },
+  {
+    "feature": "risk_features__education_level_secondary",
+    "coefficient": -0.002621462317604145,
+    "abs_coefficient": 0.002621462317604145,
+    "rank": 176
+  },
+  {
+    "feature": "demographics__education_level_secondary",
+    "coefficient": -0.002621462317604145,
+    "abs_coefficient": 0.002621462317604145,
+    "rank": 177
+  },
+  {
+    "feature": "education_level_secondary",
+    "coefficient": -0.002621462317604145,
+    "abs_coefficient": 0.002621462317604145,
+    "rank": 178
+  },
+  {
+    "feature": "education_level_technical",
+    "coefficient": 0.0021443092330626773,
+    "abs_coefficient": 0.0021443092330626773,
+    "rank": 179
+  },
+  {
+    "feature": "demographics__education_level_technical",
+    "coefficient": 0.0021443092330626773,
+    "abs_coefficient": 0.0021443092330626773,
+    "rank": 180
+  },
+  {
+    "feature": "risk_features__education_level_technical",
+    "coefficient": 0.0021443092330626773,
+    "abs_coefficient": 0.0021443092330626773,
+    "rank": 181
+  },
+  {
+    "feature": "declared_income",
+    "coefficient": 0.0,
+    "abs_coefficient": 0.0,
+    "rank": 182
+  },
+  {
+    "feature": "risk_features__declared_income",
+    "coefficient": 0.0,
+    "abs_coefficient": 0.0,
+    "rank": 183
+  }
+]

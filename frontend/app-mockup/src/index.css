@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: #1a1a2e;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hide scrollbars but keep scroll */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 3px;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}

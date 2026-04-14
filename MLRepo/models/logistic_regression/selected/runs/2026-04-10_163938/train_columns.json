@@ -1,0 +1,51 @@
+{
+  "training_mode": "selected",
+  "input_columns_before_preprocessing": [
+    "declared_income",
+    "is_banked",
+    "employment_type",
+    "age",
+    "city_type",
+    "total_sessions",
+    "pct_conversion",
+    "tx_income_pct",
+    "payments_count",
+    "on_time_rate",
+    "overdue_rate",
+    "avg_decision_score"
+  ],
+  "numeric_columns": [
+    "declared_income",
+    "is_banked",
+    "age",
+    "total_sessions",
+    "pct_conversion",
+    "tx_income_pct",
+    "payments_count",
+    "on_time_rate",
+    "overdue_rate",
+    "avg_decision_score"
+  ],
+  "categorical_columns": [
+    "employment_type",
+    "city_type"
+  ],
+  "datetime_columns": [],
+  "encoded_columns_used_by_model": [
+    "declared_income",
+    "is_banked",
+    "age",
+    "total_sessions",
+    "pct_conversion",
+    "tx_income_pct",
+    "payments_count",
+    "on_time_rate",
+    "overdue_rate",
+    "avg_decision_score",
+    "employment_type_formal",
+    "employment_type_independent",
+    "employment_type_informal",
+    "city_type_rural",
+    "city_type_urban"
+  ]
+}

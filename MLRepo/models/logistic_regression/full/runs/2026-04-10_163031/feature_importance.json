@@ -1,0 +1,32 @@
+[
+  {
+    "feature": "digital_sessions__os_mode_macos",
+    "coefficient": 0.8379101690961087,
+    "abs_coefficient": 0.8379101690961087,
+    "rank": 1
+  },
+  {
+    "feature": "approved_count",
+    "coefficient": -0.7875722182376861,
+    "abs_coefficient": 0.7875722182376861,
+    "rank": 2
+  },
+  {
+    "feature": "loan_applications__amount_requested_mean",
+    "coefficient": 0.7729939625555441,
+    "abs_coefficient": 0.7729939625555441,
+    "rank": 3
+  },
+  {
+    "feature": "digital_sessions__os_mode_windows",
+    "coefficient": -0.6954130820402068,
+    "abs_coefficient": 0.6954130820402068,
+    "rank": 4
+  },
+  {
+    "feature": "digital_sessions__steps_completed_sum",
+    "coefficient": -0.660044767581719,
+    "abs_coefficient": 0.660044767581719,
+    "rank": 5
+  }
+]

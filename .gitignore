@@ -1,0 +1,88 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment
+.env
+.envrc
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.claude/
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# Linting
+.ruff_cache/
+.mypy_cache/
+
+# Node / Frontend
+node_modules/
+frontend/app-mockup/dist/
+frontend/app-mockup/.vite/
+.npm
+
+# ML models and data (binarios)
+*.pkl
+*.joblib
+*.h5
+*.onnx
+*.pt
+*.bin
+
+# Local database
+data/*.db
+data/*.db-shm
+data/*.db-wal
+data/*.sqlite
+
+# ML generated data (CSVs grandes)
+MLRepo/data/generated/
+MLRepo/data/raw/
+MLRepo/data/processed/
+
+# ML git backup (temporal)
+MLRepo/.git-backup/
+
+# Compressed files sueltos
+MLRepo/src/*.rar
+
+# Docker
+.docker/
+
+# AWS
+cdk.out/
+.cdk.staging/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Backups manuales
+*-backup-*/
+*.bak

@@ -1,0 +1,33 @@
+{
+  "training_mode": "full",
+  "top_k": 5,
+  "selected_features": [
+    "digital_sessions__os_mode_macos",
+    "approved_count",
+    "loan_applications__amount_requested_mean",
+    "digital_sessions__os_mode_windows",
+    "digital_sessions__steps_completed_sum"
+  ],
+  "feature_origin": [
+    {
+      "feature": "digital_sessions__os_mode_macos",
+      "source_table": "digital_sessions"
+    },
+    {
+      "feature": "approved_count",
+      "source_table": "clients"
+    },
+    {
+      "feature": "loan_applications__amount_requested_mean",
+      "source_table": "loan_applications"
+    },
+    {
+      "feature": "digital_sessions__os_mode_windows",
+      "source_table": "digital_sessions"
+    },
+    {
+      "feature": "digital_sessions__steps_completed_sum",
+      "source_table": "digital_sessions"
+    }
+  ]
+}

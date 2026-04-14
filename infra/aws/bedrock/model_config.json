@@ -1,0 +1,19 @@
+{
+  "models": {
+    "primary": {
+      "model_id": "anthropic.claude-sonnet-4-20250514-v1:0",
+      "region": "us-east-1",
+      "use_case": "Agent responses, intent classification"
+    },
+    "lightweight": {
+      "model_id": "anthropic.claude-haiku-4-5-20251001-v1:0",
+      "region": "us-east-1",
+      "use_case": "Intent classification only (cost optimization)"
+    }
+  },
+  "guardrails": {
+    "enabled": true,
+    "content_policy": "block_harmful_content",
+    "pii_policy": "anonymize"
+  }
+}

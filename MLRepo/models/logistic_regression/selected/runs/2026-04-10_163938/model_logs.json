@@ -1,0 +1,51 @@
+{
+  "run_timestamp": "2026-04-10T16:39:38.136948",
+  "model_name": "logistic_regression",
+  "training_mode": "selected",
+  "input_path": "data\\generated\\model_mt.csv",
+  "run_dir": "models\\logistic_regression\\selected\\runs\\2026-04-10_163938",
+  "target_column": "default",
+  "id_column": "client_id",
+  "excluded_columns": [
+    "p_default",
+    "national_id"
+  ],
+  "excluded_prefixes": [
+    "target__"
+  ],
+  "selected_training_features": [
+    "declared_income",
+    "is_banked",
+    "employment_type",
+    "age",
+    "city_type",
+    "total_sessions",
+    "pct_conversion",
+    "tx_income_pct",
+    "payments_count",
+    "on_time_rate",
+    "overdue_rate",
+    "avg_decision_score"
+  ],
+  "scale_numeric": true,
+  "scale_datetime": true,
+  "train_rows": 1600,
+  "test_rows": 400,
+  "n_input_features": 12,
+  "n_encoded_features": 15,
+  "test_size": 0.2,
+  "random_state": 42,
+  "max_iter": 1000,
+  "solver": "liblinear",
+  "class_weight": "balanced",
+  "export_design_matrix": false,
+  "artifacts": {
+    "model": "models\\logistic_regression\\selected\\runs\\2026-04-10_163938\\model.pkl",
+    "logs": "models\\logistic_regression\\selected\\runs\\2026-04-10_163938\\model_logs.json",
+    "metrics": "models\\logistic_regression\\selected\\runs\\2026-04-10_163938\\metrics.json",
+    "feature_importance": "models\\logistic_regression\\selected\\runs\\2026-04-10_163938\\feature_importance.json",
+    "feature_importance_full": "models\\logistic_regression\\selected\\runs\\2026-04-10_163938\\feature_importance_full.json",
+    "train_columns": "models\\logistic_regression\\selected\\runs\\2026-04-10_163938\\train_columns.json",
+    "selected_features": "models\\logistic_regression\\selected\\runs\\2026-04-10_163938\\selected_features.json"
+  }
+}

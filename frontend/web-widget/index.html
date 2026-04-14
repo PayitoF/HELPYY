@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BBVA Colombia — Tu banco digital</title>
+  <style>
+    :root {
+      --bbva-blue: #0727b5;
+      --bbva-dark: #0b1650;
+      --bbva-text: #11215a;
+      --bbva-muted: #5d688b;
+      --bbva-line: #e7e9f2;
+      --bg: #f3f4f7;
+      --card: #ffffff;
+      --helpyy: #00a870;
+      --helpyy-dark: #007a52;
+      --radius-xl: 28px;
+      --shadow: 0 2px 10px rgba(0,0,0,.05);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--bbva-text);
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    .container {
+      width: min(1600px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    /* ─── Topbar / Nav ─── */
+    .topbar {
+      position: sticky; top: 0; z-index: 20;
+      padding: 24px 0 14px;
+      background: rgba(243,244,247,0.9);
+      backdrop-filter: blur(8px);
+    }
+    .nav-shell {
+      background: var(--card);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px 28px;
+    }
+    .brand-group { display: flex; align-items: center; gap: 40px; min-width: 0; }
+    .logo {
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 800; font-size: 28px; color: var(--bbva-blue);
+      letter-spacing: 0.5px; white-space: nowrap;
+    }
+    .logo .years { font-size: 20px; font-weight: 700; opacity: 0.95; }
+    .nav-links, .nav-actions { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+    .nav-link {
+      border: 0; background: transparent; color: var(--bbva-text);
+      font-size: 17px; font-weight: 600; padding: 10px 4px; cursor: pointer;
+      border-bottom: 3px solid transparent; font-family: inherit;
+    }
+    .nav-link.active { border-color: var(--bbva-text); }
+    .nav-action {
+      display: inline-flex; align-items: center; justify-content: center;
+      height: 56px; padding: 0 24px; border-radius: 14px; border: 0;
+      font-size: 17px; font-weight: 700; cursor: pointer; color: var(--bbva-text);
+      background: transparent; white-space: nowrap; font-family: inherit;
+    }
+    .nav-action.soft { background: #f1f2f6; min-width: 146px; }
+    .nav-action.primary { background: #0a55ff; color: #fff; min-width: 190px; }
+    .nav-action.primary:hover { background: #0740df; }
+
+    main { padding-bottom: 0; }
+
+    /* ─── Hero slide ─── */
+    .hero-wrap {
+      margin-top: 12px;
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .slide {
+      min-height: 590px;
+      border-radius: 26px;
+      overflow: hidden;
+      position: relative;
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+    }
+    .slide-left {
+      position: relative;
+      background: linear-gradient(90deg, #050505 0%, #050505 55%, rgba(5,5,5,0.1) 100%);
+      display: flex; align-items: center; padding: 40px 34px; z-index: 2;
+    }
+    .promo-card {
+      width: min(600px, 100%);
+      background: #fff;
+      border-radius: 28px;
+      padding: 34px 28px 30px;
+      box-shadow: 0 16px 30px rgba(0,0,0,.12);
+    }
+    .promo-card h1 {
+      margin: 0 0 24px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(36px, 4vw, 58px);
+      line-height: 0.98;
+      color: var(--bbva-dark);
+      letter-spacing: -1.5px;
+    }
+    .promo-card p { margin: 0; color: #33406f; font-size: 18px; line-height: 1.55; max-width: 520px; }
+    .cta {
+      margin-top: 22px;
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 190px; height: 58px; padding: 0 24px;
+      border: 0; border-radius: 12px; background: var(--bbva-blue); color: #fff;
+      font-size: 17px; font-weight: 700; cursor: pointer; font-family: inherit;
+    }
+    .cta:hover { background: #051f9a; }
+    .cta.green { background: var(--helpyy); }
+    .cta.green:hover { background: var(--helpyy-dark); }
+    .slide-right {
+      position: relative;
+      background: radial-gradient(circle at 58% 30%, rgba(255,255,255,0.55), rgba(255,255,255,0) 20%),
+        linear-gradient(90deg, #030310 0%, #08206e 44%, #0e3ca0 72%, #061641 100%);
+      overflow: hidden;
+    }
+    .curtain {
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(90deg,
+        rgba(0,0,0,0.38) 0px, rgba(0,0,0,0.18) 16px,
+        rgba(16,77,193,0.25) 28px, rgba(10,27,78,0.52) 44px);
+      mix-blend-mode: screen; opacity: 0.88;
+    }
+    .stage-person {
+      position: absolute; right: 8%; bottom: 0; width: 42%; min-width: 290px;
+      aspect-ratio: 0.75 / 1; z-index: 2;
+    }
+    .stage-person .body {
+      position: absolute; left: 50%; bottom: 0; width: 62%; height: 58%;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, #d9cfbf, #b7a891);
+      border-radius: 34% 34% 10% 10% / 20% 20% 10% 10%;
+    }
+    .stage-person .head {
+      position: absolute; left: 50%; top: 13%; width: 30%; height: 20%;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, #c48762, #a16648);
+      border-radius: 45% 45% 48% 48%; z-index: 3;
+    }
+    .stage-person .hair {
+      position: absolute; left: 50%; top: 9%; width: 34%; height: 16%;
+      transform: translateX(-50%); background: #3d1e16;
+      border-radius: 44% 44% 34% 34%; z-index: 4;
+    }
+    .stage-person .arm-left, .stage-person .arm-right {
+      position: absolute; top: 42%; width: 11%; height: 19%;
+      background: linear-gradient(180deg, #c48762, #9f6447);
+      border-radius: 999px; z-index: 4;
+    }
+    .stage-person .arm-left { left: 12%; transform: rotate(18deg); }
+    .stage-person .arm-right { right: 10%; transform: rotate(-12deg); }
+    .check {
+      position: absolute; left: 10%; bottom: 12%; width: 78%; height: 27%;
+      background: linear-gradient(180deg, #fbfbfd, #e8ebf1);
+      border: 3px solid #9fa4b4; border-radius: 18px; transform: rotate(-4deg);
+      z-index: 5; padding: 20px 24px;
+      box-shadow: 0 18px 28px rgba(0,0,0,.18);
+    }
+    .check .small { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; text-align: center; color: #222; margin-bottom: 6px; font-weight: 700; }
+    .check .amount { text-align: center; font-family: Georgia, "Times New Roman", serif; font-size: clamp(38px, 4vw, 64px); font-weight: 700; color: #111; line-height: 1; letter-spacing: -2px; }
+    .check .brand { text-align: center; margin-top: 8px; font-size: 16px; font-weight: 800; color: #111; letter-spacing: 1px; }
+    .carousel-nav {
+      display: flex; justify-content: center; align-items: center; gap: 28px;
+      padding: 18px 0 6px; color: #273d91; font-weight: 600;
+    }
+    .arrow { width: 20px; height: 20px; border-top: 3px solid #2942a8; border-left: 3px solid #2942a8; transform: rotate(-45deg); cursor: pointer; }
+    .arrow.right { transform: rotate(135deg); }
+
+    /* ─── Loan panel ─── */
+    .secondary {
+      margin-top: 26px; background: var(--card); border-radius: var(--radius-xl);
+      box-shadow: var(--shadow); padding: 34px 30px;
+    }
+    .loan-panel {
+      background: #f8f8fb; border-radius: 28px; min-height: 540px;
+      display: grid; grid-template-columns: 0.95fr 1.15fr 0.9fr;
+      align-items: center; gap: 28px; padding: 46px 58px;
+    }
+    .coin-art { position: relative; width: min(340px, 100%); aspect-ratio: 1/1; margin: 0 auto; }
+    .coin, .coin-stack {
+      position: absolute; border-radius: 50%;
+      background: radial-gradient(circle at 62% 40%, #25d9ff, #07a6ef 48%, #0d7dd7 100%);
+      box-shadow: inset 0 0 0 4px rgba(255,255,255,.15), 0 20px 30px rgba(17,98,204,.12);
+    }
+    .coin-stack.s1 { left: 16%; top: 22%; width: 42%; height: 18%; }
+    .coin-stack.s2 { left: 16%; top: 34%; width: 42%; height: 18%; }
+    .coin-stack.s3 { left: 16%; top: 46%; width: 42%; height: 18%; }
+    .coin-stack.s4 { left: 16%; top: 58%; width: 42%; height: 18%; }
+    .coin { left: 42%; top: 44%; width: 40%; height: 40%; transform: rotate(-18deg); }
+    .loan-copy h2 {
+      margin: 0; font-family: Georgia, "Times New Roman", serif; color: var(--bbva-dark);
+      font-size: clamp(38px, 4.2vw, 62px); line-height: 0.98; letter-spacing: -1.6px; max-width: 520px;
+    }
+    .loan-copy p { margin: 24px 0 0; font-size: 18px; line-height: 1.5; color: #33406f; max-width: 520px; }
+    .loan-copy .cta { min-width: 380px; max-width: 100%; margin-top: 34px; }
+    .benefits { padding-left: 24px; border-left: 1px solid var(--bbva-line); }
+    .benefit { padding: 6px 0 24px; }
+    .benefit + .benefit { border-top: 1px solid var(--bbva-line); padding-top: 24px; }
+    .benefit h3 { margin: 0 0 10px; font-size: 20px; line-height: 1.2; color: var(--bbva-dark); }
+    .benefit p { margin: 0; font-size: 16px; line-height: 1.5; color: #33406f; }
+
+    /* ─── Products / Feature Cards ─── */
+    .features { margin-top: 26px; background: var(--card); border-radius: var(--radius-xl); box-shadow: var(--shadow); padding: 46px 40px; }
+    .section-label {
+      display: inline-block; font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--bbva-blue); background: #eef2ff; padding: 4px 12px; border-radius: 12px; margin-bottom: 12px;
+    }
+    .section-title { font-family: Georgia, "Times New Roman", serif; font-size: clamp(28px, 3vw, 48px); font-weight: 700; color: var(--bbva-dark); margin-bottom: 8px; letter-spacing: -0.8px; }
+    .section-subtitle { font-size: 17px; color: var(--bbva-muted); max-width: 540px; margin-bottom: 40px; }
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .card {
+      background: #f8f8fb; border-radius: 22px; padding: 28px 24px;
+      border: 1px solid var(--bbva-line); transition: transform .2s, box-shadow .2s;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(7,39,181,.08); }
+    .card-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+    .card-icon.blue { background: #eef2ff; }
+    .card-icon.green { background: rgba(0,168,112,.1); }
+    .card-icon.orange { background: #fff7ed; }
+    .card-icon.purple { background: #f5f3ff; }
+    .card h3 { font-size: 17px; font-weight: 700; color: var(--bbva-dark); margin-bottom: 8px; }
+    .card p { font-size: 14px; color: var(--bbva-muted); line-height: 1.7; }
+    .card-tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 10px; margin-top: 14px; }
+    .card-tag.new { background: rgba(0,168,112,.12); color: var(--helpyy-dark); }
+    .card-tag.hot { background: rgba(239,68,68,.1); color: #dc2626; }
+
+    /* ─── Helpyy Banner ─── */
+    .helpyy-wrap { margin-top: 26px; background: var(--card); border-radius: var(--radius-xl); box-shadow: var(--shadow); padding: 34px 30px; }
+    .helpyy-inner {
+      background: linear-gradient(135deg, var(--bbva-dark) 0%, #0b3d8f 100%);
+      border-radius: 24px; padding: 56px; display: grid; grid-template-columns: 1fr 1fr;
+      gap: 56px; align-items: center; position: relative; overflow: hidden;
+    }
+    .helpyy-inner::before {
+      content: ''; position: absolute; width: 400px; height: 400px;
+      background: rgba(255,255,255,.02); border-radius: 50%; top: -100px; right: -100px;
+    }
+    .helpyy-text { color: white; position: relative; }
+    .helpyy-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,168,112,.2); border: 1px solid rgba(0,168,112,.35);
+      color: #4fffbb; font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 20px; margin-bottom: 20px;
+    }
+    .helpyy-text h2 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(28px, 3vw, 42px); font-weight: 700; margin-bottom: 16px; line-height: 1.1; }
+    .helpyy-text p { color: rgba(255,255,255,.7); font-size: 16px; margin-bottom: 28px; }
+    .steps-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+    .steps-list li { display: flex; align-items: flex-start; gap: 12px; color: rgba(255,255,255,.85); font-size: 15px; }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--helpyy); color: white; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .helpyy-illustration { display: flex; justify-content: flex-end; position: relative; }
+
+    /* ─── Footer ─── */
+    .footer-panel {
+      margin-top: 26px; background: var(--card);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      padding: 32px 0 0; box-shadow: var(--shadow); overflow: hidden;
+    }
+    .footer-top { padding: 0 34px 28px; display: grid; grid-template-columns: 1fr 1fr 1fr 1.1fr; gap: 26px; }
+    .footer-col h4 { margin: 0 0 22px; font-size: 22px; line-height: 1.15; color: var(--bbva-dark); font-family: Georgia, serif; }
+    .footer-links { display: grid; gap: 14px; }
+    .footer-links a { color: var(--bbva-blue); font-size: 17px; font-weight: 600; }
+    .footer-links a:hover { text-decoration: underline; }
+    .aside-box p { margin: 0 0 16px; color: #33406f; font-size: 16px; line-height: 1.5; }
+    .aside-box a { color: var(--bbva-blue); font-weight: 600; }
+    .footer-bottom-bar {
+      background: var(--bbva-blue); color: #dce5ff; padding: 40px 34px 32px;
+    }
+    .socials { display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 44px; }
+    .social { width: 42px; height: 42px; border-radius: 50%; border: 2px solid rgba(167,212,255,0.7); display: grid; place-items: center; font-weight: 800; color: #9dd0ff; font-size: 17px; transition: border-color .2s; }
+    .social:hover { border-color: #9dd0ff; }
+    .legal { display: flex; flex-wrap: wrap; gap: 40px; font-size: 17px; margin-bottom: 40px; }
+    .legal a { color: #dce5ff; }
+    .legal a:hover { color: white; }
+    .copyright { font-size: 16px; color: #dce5ff; }
+
+    /* ─── Floating promo ─── */
+    .helpyy-promo-bar {
+      position: fixed; bottom: 100px; right: 24px;
+      background: white; border-radius: 14px; padding: 14px 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.18);
+      display: flex; align-items: center; gap: 12px; max-width: 280px;
+      z-index: 99998;
+      animation: slideIn .6s cubic-bezier(.4,0,.2,1) 4s both;
+      border-left: 4px solid var(--helpyy);
+    }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(120%); } to { opacity: 1; transform: translateX(0); } }
+    .helpyy-promo-bar .hpb-icon { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--helpyy), #00897b); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .helpyy-promo-bar p { font-size: 13px; font-weight: 500; color: var(--bbva-text); line-height: 1.4; }
+    .helpyy-promo-bar .close-promo { position: absolute; top: 6px; right: 8px; background: none; border: none; font-size: 18px; color: #999; cursor: pointer; line-height: 1; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 1200px) {
+      .slide, .loan-panel { grid-template-columns: 1fr; }
+      .slide-left { background: linear-gradient(180deg, #050505 0%, rgba(5,5,5,0.82) 100%); }
+      .slide-right { min-height: 400px; }
+      .benefits { border-left: 0; padding-left: 0; border-top: 1px solid var(--bbva-line); padding-top: 16px; }
+      .loan-copy .cta { min-width: 0; width: 100%; }
+      .helpyy-inner { grid-template-columns: 1fr; gap: 32px; }
+      .helpyy-illustration { display: none; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 860px) {
+      .container { width: min(100%, calc(100% - 24px)); }
+      .nav-shell { flex-direction: column; align-items: stretch; }
+      .brand-group, .nav-actions { justify-content: space-between; }
+      .loan-panel { padding: 28px 20px; min-height: auto; }
+      .slide-left { padding: 22px; }
+      .helpyy-inner { padding: 32px 24px; }
+      .footer-top { grid-template-columns: 1fr; padding: 0 20px 24px; }
+      .footer-bottom-bar { padding: 32px 20px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header class="topbar">
+  <div class="container">
+    <div class="nav-shell">
+      <div class="brand-group">
+        <div class="logo" aria-label="BBVA">
+          <span>BBVA</span>
+          <span class="years">30</span>
+        </div>
+        <nav class="nav-links" aria-label="Secciones principales">
+          <button class="nav-link active">Personas</button>
+          <button class="nav-link">Empresas</button>
+          <button class="nav-link">Pyme</button>
+        </nav>
+      </div>
+      <div class="nav-actions">
+        <button class="nav-action">💳 Solicita tu Tarjeta</button>
+        <button class="nav-action soft">Acceso</button>
+        <button class="nav-action primary" id="main-cta">Crea tu cuenta</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- ═══════════════ HERO SLIDE ═══════════════ -->
+  <section class="hero-wrap" aria-label="Hero principal">
+    <div class="slide">
+      <div class="slide-left">
+        <div class="promo-card">
+          <h1>Banca digital que impulsa tu futuro</h1>
+          <p>
+            Abre tu cuenta en minutos, accede a microcréditos con IA y lleva tus finanzas al siguiente nivel.
+            Sin filas, sin papeleo. Disponible 24/7.
+          </p>
+          <button class="cta" id="hero-cta">Abrir mi cuenta</button>
+        </div>
+      </div>
+
+      <div class="slide-right">
+        <div class="curtain"></div>
+
+        <div class="stage-person" aria-hidden="true">
+          <div class="hair"></div>
+          <div class="head"></div>
+          <div class="body"></div>
+          <div class="arm-left"></div>
+          <div class="arm-right"></div>
+          <div class="check">
+            <div class="small">Microcrédito aprobado</div>
+            <div class="amount">$1.500.000</div>
+            <div class="brand">BBVA · Helpyy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="carousel-nav" aria-label="Navegación del carrusel">
+      <span class="arrow" aria-hidden="true"></span>
+      <span>1 de 4</span>
+      <span class="arrow right" aria-hidden="true"></span>
+    </div>
+  </section>
+
+  <!-- ═══════════════ LOAN PANEL ═══════════════ -->
+  <section class="secondary" aria-label="Microcrédito Helpyy">
+    <div class="loan-panel">
+      <div class="coin-art" aria-hidden="true">
+        <div class="coin-stack s1"></div>
+        <div class="coin-stack s2"></div>
+        <div class="coin-stack s3"></div>
+        <div class="coin-stack s4"></div>
+        <div class="coin"></div>
+      </div>
+
+      <div class="loan-copy">
+        <h2>Un microcrédito para que tu negocio despegue</h2>
+        <p>
+          Evaluamos tu perfil con inteligencia artificial en minutos. Sin papeleo, sin codeudor.
+          Disponible para trabajadores informales y emprendedores.
+        </p>
+        <button class="cta green" id="loan-cta">Quiero mi microcrédito</button>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">
+          <h3>Sin historial crediticio requerido</h3>
+          <p>Evaluamos tu flujo de caja real, no solo el puntaje Datacrédito.</p>
+        </div>
+        <div class="benefit">
+          <h3>Resultado en minutos</h3>
+          <p>La IA de Helpyy Hand analiza tu perfil al instante.</p>
+        </div>
+        <div class="benefit">
+          <h3>Te acompañamos hasta calificar</h3>
+          <p>Si hoy no calificas, te damos un plan personalizado para lograrlo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ FEATURE CARDS ═══════════════ -->
+  <section class="features" id="productos" aria-label="Productos BBVA">
+    <span class="section-label">Nuestros productos</span>
+    <h2 class="section-title">Todo lo que necesitas en un solo banco</h2>
+    <p class="section-subtitle">Desde tu primera cuenta hasta tu microcrédito, te acompañamos en cada paso.</p>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon blue">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect x="4" y="10" width="24" height="17" rx="3" fill="none" stroke="#0727b5" stroke-width="2"/>
+            <rect x="4" y="15" width="24" height="4" fill="#0727b5"/>
+            <rect x="8" y="21" width="8" height="2" rx="1" fill="#0727b5"/>
+          </svg>
+        </div>
+        <h3>Cuenta Libretón</h3>
+        <p>Sin cuota de manejo para nómina. Apertura desde $0 con tarjeta débito incluida.</p>
+        <span class="card-tag new">Sin costo</span>
+      </div>
+
+      <div class="card">
+        <div class="card-icon green">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="7" r="4" stroke="#00a870" stroke-width="2" fill="none"/>
+            <line x1="16" y1="11" x2="16" y2="22" stroke="#00a870" stroke-width="2" stroke-linecap="round"/>
+            <line x1="16" y1="16" x2="10" y2="21" stroke="#00a870" stroke-width="2" stroke-linecap="round"/>
+            <line x1="16" y1="16" x2="22" y2="13" stroke="#00a870" stroke-width="2" stroke-linecap="round"/>
+            <line x1="16" y1="22" x2="12" y2="28" stroke="#00a870" stroke-width="2" stroke-linecap="round"/>
+            <line x1="16" y1="22" x2="20" y2="28" stroke="#00a870" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Microcrédito Helpyy</h3>
+        <p>Créditos desde $100.000 para emprendedores e independientes. Evaluación con IA en minutos.</p>
+        <span class="card-tag new">Nuevo</span>
+      </div>
+
+      <div class="card">
+        <div class="card-icon orange">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect x="9" y="3" width="14" height="22" rx="3" stroke="#f97316" stroke-width="2" fill="none"/>
+            <line x1="13" y1="21" x2="19" y2="21" stroke="#f97316" stroke-width="2" stroke-linecap="round"/>
+            <path d="M 8 11 L 4 8 L 8 5" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M 24 11 L 28 8 L 24 5" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <line x1="4" y1="8" x2="28" y2="8" stroke="#f97316" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Bre-B Instantáneo</h3>
+        <p>Transfiere a cualquier banco en segundos. Solo con el número de celular. Disponible 24/7.</p>
+        <span class="card-tag hot">Popular</span>
+      </div>
+
+      <div class="card">
+        <div class="card-icon purple">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M16 3 L28 7 L28 16 C28 22 23 27 16 29 C9 27 4 22 4 16 L4 7 Z" stroke="#7c3aed" stroke-width="2" fill="none"/>
+            <path d="M 11 16 L 14 19 L 21 12" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>CDT BBVA</h3>
+        <p>Invierte tu dinero con las mejores tasas del mercado. Plazos desde 30 días. Asegurado por FOGAFÍN.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon blue">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <circle cx="11" cy="8" r="4" stroke="#0727b5" stroke-width="2" fill="none"/>
+            <line x1="11" y1="12" x2="11" y2="22" stroke="#0727b5" stroke-width="2" stroke-linecap="round"/>
+            <line x1="11" y1="17" x2="7" y2="21" stroke="#0727b5" stroke-width="2" stroke-linecap="round"/>
+            <line x1="11" y1="17" x2="15" y2="21" stroke="#0727b5" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="23" cy="8" r="4" stroke="#0727b5" stroke-width="2" fill="none"/>
+            <line x1="23" y1="12" x2="23" y2="22" stroke="#0727b5" stroke-width="2" stroke-linecap="round"/>
+            <line x1="23" y1="17" x2="19" y2="21" stroke="#0727b5" stroke-width="2" stroke-linecap="round"/>
+            <line x1="23" y1="17" x2="27" y2="21" stroke="#0727b5" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Tarjeta Aqua</h3>
+        <p>Sin cuota el primer año. Cashback en compras nacionales e internacionales. Control total desde la app.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon green">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <polyline points="4,24 10,18 16,20 22,10 28,6" stroke="#00a870" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <circle cx="28" cy="6" r="3" fill="#00a870"/>
+            <line x1="4" y1="28" x2="28" y2="28" stroke="#00a870" stroke-width="2" stroke-linecap="round"/>
+            <line x1="4" y1="4" x2="4" y2="28" stroke="#00a870" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Fondos de Inversión</h3>
+        <p>Invierte desde $50.000 en fondos diversificados. Rendimientos según tu perfil. 100% desde la app.</p>
+        <span class="card-tag new">Alta rentabilidad</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ HELPYY HAND BANNER ═══════════════ -->
+  <section class="helpyy-wrap" id="helpyy" aria-label="Helpyy Hand">
+    <div class="helpyy-inner">
+      <div class="helpyy-text">
+        <div class="helpyy-chip">✦ Inteligencia artificial</div>
+        <h2>Conoce Helpyy Hand: tu asesor financiero personal</h2>
+        <p>¿Aún no eres cliente BBVA? En minutos te ayudamos a abrir tu cuenta y evaluar tu elegibilidad para un microcrédito.</p>
+        <ul class="steps-list">
+          <li><span class="step-num">1</span><span>Habla con nuestro asistente — te guía paso a paso</span></li>
+          <li><span class="step-num">2</span><span>Danos tus datos básicos — los protegemos con cifrado</span></li>
+          <li><span class="step-num">3</span><span>Evaluamos tu perfil con IA — resultado en minutos</span></li>
+          <li><span class="step-num">4</span><span>Tu cuenta creada y Helpyy Hand activo en la app</span></li>
+        </ul>
+        <button class="cta green" id="open-helpyy-btn">Hablar con Helpyy Hand →</button>
+      </div>
+      <div class="helpyy-illustration">
+        <svg width="320" height="280" viewBox="0 0 320 280" fill="none">
+          <circle cx="160" cy="140" r="120" fill="rgba(255,255,255,.04)"/>
+          <rect x="20" y="40" width="110" height="38" rx="12" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+          <rect x="30" y="50" width="75" height="6" rx="3" fill="rgba(255,255,255,.25)"/>
+          <rect x="30" y="62" width="50" height="5" rx="2.5" fill="rgba(255,255,255,.15)"/>
+          <rect x="190" y="30" width="110" height="44" rx="12" fill="rgba(0,168,112,.15)" stroke="rgba(0,168,112,.35)" stroke-width="1"/>
+          <rect x="200" y="42" width="85" height="6" rx="3" fill="rgba(255,255,255,.35)"/>
+          <rect x="200" y="54" width="55" height="5" rx="2.5" fill="rgba(255,255,255,.2)"/>
+          <!-- Agent figure -->
+          <circle cx="90" cy="125" r="22" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.5)" stroke-width="2.5"/>
+          <circle cx="84" cy="121" r="3" fill="rgba(255,255,255,.8)"/>
+          <circle cx="96" cy="121" r="3" fill="rgba(255,255,255,.8)"/>
+          <path d="M 84 132 Q 90 138 96 132" stroke="rgba(255,255,255,.8)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <line x1="90" y1="147" x2="90" y2="194" stroke="rgba(255,255,255,.6)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 90 156 L 110 148" stroke="rgba(255,255,255,.6)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="90" y1="156" x2="70" y2="170" stroke="rgba(255,255,255,.6)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="90" y1="194" x2="76" y2="230" stroke="rgba(255,255,255,.6)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="90" y1="194" x2="104" y2="230" stroke="rgba(255,255,255,.6)" stroke-width="3" stroke-linecap="round"/>
+          <!-- Client figure -->
+          <circle cx="230" cy="130" r="20" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.4)" stroke-width="2.5"/>
+          <circle cx="224" cy="126" r="2.5" fill="rgba(255,255,255,.8)"/>
+          <circle cx="236" cy="126" r="2.5" fill="rgba(255,255,255,.8)"/>
+          <path d="M 223 138 Q 230 145 237 138" stroke="rgba(255,255,255,.8)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <line x1="230" y1="150" x2="230" y2="198" stroke="rgba(255,255,255,.55)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="230" y1="165" x2="210" y2="156" stroke="rgba(255,255,255,.55)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="230" y1="165" x2="252" y2="172" stroke="rgba(255,255,255,.55)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="230" y1="198" x2="218" y2="234" stroke="rgba(255,255,255,.55)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="230" y1="198" x2="242" y2="234" stroke="rgba(255,255,255,.55)" stroke-width="3" stroke-linecap="round"/>
+          <!-- Connection -->
+          <line x1="145" y1="148" x2="205" y2="145" stroke="rgba(0,168,112,.5)" stroke-width="2" stroke-dasharray="5,4"/>
+          <!-- Floating checkmark -->
+          <circle cx="168" cy="190" r="16" fill="rgba(0,168,112,.2)" stroke="rgba(0,168,112,.5)" stroke-width="1.5"/>
+          <path d="M 161 190 L 166 195 L 175 184" stroke="rgba(0,168,112,.9)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="footer-panel" aria-label="Pie de página">
+    <div class="footer-top">
+      <div class="footer-col">
+        <h4>Información de interés</h4>
+        <div class="footer-links">
+          <a href="#">Líneas de atención</a>
+          <a href="#">Política de Cobranzas</a>
+          <a href="#">Información Práctica</a>
+          <a href="#">Tasas y Tarifas</a>
+          <a href="#">Tarjetas de crédito</a>
+          <a href="#">Formularios</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Información Corporativa</h4>
+        <div class="footer-links">
+          <a href="#">Historia</a>
+          <a href="#">Atención al Inversionista</a>
+          <a href="#">PQR, Radícala en línea</a>
+          <a href="#">BBVA Valores</a>
+          <a href="#">Fogafín</a>
+          <a href="#">Defensor del Consumidor</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Otras webs de BBVA</h4>
+        <div class="footer-links">
+          <a href="#">BBVA Asset Management</a>
+          <a href="#">BBVA Spark</a>
+          <a href="#">BBVA Research</a>
+          <a href="#">Empleos BBVA</a>
+          <a href="#">BBVA Seguros</a>
+          <a href="#">Blog Salud Financiera</a>
+        </div>
+      </div>
+      <div class="footer-col aside-box">
+        <h4>Aprovecha las oportunidades que BBVA tiene para ti</h4>
+        <p>Hazte cliente y descubre un mundo de posibilidades — <a href="#">Conoce más</a></p>
+        <p>Si encontraste una vulnerabilidad en nuestros sistemas, por favor <a href="#">repórtala aquí</a>.</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div class="socials">
+        <a class="social" href="#">f</a>
+        <a class="social" href="#">𝕏</a>
+        <a class="social" href="#">in</a>
+        <a class="social" href="#">▶</a>
+      </div>
+      <div class="legal">
+        <a href="#">Sitemap</a>
+        <a href="#">Seguridad</a>
+        <a href="#">Aviso legal</a>
+        <a href="#">Políticas</a>
+        <a href="#">Reglamento de productos</a>
+      </div>
+      <div class="copyright">© 2026 BBVA Banco Bilbao Vizcaya Argentaria Colombia S.A.</div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- ═══════════════ FLOATING PROMO ═══════════════ -->
+<div class="helpyy-promo-bar" id="helpyy-promo">
+  <button class="close-promo" onclick="document.getElementById('helpyy-promo').style.display='none'">×</button>
+  <div class="hpb-icon">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+      <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/>
+      <circle cx="8" cy="10" r="1.3"/>
+      <circle cx="12" cy="10" r="1.3"/>
+      <circle cx="16" cy="10" r="1.3"/>
+    </svg>
+  </div>
+  <p>¿Aún no eres cliente? <strong>Helpyy Hand</strong> te abre tu cuenta en minutos 👆</p>
+</div>
+
+<!-- ═══════════════ WIDGET ═══════════════ -->
+<script>window.HELPYY_API_URL = 'http://localhost:8000/api/v1/chat';</script>
+<script src="helpyy-widget.js"></script>
+
+<script>
+  // All CTA buttons open Helpyy widget
+  document.querySelectorAll('#main-cta, #hero-cta, #loan-cta, #open-helpyy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const shadowHost = document.querySelector('helpyy-hand-widget');
+      if (shadowHost && shadowHost.shadowRoot) {
+        const fab = shadowHost.shadowRoot.querySelector('.hw-fab');
+        if (fab) fab.click();
+      }
+    });
+  });
+</script>
+</body>
+</html>

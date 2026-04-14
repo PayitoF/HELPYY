@@ -1,0 +1,100 @@
+[
+  {
+    "id": "cuenta_ahorro_libreton",
+    "question": "¿Qué es la cuenta de ahorro Libretón?",
+    "keywords": ["libretón", "libreton", "cuenta ahorro", "cuenta de ahorro"],
+    "answer": "La cuenta de ahorro Libretón de BBVA es una cuenta sin cuota de manejo para clientes de nómina. Puedes abrirla desde $0, incluye tarjeta débito y acceso a todos los canales digitales del banco. Es ideal si recibes tu salario en BBVA.",
+    "category": "productos"
+  },
+  {
+    "id": "cuenta_meta",
+    "question": "¿Qué es la Cuenta Meta de BBVA?",
+    "keywords": ["cuenta meta", "meta ahorro", "ahorro programado"],
+    "answer": "La Cuenta Meta te permite ahorrar para un objetivo específico. Puedes programar transferencias automáticas desde tu cuenta principal. No tiene cuota de manejo y puedes retirar tu dinero en cualquier momento sin penalización.",
+    "category": "productos"
+  },
+  {
+    "id": "tarjeta_aqua",
+    "question": "¿Qué beneficios tiene la tarjeta Aqua?",
+    "keywords": ["tarjeta aqua", "aqua", "tarjeta credito", "tarjeta de crédito"],
+    "answer": "La tarjeta Aqua de BBVA no tiene cuota de manejo el primer año, ofrece cashback en compras seleccionadas y puedes manejarla 100% desde la app. Incluye seguros de viaje y compra protegida. La tasa de interés varía según tu perfil.",
+    "category": "productos"
+  },
+  {
+    "id": "cdt_info",
+    "question": "¿Cómo funciona un CDT en BBVA?",
+    "keywords": ["cdt", "certificado", "depósito a término", "deposito a termino", "inversión", "inversion"],
+    "answer": "El CDT (Certificado de Depósito a Término) de BBVA te permite invertir desde $1.000.000 a plazos de 30 a 360 días. La tasa depende del monto y el plazo — a mayor plazo, mejor tasa. Puedes abrirlo desde la app. Al vencimiento puedes renovarlo o transferir a tu cuenta.",
+    "category": "productos"
+  },
+  {
+    "id": "transferencias",
+    "question": "¿Cómo hago una transferencia en BBVA?",
+    "keywords": ["transferencia", "transferir", "enviar dinero", "enviar plata"],
+    "answer": "Puedes hacer transferencias desde la app BBVA o banca en línea. Entre cuentas BBVA es gratis e inmediato. A otros bancos puedes usar transferencia ACH (1-2 días hábiles) o PSE (inmediato). También puedes usar Bre-B para enviar dinero con solo el número de celular.",
+    "category": "operaciones"
+  },
+  {
+    "id": "breb",
+    "question": "¿Qué es Bre-B y cómo funciona?",
+    "keywords": ["bre-b", "breb", "bre b", "pago celular", "pago movil", "pago móvil"],
+    "answer": "Bre-B es el sistema de pagos móviles de BBVA. Te permite enviar y recibir dinero usando solo el número de celular, sin necesidad de conocer el número de cuenta. Funciona entre cuentas BBVA y otros bancos afiliados. Las transferencias son inmediatas.",
+    "category": "operaciones"
+  },
+  {
+    "id": "pse",
+    "question": "¿Cómo pago por PSE?",
+    "keywords": ["pse", "pago servicios", "pago en línea", "pago en linea", "pagar servicios"],
+    "answer": "PSE (Pagos Seguros en Línea) te permite pagar desde tu cuenta BBVA directamente en tiendas y comercios online. Al pagar, selecciona BBVA como tu banco, ingresa a tu banca en línea y autoriza el pago. Es seguro y sin costo adicional.",
+    "category": "operaciones"
+  },
+  {
+    "id": "horarios",
+    "question": "¿Cuáles son los horarios de atención de BBVA?",
+    "keywords": ["horario", "horarios", "atención", "atencion", "abierto", "cierra", "sucursal"],
+    "answer": "Los horarios de atención de BBVA son: Sucursales principales Lunes a Viernes de 8:00 AM a 4:00 PM, Sábados de 9:00 AM a 12:00 PM. La app y banca en línea están disponibles 24/7. Línea de atención: 01 8000 912 227, disponible las 24 horas.",
+    "category": "canales"
+  },
+  {
+    "id": "canales",
+    "question": "¿Cuáles son los canales de atención de BBVA?",
+    "keywords": ["canales", "contacto", "teléfono", "telefono", "línea", "linea", "app", "aplicación"],
+    "answer": "Puedes contactar a BBVA por: (1) App BBVA Colombia — disponible 24/7, (2) Banca en línea en bbva.com.co, (3) Línea telefónica 01 8000 912 227 (24h), (4) Sucursales físicas en horario de atención. Para emergencias con tarjetas: 01 8000 912 228.",
+    "category": "canales"
+  },
+  {
+    "id": "retiro_sin_tarjeta",
+    "question": "¿Cómo hago un retiro sin tarjeta?",
+    "keywords": ["retiro sin tarjeta", "retirar sin tarjeta", "sin tarjeta", "cajero sin tarjeta"],
+    "answer": "Desde la app BBVA puedes generar un código de retiro. Ve a 'Retirar sin tarjeta', selecciona el monto y la app te dará un código válido por 30 minutos. En el cajero, selecciona 'Retiro sin tarjeta' e ingresa el código. Máximo $600.000 por transacción.",
+    "category": "operaciones"
+  },
+  {
+    "id": "costos_transferencias",
+    "question": "¿Cuánto cuesta hacer una transferencia?",
+    "keywords": ["costo transferencia", "cuánto cuesta", "cuanto cuesta", "tarifa", "comisión", "comision", "gratis"],
+    "answer": "Transferencias entre cuentas BBVA: gratis. Transferencias a otros bancos vía ACH: desde $0 dependiendo de tu plan. Pagos por PSE: sin costo adicional. Bre-B: sin costo entre cuentas afiliadas. Consulta los detalles específicos de tu plan en la app.",
+    "category": "tarifas"
+  },
+  {
+    "id": "bloqueo_tarjeta",
+    "question": "¿Cómo bloqueo mi tarjeta?",
+    "keywords": ["bloquear tarjeta", "bloqueo", "perdí tarjeta", "perdi", "robaron", "robo"],
+    "answer": "Si perdiste o te robaron tu tarjeta, bloquéala inmediatamente desde la app BBVA en la sección 'Mis tarjetas' → 'Bloquear'. También puedes llamar a la línea 01 8000 912 228 las 24 horas. El bloqueo es inmediato y gratuito. Luego puedes solicitar reposición desde la app.",
+    "category": "seguridad"
+  },
+  {
+    "id": "apertura_cuenta",
+    "question": "¿Qué necesito para abrir una cuenta en BBVA?",
+    "keywords": ["abrir cuenta", "requisitos", "apertura", "documentos", "nueva cuenta"],
+    "answer": "Para abrir una cuenta de ahorro necesitas: cédula de ciudadanía vigente, ser mayor de edad y tener un ingreso mínimo demostrable. Puedes abrirla en sucursal o iniciar el proceso desde la app BBVA. Si aún no eres cliente, nuestro agente de bienvenida puede guiarte paso a paso.",
+    "category": "productos"
+  },
+  {
+    "id": "seguros",
+    "question": "¿Qué seguros ofrece BBVA?",
+    "keywords": ["seguro", "seguros", "póliza", "poliza", "protección", "proteccion"],
+    "answer": "BBVA ofrece seguros de vida, hogar, auto y protección de tarjetas. Puedes contratarlos directamente desde la app. El seguro de protección de tarjetas cubre compras fraudulentas y pérdida. Para más detalles sobre coberturas y precios, consulta la sección 'Seguros' en la app.",
+    "category": "productos"
+  }
+]

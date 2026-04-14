@@ -1,0 +1,357 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useAgent } from '../contexts/AgentContext';
+import AgentBadge from './AgentBadge';
+
+function getGreeting(name) {
+  const displayName = name ? name.split(' ')[0] : null;
+  const saludo = displayName ? `¡Hola ${displayName}!` : '¡Hola!';
+  return `${saludo} Soy Helpyy Hand, tu asistente personal. ` +
+    'Puedo ayudarte con microprestamos, mejorar tu puntaje financiero y mucho mas. ¿En que te puedo ayudar?';
+}
+
+const BANKED_SUGGESTIONS = [
+  'Quiero un microprestamo',
+  'Mejorar mi puntaje',
+  'Consultar productos',
+];
+
+const UNBANKED_SUGGESTIONS = [
+  'Quiero abrir una cuenta',
+  'Que es Helpyy Hand?',
+  'Que beneficios tengo?',
+];
+
+export default function HelpyyPanel({ onClose }) {
+  const {
+    messages,
+    isStreaming,
+    currentAgent,
+    sendMessage,
+    connect,
+    isConnected,
+    connectionState,
+    userProfile,
+    isBanked,
+  } = useAgent();
+
+  const greeting = getGreeting(userProfile?.name);
+  const suggestions = isBanked ? BANKED_SUGGESTIONS : UNBANKED_SUGGESTIONS;
+
+  const [input, setInput] = useState('');
+  const [activeTab, setActiveTab] = useState('chat');
+  const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    connect();
+  }, [connect]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isStreaming]);
+
+  function handleSend(text) {
+    const msg = (text || input).trim();
+    if (!msg || isStreaming) return;
+    sendMessage(msg);
+    setInput('');
+    inputRef.current?.focus();
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  }
+
+  const displayAgent = currentAgent || 'helpyy_general';
+
+  return (
+    <div className="flex flex-col h-full bg-gray-50">
+      {/* ─── Header ─── */}
+      <div className="bg-gradient-to-r from-emerald-500 to-teal-600 px-4 pt-12 pb-3 flex-shrink-0">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+              <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-white font-bold text-lg">Helpyy Hand</h2>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-300 animate-pulse" />
+                <span className="text-white/80 text-xs">
+                  {connectionState === 'connected' ? 'En linea'
+                    : connectionState === 'error' ? 'Error de conexion'
+                    : connectionState === 'disconnected' ? 'Reconectando...'
+                    : 'Conectando...'}
+                </span>
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center text-white hover:bg-white/25 transition-colors"
+          >
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Active agent badge */}
+        <AgentBadge agentType={displayAgent} size="sm" />
+
+        {/* Tabs */}
+        <div className="flex gap-1 mt-3 bg-white/10 rounded-lg p-0.5">
+          {['chat', 'progreso'].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`flex-1 py-1.5 rounded-md text-sm font-medium transition-all ${
+                activeTab === tab
+                  ? 'bg-white text-emerald-700 shadow-sm'
+                  : 'text-white/70 hover:text-white'
+              }`}
+            >
+              {tab === 'chat' ? 'Chat' : 'Mi Progreso'}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ─── Chat Tab ─── */}
+      {activeTab === 'chat' && (
+        <>
+          <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
+            {/* Greeting — shows until the agent sends its first response */}
+            {!messages.some((m) => m.role === 'assistant') && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <MessageBubble role="assistant" content={greeting} agent="helpyy_general" />
+                <SuggestionChips actions={suggestions} onSelect={handleSend} />
+              </motion.div>
+            )}
+
+            {/* Messages */}
+            {messages.map((msg, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                {msg.role === 'system' ? (
+                  <div className="text-center py-2">
+                    <span className="text-xs text-gray-400 bg-gray-100 px-3 py-1 rounded-full">
+                      {msg.content}
+                    </span>
+                  </div>
+                ) : (
+                  <>
+                    <MessageBubble
+                      role={msg.role}
+                      content={msg.content}
+                      agent={msg.agent}
+                      streaming={msg._streaming}
+                    />
+                    {msg.suggestedActions?.length > 0 && (
+                      <SuggestionChips actions={msg.suggestedActions} onSelect={handleSend} />
+                    )}
+                  </>
+                )}
+              </motion.div>
+            ))}
+
+            {/* Typing indicator */}
+            <AnimatePresence>
+              {isStreaming && !messages.some((m) => m._streaming) && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex items-center gap-1 py-2 px-3"
+                >
+                  <TypingDots />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* ─── Input Bar ─── */}
+          <div className="flex-shrink-0 bg-white border-t border-gray-100 px-4 py-3 flex items-end gap-2">
+            <textarea
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Escribe tu mensaje..."
+              rows={1}
+              className="flex-1 resize-none border border-gray-200 rounded-2xl px-4 py-2.5 text-sm outline-none focus:border-emerald-400 transition-colors max-h-24 overflow-y-auto"
+              style={{ height: 'auto', minHeight: '40px' }}
+              onInput={(e) => {
+                e.target.style.height = 'auto';
+                e.target.style.height = Math.min(e.target.scrollHeight, 96) + 'px';
+              }}
+            />
+            <button
+              onClick={() => handleSend()}
+              disabled={!input.trim() || isStreaming}
+              className="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white flex-shrink-0 disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-emerald-600 active:scale-95 transition-all"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+              </svg>
+            </button>
+          </div>
+        </>
+      )}
+
+      {/* ─── Progress Tab ─── */}
+      {activeTab === 'progreso' && <ProgressTab />}
+    </div>
+  );
+}
+
+/* ═══ Sub-components ═══ */
+
+function MessageBubble({ role, content, agent, streaming }) {
+  const isUser = role === 'user';
+  return (
+    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+      <div
+        className={`max-w-[80%] px-3.5 py-2.5 text-sm leading-relaxed ${
+          isUser
+            ? 'bg-emerald-500 text-white rounded-2xl rounded-br-md'
+            : 'bg-white text-gray-800 rounded-2xl rounded-bl-md border border-gray-100 shadow-sm'
+        }`}
+      >
+        {!isUser && agent && (
+          <div className="mb-1">
+            <AgentBadge agentType={agent} size="sm" />
+          </div>
+        )}
+        <p className="whitespace-pre-wrap">{content}</p>
+        {streaming && (
+          <span className="inline-block w-1.5 h-4 bg-emerald-400 rounded-sm animate-pulse ml-0.5 align-text-bottom" />
+        )}
+        <p className={`text-[10px] mt-1 ${isUser ? 'text-white/60 text-right' : 'text-gray-400'}`}>
+          {new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function SuggestionChips({ actions, onSelect }) {
+  return (
+    <div className="flex flex-wrap gap-1.5 mt-2 pl-1">
+      {actions.map((text, i) => (
+        <button
+          key={i}
+          onClick={() => onSelect(text)}
+          className="px-3 py-1.5 text-xs font-medium border border-emerald-400 text-emerald-600 rounded-full bg-white hover:bg-emerald-50 active:bg-emerald-100 transition-colors"
+        >
+          {text}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function TypingDots() {
+  return (
+    <div className="bg-white border border-gray-100 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm inline-flex gap-1.5">
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="w-2 h-2 rounded-full bg-gray-400"
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15, ease: 'easeInOut' }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function ProgressTab() {
+  const missions = [
+    { title: 'Deposita tus ingresos semanales', points: 15, done: true, factor: 'Ingresos' },
+    { title: 'Manten saldo > $200.000 por 2 semanas', points: 25, done: true, factor: 'Estabilidad' },
+    { title: 'Paga un servicio desde la app', points: 10, done: false, factor: 'Actividad' },
+    { title: 'Completa tu perfil financiero', points: 20, done: false, factor: 'Perfil' },
+    { title: 'Ahorra $50.000 este mes', points: 30, done: false, factor: 'Ahorro' },
+  ];
+
+  const earned = missions.filter((m) => m.done).reduce((s, m) => s + m.points, 0);
+  const total = missions.reduce((s, m) => s + m.points, 0);
+  const level = earned >= 100 ? 'Disciplinado' : earned >= 50 ? 'Aprendiz' : 'Principiante';
+
+  return (
+    <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+      {/* Level card */}
+      <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-5 text-white">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <p className="text-white/70 text-xs">Tu nivel</p>
+            <h3 className="text-xl font-bold">{level}</h3>
+          </div>
+          <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center">
+            <span className="text-2xl font-bold">{earned}</span>
+          </div>
+        </div>
+        <div className="w-full bg-white/20 rounded-full h-2">
+          <div
+            className="h-full rounded-full bg-white transition-all duration-500"
+            style={{ width: `${Math.min((earned / total) * 100, 100)}%` }}
+          />
+        </div>
+        <p className="text-white/60 text-xs mt-2">{earned}/{total} puntos</p>
+      </div>
+
+      {/* Missions list */}
+      <h3 className="text-sm font-semibold text-gray-600">Misiones activas</h3>
+      <div className="space-y-2">
+        {missions.map((m, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: i * 0.08 }}
+            className={`bg-white rounded-xl p-4 border ${m.done ? 'border-emerald-200' : 'border-gray-100'} shadow-sm`}
+          >
+            <div className="flex items-start gap-3">
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                m.done ? 'bg-emerald-500' : 'bg-gray-200'
+              }`}>
+                {m.done ? (
+                  <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                  </svg>
+                ) : (
+                  <span className="w-2 h-2 rounded-full bg-gray-400" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className={`text-sm font-medium ${m.done ? 'text-emerald-700 line-through' : 'text-gray-800'}`}>
+                  {m.title}
+                </p>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-xs text-gray-400">{m.factor}</span>
+                  <span className="text-xs font-semibold text-emerald-500">+{m.points} pts</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
