@@ -23,23 +23,9 @@ MONTHLY_RATE_DEFAULT = 0.025  # 2.5% monthly (≈34.5% effective annual)
 # Term options offered to approved users
 _TERM_OPTIONS = [6, 12, 18]  # months
 
-_SYSTEM_PROMPT = """\
-Eres el evaluador de crédito de Helpyy Hand. Tu trabajo es consultar el modelo
-de Machine Learning y traducir el resultado en una respuesta clara y empática.
+from backend.agents.prompt_loader import load_prompt
 
-CUANDO RECIBES UNA CONSULTA:
-1. Analiza los factores del modelo (feature importances)
-2. Si APROBADO: presenta montos, plazos y cuotas estimadas
-3. Si RECHAZADO: lista los 3 factores principales que lo impiden y sugiere acciones
-
-PERSONALIDAD: Profesional pero accesible. Usa analogías simples para explicar
-conceptos financieros. Nunca seas condescendiente.
-
-RESTRICCIONES:
-- NUNCA reveles el score numérico exacto
-- NUNCA menciones el nombre del modelo o sus variables internas
-- Siempre enmarca el rechazo como "aún no" y no como "no"
-- Responde SIEMPRE en español"""
+_SYSTEM_PROMPT = load_prompt("credit_evaluator")
 
 # -----------------------------------------------------------------------
 # Tools
@@ -279,18 +265,21 @@ class CreditEvaluatorAgent(BaseAgent):
     async def _get_prediction(self, context: dict) -> dict:
         """Get credit prediction from ML service or mock."""
         if self._ml_client:
-            from backend.ml_client.schemas import (
-                PredictRequest, EmploymentType, CityType, EducationLevel,
-            )
+            from backend.ml_client.schemas import RiskRequest
             user_data = context.get("user_data", {})
-            request = PredictRequest(
+            request = RiskRequest(
                 declared_income=user_data.get("income", 1_000_000),
-                employment_type=EmploymentType(user_data.get("employment_type", "informal")),
-                is_banked=user_data.get("is_banked", True),
+                is_banked=1 if user_data.get("is_banked", True) else 0,
+                employment_type=user_data.get("employment_type", "informal"),
                 age=user_data.get("age", 30),
-                city_type=CityType(user_data.get("city_type", "urban")),
-                education_level=EducationLevel(user_data.get("education_level", "secondary")),
-                household_size=user_data.get("household_size", 3),
+                city_type=user_data.get("city_type", "urban"),
+                total_sessions=user_data.get("total_sessions", 0),
+                pct_conversion=user_data.get("pct_conversion", 0.0),
+                tx_income_pct=user_data.get("tx_income_pct", 0.0),
+                payments_count=user_data.get("payments_count", 0),
+                on_time_rate=user_data.get("on_time_rate", 0.5),
+                overdue_rate=user_data.get("overdue_rate", 0.0),
+                avg_decision_score=user_data.get("avg_decision_score", 0.5),
             )
             pred = await self._ml_client.predict(request)
             return {
@@ -299,8 +288,9 @@ class CreditEvaluatorAgent(BaseAgent):
                 "max_amount": pred.max_amount,
                 "recommended_product": pred.recommended_product.value if pred.recommended_product else None,
                 "score_band": pred.score_band.value,
-                "factors": [f.model_dump() for f in pred.factors],
-                "confidence": pred.confidence,
+                "factors": [{"name": f.name, "impact": f.impact, "weight": f.weight} for f in pred.factors],
+                "risk_category": pred.risk_category,
+                "decision": pred.decision,
             }
 
         # Mock fallback
@@ -318,7 +308,8 @@ class CreditEvaluatorAgent(BaseAgent):
                 {"name": "is_banked", "impact": "negative", "weight": 0.2},
                 {"name": "on_time_rate", "impact": "negative", "weight": 0.6},
             ],
-            "confidence": 0.75,
+            "risk_category": "low" if eligible else "high",
+            "decision": "approved" if eligible else "rejected",
         }
 
     # ------------------------------------------------------------------

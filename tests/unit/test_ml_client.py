@@ -10,16 +10,13 @@ from backend.ml_client.mock_server import app as mock_app
 from backend.ml_client.client import MLClient
 from backend.ml_client.schemas import (
     CreditPrediction,
-    EmploymentType,
-    CityType,
-    EducationLevel,
-    FeatureSpec,
+    HealthResponse,
     ImprovementFactor,
-    ModelInfo,
-    PredictRequest,
+    ModelInfoResponse,
     ProductType,
+    RiskRequest,
+    RiskResponse,
     ScoreBand,
-    ScoreEntry,
 )
 
 
@@ -34,218 +31,115 @@ def mock_server():
 
 
 @pytest.fixture
-def good_features() -> PredictRequest:
-    """High-income formal banked user — should be eligible."""
-    return PredictRequest(
+def good_request() -> RiskRequest:
+    """High-income banked user with good rates — should APPROVE."""
+    return RiskRequest(
         declared_income=5_000_000,
-        employment_type=EmploymentType.formal,
-        is_banked=True,
+        is_banked=1,
+        employment_type="formal",
         age=35,
-        city_type=CityType.urban,
-        education_level=EducationLevel.university,
-        household_size=3,
+        city_type="urban",
+        total_sessions=15,
+        pct_conversion=0.80,
+        tx_income_pct=0.60,
+        payments_count=20,
         on_time_rate=0.95,
         overdue_rate=0.02,
-        rejection_rate=0.05,
-        pct_conversion=0.70,
+        avg_decision_score=0.85,
     )
 
 
 @pytest.fixture
-def bad_features() -> PredictRequest:
-    """Low-income informal unbanked user — should be ineligible."""
-    return PredictRequest(
+def bad_request() -> RiskRequest:
+    """Low-income unbanked user with bad rates — should REJECT."""
+    return RiskRequest(
         declared_income=400_000,
-        employment_type=EmploymentType.informal,
-        is_banked=False,
+        is_banked=0,
+        employment_type="informal",
         age=20,
-        city_type=CityType.rural,
-        education_level=EducationLevel.primary,
-        household_size=6,
+        city_type="rural",
+        total_sessions=2,
+        pct_conversion=0.10,
+        tx_income_pct=0.05,
+        payments_count=3,
         on_time_rate=0.20,
         overdue_rate=0.60,
-        rejection_rate=0.80,
-        pct_conversion=0.10,
-    )
-
-
-@pytest.fixture
-def new_user_features() -> PredictRequest:
-    """New user with demographics only — no behavioral data."""
-    return PredictRequest(
-        declared_income=1_500_000,
-        employment_type=EmploymentType.independent,
-        is_banked=False,
-        age=28,
-        city_type=CityType.urban,
-        education_level=EducationLevel.secondary,
-        household_size=2,
+        avg_decision_score=0.15,
     )
 
 
 # =======================================================================
-# MOCK SERVER — direct endpoint tests
+# MOCK SERVER — /risk-score
 # =======================================================================
 
-class TestMockServerPredict:
-    """Test the mock server /predict endpoint directly."""
+class TestMockServerRiskScore:
 
-    def test_predict_eligible_user(self, mock_server, good_features):
-        resp = mock_server.post(
-            "/api/ml/predict", json=good_features.model_dump(mode="json"),
-        )
+    def test_eligible_user(self, mock_server, good_request):
+        resp = mock_server.post("/risk-score", json=good_request.model_dump(mode="json"))
         assert resp.status_code == 200
         data = resp.json()
-        pred = CreditPrediction(**data)
-        assert pred.eligible is True
-        assert pred.p_default < 0.50
-        assert pred.score_band in (ScoreBand.low_risk, ScoreBand.medium_risk)
-        assert pred.max_amount is not None
-        assert pred.max_amount > 0
-        assert pred.recommended_product is not None
-        assert pred.confidence > 0.5
+        assert data["decision"] == "APPROVE"
+        assert data["risk_category"] == "LOW"
+        assert data["probability_of_default"] < 0.40
 
-    def test_predict_ineligible_user(self, mock_server, bad_features):
-        resp = mock_server.post(
-            "/api/ml/predict", json=bad_features.model_dump(mode="json"),
-        )
+    def test_ineligible_user(self, mock_server, bad_request):
+        resp = mock_server.post("/risk-score", json=bad_request.model_dump(mode="json"))
         assert resp.status_code == 200
-        pred = CreditPrediction(**resp.json())
-        assert pred.eligible is False
-        assert pred.p_default >= 0.50
-        assert pred.score_band == ScoreBand.high_risk
-        assert pred.max_amount is None
-        assert pred.recommended_product is None
+        data = resp.json()
+        # Mock heuristic max p_default ~0.48 → REVIEW/MEDIUM (not APPROVE)
+        assert data["decision"] != "APPROVE"
+        assert data["risk_category"] != "LOW"
+        assert data["probability_of_default"] >= 0.40
 
-    def test_predict_new_user_no_behavioral(self, mock_server, new_user_features):
-        resp = mock_server.post(
-            "/api/ml/predict", json=new_user_features.model_dump(mode="json"),
-        )
-        assert resp.status_code == 200
-        pred = CreditPrediction(**resp.json())
-        # New user without history has lower confidence
-        assert pred.confidence < 0.70
-        # Fields are valid regardless
-        assert 0.0 <= pred.p_default <= 1.0
-        assert 0.0 <= pred.risk_index <= 1.0
+    def test_returns_valid_schema(self, mock_server, good_request):
+        resp = mock_server.post("/risk-score", json=good_request.model_dump(mode="json"))
+        risk = RiskResponse(**resp.json())
+        assert 0.0 <= risk.probability_of_default <= 1.0
+        assert risk.risk_category in ("LOW", "MEDIUM", "HIGH")
+        assert risk.decision in ("APPROVE", "REVIEW", "REJECT")
+        assert isinstance(risk.top_features, list)
+        assert len(risk.top_features) > 0
 
-    def test_predict_returns_factors(self, mock_server, good_features):
-        resp = mock_server.post(
-            "/api/ml/predict", json=good_features.model_dump(mode="json"),
-        )
-        pred = CreditPrediction(**resp.json())
-        assert len(pred.factors) > 0
-        assert len(pred.factors) <= 5
-        for f in pred.factors:
-            assert f.name
-            assert f.impact in ("positive", "negative")
-            assert f.weight > 0
+    def test_deterministic(self, mock_server, good_request):
+        body = good_request.model_dump(mode="json")
+        r1 = mock_server.post("/risk-score", json=body).json()
+        r2 = mock_server.post("/risk-score", json=body).json()
+        assert r1["probability_of_default"] == r2["probability_of_default"]
+        assert r1["decision"] == r2["decision"]
 
-    def test_predict_score_band_consistency(self, mock_server, good_features):
-        """Score band must match p_default thresholds."""
-        resp = mock_server.post(
-            "/api/ml/predict", json=good_features.model_dump(mode="json"),
-        )
-        pred = CreditPrediction(**resp.json())
-        if pred.p_default < 0.20:
-            assert pred.score_band == ScoreBand.low_risk
-        elif pred.p_default < 0.50:
-            assert pred.score_band == ScoreBand.medium_risk
-        else:
-            assert pred.score_band == ScoreBand.high_risk
-
-    def test_predict_rejects_invalid_income(self, mock_server):
-        """Income below range should fail validation."""
-        resp = mock_server.post("/api/ml/predict", json={
-            "declared_income": 100_000,  # below 300K min
-            "employment_type": "informal",
-            "is_banked": False,
-            "age": 30,
-            "city_type": "urban",
-            "education_level": "secondary",
-            "household_size": 3,
-        })
+    def test_rejects_missing_field(self, mock_server):
+        resp = mock_server.post("/risk-score", json={"declared_income": 1_000_000})
         assert resp.status_code == 422
 
-    def test_predict_deterministic(self, mock_server, good_features):
-        """Same input should produce same output."""
-        body = good_features.model_dump(mode="json")
-        r1 = mock_server.post("/api/ml/predict", json=body).json()
-        r2 = mock_server.post("/api/ml/predict", json=body).json()
-        assert r1["p_default"] == r2["p_default"]
-        assert r1["risk_index"] == r2["risk_index"]
 
+# =======================================================================
+# MOCK SERVER — /health
+# =======================================================================
 
-class TestMockServerScoreHistory:
+class TestMockServerHealth:
 
-    def test_returns_list(self, mock_server):
-        resp = mock_server.get("/api/ml/score-history/client-001")
+    def test_returns_ok(self, mock_server):
+        resp = mock_server.get("/health")
         assert resp.status_code == 200
-        entries = [ScoreEntry(**e) for e in resp.json()]
-        assert len(entries) == 6
-
-    def test_entries_have_valid_ranges(self, mock_server):
-        resp = mock_server.get("/api/ml/score-history/client-002")
-        for entry in resp.json():
-            se = ScoreEntry(**entry)
-            assert 0.0 <= se.p_default <= 1.0
-            assert 0.0 <= se.risk_index <= 1.0
-            assert se.score_band in list(ScoreBand)
-
-    def test_deterministic_per_client(self, mock_server):
-        r1 = mock_server.get("/api/ml/score-history/client-abc").json()
-        r2 = mock_server.get("/api/ml/score-history/client-abc").json()
-        assert r1 == r2
-
-    def test_different_clients_different_history(self, mock_server):
-        r1 = mock_server.get("/api/ml/score-history/alice").json()
-        r2 = mock_server.get("/api/ml/score-history/bob").json()
-        assert r1[0]["p_default"] != r2[0]["p_default"]
+        h = HealthResponse(**resp.json())
+        assert h.status == "ok"
+        assert h.model_loaded is True
 
 
-class TestMockServerFeaturesSpec:
-
-    def test_returns_all_features(self, mock_server):
-        resp = mock_server.get("/api/ml/features-spec")
-        assert resp.status_code == 200
-        specs = [FeatureSpec(**s) for s in resp.json()]
-        assert len(specs) == 14
-        names = {s.name for s in specs}
-        assert "declared_income" in names
-        assert "on_time_rate" in names
-
-    def test_required_features(self, mock_server):
-        resp = mock_server.get("/api/ml/features-spec")
-        specs = [FeatureSpec(**s) for s in resp.json()]
-        required = [s for s in specs if s.required]
-        optional = [s for s in specs if not s.required]
-        assert len(required) == 7
-        assert len(optional) == 7
-
-    def test_behavioral_features_have_weights(self, mock_server):
-        resp = mock_server.get("/api/ml/features-spec")
-        specs = [FeatureSpec(**s) for s in resp.json()]
-        on_time = next(s for s in specs if s.name == "on_time_rate")
-        assert on_time.weight_in_risk_index == 0.6
-        assert on_time.coef_in_p_default == 2.0
-
+# =======================================================================
+# MOCK SERVER — /model-info
+# =======================================================================
 
 class TestMockServerModelInfo:
 
-    def test_returns_valid_info(self, mock_server):
-        resp = mock_server.get("/api/ml/model-info")
+    def test_returns_valid_schema(self, mock_server):
+        resp = mock_server.get("/model-info")
         assert resp.status_code == 200
-        info = ModelInfo(**resp.json())
-        assert info.model_type == "heuristic_rgp"
-        assert info.version
-        assert info.base_rate == 0.15
-        assert info.n_features == 14
-        assert "on_time_rate" in info.feature_importances
-
-    def test_health(self, mock_server):
-        resp = mock_server.get("/health")
-        assert resp.status_code == 200
-        assert resp.json()["status"] == "ok"
+        info = ModelInfoResponse(**resp.json())
+        assert info.model_name
+        assert isinstance(info.top_features, list)
+        assert len(info.top_features) > 0
+        assert isinstance(info.selected_training_features, list)
 
 
 # =======================================================================
@@ -255,11 +149,11 @@ class TestMockServerModelInfo:
 _FAKE_REQUEST = httpx.Request("POST", "http://test")
 
 
-def _ok_response(body: dict | list, status: int = 200) -> httpx.Response:
-    import json
+def _ok_response(body: dict, status: int = 200) -> httpx.Response:
+    import json as _json
     return httpx.Response(
         status_code=status,
-        content=json.dumps(body).encode(),
+        content=_json.dumps(body).encode(),
         headers={"content-type": "application/json"},
         request=_FAKE_REQUEST,
     )
@@ -273,53 +167,53 @@ def _err_response(status: int = 500) -> httpx.Response:
     )
 
 
+_MOCK_RISK_RESPONSE = {
+    "probability_of_default": 0.12,
+    "risk_category": "LOW",
+    "decision": "APPROVE",
+    "top_features": ["on_time_rate", "is_banked"],
+}
+
+
 class TestMLClientPredict:
 
     @pytest.mark.asyncio
-    async def test_predict_parses_response(self, good_features):
-        """Client should parse a valid predict response into CreditPrediction."""
-        mock_response = {
-            "eligible": True, "p_default": 0.12, "risk_index": 0.25,
-            "score_band": "low_risk", "max_amount": 1_500_000,
-            "recommended_product": "micro", "confidence": 0.85,
-            "factors": [{"name": "on_time_rate", "impact": "positive", "weight": 2.6}],
-        }
+    async def test_predict_parses_response(self, good_request):
         client = MLClient(base_url="http://fake:8001")
         with patch("backend.ml_client.client.httpx.AsyncClient") as MockClient:
             mock_http = AsyncMock()
-            mock_http.post.return_value = _ok_response(mock_response)
+            mock_http.post.return_value = _ok_response(_MOCK_RISK_RESPONSE)
             mock_http.__aenter__ = AsyncMock(return_value=mock_http)
             mock_http.__aexit__ = AsyncMock(return_value=False)
             MockClient.return_value = mock_http
 
-            pred = await client.predict(good_features)
+            pred = await client.predict(good_request)
 
         assert isinstance(pred, CreditPrediction)
         assert pred.eligible is True
         assert pred.p_default == 0.12
         assert pred.score_band == ScoreBand.low_risk
+        assert pred.risk_category == "LOW"
+        assert pred.decision == "APPROVE"
+        assert "on_time_rate" in pred.top_features
 
     @pytest.mark.asyncio
-    async def test_predict_raises_on_4xx(self, good_features):
-        """Client should NOT retry on 4xx errors."""
+    async def test_raises_on_4xx(self, good_request):
         client = MLClient(base_url="http://fake:8001")
         with patch("backend.ml_client.client.httpx.AsyncClient") as MockClient:
             mock_http = AsyncMock()
-            mock_resp = _err_response(422)
-            mock_http.post.return_value = mock_resp
+            mock_http.post.return_value = _err_response(422)
             mock_http.__aenter__ = AsyncMock(return_value=mock_http)
             mock_http.__aexit__ = AsyncMock(return_value=False)
             MockClient.return_value = mock_http
 
             with pytest.raises(httpx.HTTPStatusError):
-                await client.predict(good_features)
+                await client.predict(good_request)
 
-        # Should only have been called once (no retry on 4xx)
         assert mock_http.post.call_count == 1
 
     @pytest.mark.asyncio
-    async def test_predict_retries_on_5xx(self, good_features):
-        """Client should retry on 5xx and eventually raise ConnectionError."""
+    async def test_retries_on_5xx(self, good_request):
         client = MLClient(base_url="http://fake:8001")
         with patch("backend.ml_client.client.httpx.AsyncClient") as MockClient:
             mock_http = AsyncMock()
@@ -330,152 +224,99 @@ class TestMLClientPredict:
 
             with patch("backend.ml_client.client.asyncio.sleep", new_callable=AsyncMock):
                 with pytest.raises(ConnectionError, match="failed after 3 attempts"):
-                    await client.predict(good_features)
+                    await client.predict(good_request)
 
-        # 3 attempts total
         assert mock_http.post.call_count == 3
 
 
-class TestMLClientScoreHistory:
+# =======================================================================
+# ML CLIENT — predict_raw
+# =======================================================================
+
+class TestMLClientPredictRaw:
 
     @pytest.mark.asyncio
-    async def test_returns_list_of_entries(self):
-        mock_data = [
-            {"date": "2025-01-01", "p_default": 0.30, "risk_index": 0.25,
-             "score_band": "medium_risk", "eligible": True},
-            {"date": "2025-02-01", "p_default": 0.28, "risk_index": 0.23,
-             "score_band": "medium_risk", "eligible": True},
-        ]
+    async def test_returns_risk_response(self, good_request):
         client = MLClient(base_url="http://fake:8001")
         with patch("backend.ml_client.client.httpx.AsyncClient") as MockClient:
             mock_http = AsyncMock()
-            mock_http.get.return_value = _ok_response(mock_data)
+            mock_http.post.return_value = _ok_response(_MOCK_RISK_RESPONSE)
             mock_http.__aenter__ = AsyncMock(return_value=mock_http)
             mock_http.__aexit__ = AsyncMock(return_value=False)
             MockClient.return_value = mock_http
 
-            entries = await client.get_score_history("client-001")
+            resp = await client.predict_raw(good_request)
 
-        assert len(entries) == 2
-        assert all(isinstance(e, ScoreEntry) for e in entries)
-        assert entries[0].p_default == 0.30
-
-
-class TestMLClientFeatureSpec:
-
-    @pytest.mark.asyncio
-    async def test_returns_list_of_specs(self):
-        mock_data = [
-            {"name": "declared_income", "type": "float", "required": True,
-             "description": "Monthly income", "range_min": 300_000, "range_max": 15_000_000},
-        ]
-        client = MLClient(base_url="http://fake:8001")
-        with patch("backend.ml_client.client.httpx.AsyncClient") as MockClient:
-            mock_http = AsyncMock()
-            mock_http.get.return_value = _ok_response(mock_data)
-            mock_http.__aenter__ = AsyncMock(return_value=mock_http)
-            mock_http.__aexit__ = AsyncMock(return_value=False)
-            MockClient.return_value = mock_http
-
-            specs = await client.get_feature_spec()
-
-        assert len(specs) == 1
-        assert isinstance(specs[0], FeatureSpec)
-        assert specs[0].name == "declared_income"
-
-
-class TestMLClientModelInfo:
-
-    @pytest.mark.asyncio
-    async def test_returns_model_info(self):
-        mock_data = {
-            "model_type": "heuristic_rgp", "version": "1.0.0",
-            "last_updated": "2025-03-15", "base_rate": 0.15,
-            "n_features": 14, "n_demographic_features": 7,
-            "n_behavioral_features": 7, "metrics": {},
-            "feature_importances": {"on_time_rate": 2.6},
-        }
-        client = MLClient(base_url="http://fake:8001")
-        with patch("backend.ml_client.client.httpx.AsyncClient") as MockClient:
-            mock_http = AsyncMock()
-            mock_http.get.return_value = _ok_response(mock_data)
-            mock_http.__aenter__ = AsyncMock(return_value=mock_http)
-            mock_http.__aexit__ = AsyncMock(return_value=False)
-            MockClient.return_value = mock_http
-
-            info = await client.get_model_info()
-
-        assert isinstance(info, ModelInfo)
-        assert info.model_type == "heuristic_rgp"
-        assert info.base_rate == 0.15
+        assert isinstance(resp, RiskResponse)
+        assert resp.probability_of_default == 0.12
+        assert resp.risk_category == "LOW"
+        assert resp.decision == "APPROVE"
+        assert resp.top_features == ["on_time_rate", "is_banked"]
 
 
 # =======================================================================
-# IMPROVEMENT FACTORS — client-side computation
+# IMPROVEMENT FACTORS
 # =======================================================================
 
 class TestImprovementFactors:
 
     @pytest.mark.asyncio
-    async def test_returns_actionable_factors(self, bad_features):
-        """Bad user should get multiple improvement suggestions."""
+    async def test_bad_user_gets_factors(self, bad_request):
         prediction = CreditPrediction(
-            eligible=False, p_default=0.85, risk_index=0.80,
-            score_band=ScoreBand.high_risk, confidence=0.90, factors=[],
+            eligible=False, p_default=0.85, score_band=ScoreBand.high_risk,
+            factors=[], risk_category="HIGH", decision="REJECT", top_features=[],
         )
         client = MLClient()
-        factors = await client.get_improvement_factors(bad_features, prediction)
+        factors = await client.get_improvement_factors(bad_request, prediction)
         assert len(factors) > 0
         assert all(isinstance(f, ImprovementFactor) for f in factors)
 
     @pytest.mark.asyncio
-    async def test_factors_sorted_by_reduction(self, bad_features):
+    async def test_factors_sorted_by_reduction(self, bad_request):
         prediction = CreditPrediction(
-            eligible=False, p_default=0.85, risk_index=0.80,
-            score_band=ScoreBand.high_risk, confidence=0.90, factors=[],
+            eligible=False, p_default=0.85, score_band=ScoreBand.high_risk,
+            factors=[], risk_category="HIGH", decision="REJECT", top_features=[],
         )
         client = MLClient()
-        factors = await client.get_improvement_factors(bad_features, prediction)
+        factors = await client.get_improvement_factors(bad_request, prediction)
         reductions = [f.potential_reduction for f in factors]
         assert reductions == sorted(reductions, reverse=True)
 
     @pytest.mark.asyncio
-    async def test_good_user_fewer_improvements(self, good_features):
-        """Good user with high scores should have fewer/no improvements."""
+    async def test_good_user_fewer_factors(self, good_request):
         prediction = CreditPrediction(
-            eligible=True, p_default=0.10, risk_index=0.15,
-            score_band=ScoreBand.low_risk, max_amount=2_000_000,
-            recommended_product=ProductType.micro, confidence=0.95, factors=[],
+            eligible=True, p_default=0.10, score_band=ScoreBand.low_risk,
+            max_amount=2_000_000, recommended_product=ProductType.micro,
+            factors=[], risk_category="LOW", decision="APPROVE", top_features=[],
         )
         client = MLClient()
-        factors = await client.get_improvement_factors(good_features, prediction)
-        # Good user already meets most targets
+        factors = await client.get_improvement_factors(good_request, prediction)
         assert len(factors) < 3
 
     @pytest.mark.asyncio
-    async def test_suggestions_are_in_spanish(self, bad_features):
+    async def test_suggestions_in_spanish(self, bad_request):
         prediction = CreditPrediction(
-            eligible=False, p_default=0.85, risk_index=0.80,
-            score_band=ScoreBand.high_risk, confidence=0.90, factors=[],
+            eligible=False, p_default=0.85, score_band=ScoreBand.high_risk,
+            factors=[], risk_category="HIGH", decision="REJECT", top_features=[],
         )
         client = MLClient()
-        factors = await client.get_improvement_factors(bad_features, prediction)
+        factors = await client.get_improvement_factors(bad_request, prediction)
         for f in factors:
-            assert f.suggestion  # non-empty
-            # Spanish indicators
+            assert f.suggestion
             assert any(
                 word in f.suggestion.lower()
                 for word in ["tu", "paga", "evita", "usa", "abre", "solicita"]
             )
 
     @pytest.mark.asyncio
-    async def test_unbanked_gets_banking_suggestion(self, new_user_features):
+    async def test_unbanked_gets_banking_suggestion(self, bad_request):
+        assert bad_request.is_banked == 0
         prediction = CreditPrediction(
-            eligible=False, p_default=0.55, risk_index=0.50,
-            score_band=ScoreBand.high_risk, confidence=0.55, factors=[],
+            eligible=False, p_default=0.55, score_band=ScoreBand.high_risk,
+            factors=[], risk_category="HIGH", decision="REJECT", top_features=[],
         )
         client = MLClient()
-        factors = await client.get_improvement_factors(new_user_features, prediction)
+        factors = await client.get_improvement_factors(bad_request, prediction)
         banking = [f for f in factors if f.factor_name == "is_banked"]
         assert len(banking) == 1
         assert "cuenta bancaria" in banking[0].suggestion.lower()

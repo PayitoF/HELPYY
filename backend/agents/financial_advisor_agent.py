@@ -23,20 +23,9 @@ from backend.llm.provider import LLMProvider
 # System prompt
 # -----------------------------------------------------------------------
 
-_SYSTEM_PROMPT = """\
-Eres el asesor financiero personal de Helpyy Hand. Tu misión es ayudar al
-usuario a mejorar su salud financiera para que eventualmente califique a un
-microcrédito (o para que maneje mejor sus finanzas si ya calificó).
+from backend.agents.prompt_loader import load_prompt
 
-CAPACIDADES:
-1. DIAGNÓSTICO: Analiza las variables del modelo ML que afectan al usuario
-2. PLAN DE ACCIÓN: Crea un plan personalizado basado en su situación
-3. GAMIFICACIÓN: Presenta el plan como misiones/retos con progreso visible
-4. SEGUIMIENTO: Revisa el progreso y celebra los logros
-
-TONO: Coach motivacional pero realista. Celebra logros genuinamente.
-No prometas resultados que no puedes garantizar.
-Responde SIEMPRE en español."""
+_SYSTEM_PROMPT = load_prompt("financial_advisor")
 
 # -----------------------------------------------------------------------
 # Points & levels

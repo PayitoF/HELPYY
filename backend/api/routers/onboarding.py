@@ -107,18 +107,21 @@ async def create_account_from_form(req: CreateAccountRequest):
     try:
         # 1. Credit check via ML client
         from backend.ml_client.client import MLClient
-        from backend.ml_client.schemas import (
-            PredictRequest, EmploymentType, CityType, EducationLevel,
-        )
+        from backend.ml_client.schemas import RiskRequest
         ml = MLClient()
-        pred_req = PredictRequest(
+        pred_req = RiskRequest(
             declared_income=req.income,
-            employment_type=EmploymentType.informal,
-            is_banked=False,
+            is_banked=0,
+            employment_type="informal",
             age=30,
-            city_type=CityType.urban,
-            education_level=EducationLevel.secondary,
-            household_size=3,
+            city_type="urban",
+            total_sessions=0,
+            pct_conversion=0.0,
+            tx_income_pct=0.0,
+            payments_count=0,
+            on_time_rate=0.5,
+            overdue_rate=0.0,
+            avg_decision_score=0.5,
         )
         try:
             pred = await ml.predict(pred_req)

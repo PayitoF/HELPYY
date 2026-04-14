@@ -1,0 +1,10 @@
+cdk.out
+node_modules
+.git
+MLRepo/data
+MLRepo/models
+frontend/app-mockup/node_modules
+*.bak
+__pycache__
+.pytest_cache
+data/

@@ -39,23 +39,9 @@ class OnboardingState(str, Enum):
 # System prompt
 # -----------------------------------------------------------------------
 
-_SYSTEM_PROMPT = """\
-Eres Helpyy Hand, el asistente de BBVA Colombia para personas que aún no son clientes.
+from backend.agents.prompt_loader import load_prompt
 
-PERSONALIDAD: Cercano, colombiano, usa lenguaje sencillo. Tuteas al usuario. Eres amable y conciso.
-
-LO QUE PUEDES HACER:
-- Responder preguntas sobre productos BBVA (cuentas, créditos, CDT, tarjetas, seguros)
-- Explicar el proceso de bancarización y microcréditos
-- Orientar sobre requisitos, tasas y servicios
-- Cuando el usuario quiera abrir una cuenta o solicitar un microcrédito, indícale
-  que use el botón "Abrir mi cuenta" que aparece en el chat para iniciar el proceso
-
-RESTRICCIONES:
-- NO pidas datos personales (nombre, cédula, ingreso) — el formulario lo hace automáticamente
-- NUNCA menciones tokens o IDs internos
-- Responde SIEMPRE en español
-- Sé breve y directo — máximo 3-4 oraciones por respuesta"""
+_SYSTEM_PROMPT = load_prompt("onboarding")
 
 # -----------------------------------------------------------------------
 # Tools
@@ -547,17 +533,20 @@ class OnboardingAgent(BaseAgent):
     async def _tool_check_credit(self, data: dict) -> dict:
         """Call ML service or return mock result."""
         if self._ml_client:
-            from backend.ml_client.schemas import (
-                PredictRequest, EmploymentType, CityType, EducationLevel,
-            )
-            request = PredictRequest(
+            from backend.ml_client.schemas import RiskRequest
+            request = RiskRequest(
                 declared_income=data.get("income", 1_000_000),
-                employment_type=EmploymentType.informal,
-                is_banked=False,  # onboarding = not yet banked
-                age=30,  # default if not collected
-                city_type=CityType.urban,
-                education_level=EducationLevel.secondary,
-                household_size=3,
+                is_banked=0,
+                employment_type="informal",
+                age=30,
+                city_type="urban",
+                total_sessions=0,
+                pct_conversion=0.0,
+                tx_income_pct=0.0,
+                payments_count=0,
+                on_time_rate=0.5,
+                overdue_rate=0.0,
+                avg_decision_score=0.5,
             )
             pred = await self._ml_client.predict(request)
             return {
@@ -565,7 +554,7 @@ class OnboardingAgent(BaseAgent):
                 "max_amount": pred.max_amount,
                 "recommended_product": pred.recommended_product.value if pred.recommended_product else None,
                 "score_band": pred.score_band.value,
-                "factors": [f.model_dump() for f in pred.factors],
+                "factors": [{"name": f.name, "impact": f.impact, "weight": f.weight} for f in pred.factors],
             }
 
         # Mock fallback when no ML client configured

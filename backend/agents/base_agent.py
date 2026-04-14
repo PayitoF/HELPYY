@@ -6,11 +6,13 @@ their name, system_prompt, tools, and optionally override _build_messages.
 """
 
 from abc import ABC, abstractmethod
+import time
 from typing import Any, AsyncIterator, Callable, Coroutine
 
 from pydantic import BaseModel
 
 from backend.llm.provider import LLMProvider, ToolCallResult, ToolDefinition
+from backend.observability.llm_logger import log_llm_call
 
 
 # -----------------------------------------------------------------------
@@ -91,10 +93,27 @@ class BaseAgent(ABC):
         """
         messages = self._build_messages(message, context)
 
-        if self.tools and self._tool_handlers:
-            content = await self._run_with_tools(messages, context)
-        else:
-            content = await self.llm.generate(messages, temperature=0.7)
+        t0 = time.perf_counter()
+        err = None
+        try:
+            if self.tools and self._tool_handlers:
+                content = await self._run_with_tools(messages, context)
+            else:
+                content = await self.llm.generate(messages, temperature=0.7)
+        except Exception as e:
+            err = str(e)
+            raise
+        finally:
+            latency = (time.perf_counter() - t0) * 1000
+            sid = context.get("history", [{}])[0].get("agent", "") if context.get("history") else ""
+            log_llm_call(
+                session_id=sid,
+                agent=self.name,
+                latency_ms=latency,
+                tokens_in=sum(len(m.get("content", "")) // 4 for m in messages),
+                tokens_out=len(content) // 4 if not err else 0,
+                error=err,
+            )
 
         return self._make_response(content, context)
 

@@ -15,6 +15,7 @@ logging.basicConfig(
 )
 
 from backend.api.routers import chat, onboarding, scoring, notifications
+from backend.api.routers import observability
 
 app = FastAPI(
     title="Helpyy Hand API",
@@ -43,6 +44,7 @@ app.include_router(chat.router, prefix="/api/v1", tags=["chat"])
 app.include_router(onboarding.router, prefix="/api/v1/onboarding", tags=["onboarding"])
 app.include_router(scoring.router, prefix="/api/v1", tags=["scoring"])
 app.include_router(notifications.router, prefix="/api/v1", tags=["notifications"])
+app.include_router(observability.router, prefix="/api/v1", tags=["observability"])
 
 
 @app.get("/health")

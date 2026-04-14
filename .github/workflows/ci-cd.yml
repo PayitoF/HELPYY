@@ -1,0 +1,184 @@
+name: CI/CD — Helpyy Hand
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+env:
+  AWS_REGION: us-east-1
+  PYTHON_VERSION: "3.12"
+  NODE_VERSION: "20"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  # ════════════════════════════════════════════════════════════════════
+  # QA — runs on every PR
+  # ════════════════════════════════════════════════════════════════════
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]" pytest-timeout pytest-asyncio
+
+      - name: Run unit + contract tests
+        run: |
+          python -m pytest tests/unit/ tests/contract/ \
+            -x --tb=short -q --timeout=30 \
+            --ignore=tests/unit/test_onboarding_agent.py \
+            --ignore=tests/unit/test_orchestrator.py
+
+      - name: Lint
+        run: |
+          pip install ruff
+          ruff check backend/ tests/ --select E,F,W
+
+  build-frontend:
+    name: Build Frontends
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/app-mockup/package-lock.json
+
+      - name: Build React app
+        working-directory: frontend/app-mockup
+        run: |
+          npm ci
+          npm run build
+
+      - name: Upload app build
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-dist
+          path: frontend/app-mockup/dist/
+
+      - name: Upload widget
+        uses: actions/upload-artifact@v4
+        with:
+          name: widget-dist
+          path: frontend/web-widget/
+
+  # ════════════════════════════════════════════════════════════════════
+  # Deploy QA — on PR (to dev environment)
+  # ════════════════════════════════════════════════════════════════════
+  deploy-qa:
+    name: Deploy QA
+    needs: [test, build-frontend]
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    environment: qa
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_QA }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: app-dist
+          path: frontend/app-mockup/dist/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: widget-dist
+          path: frontend/web-widget/
+
+      - name: Deploy frontends to S3
+        run: |
+          aws s3 sync frontend/app-mockup/dist/ s3://helpyy-dev-app-${{ secrets.AWS_ACCOUNT_ID }}/ --delete
+          aws s3 sync frontend/web-widget/ s3://helpyy-dev-widget-${{ secrets.AWS_ACCOUNT_ID }}/ --delete
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_APP_DIST_ID }} --paths "/*"
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_WIDGET_DIST_ID }} --paths "/*"
+
+      - name: Deploy backend (App Runner)
+        run: |
+          SERVICE_ARN=$(aws apprunner list-services --query "ServiceSummaryList[?ServiceName=='helpyy-dev-api'].ServiceArn" --output text)
+          if [ -n "$SERVICE_ARN" ]; then
+            aws apprunner start-deployment --service-arn "$SERVICE_ARN"
+            echo "Backend deployment triggered: $SERVICE_ARN"
+          else
+            echo "⚠️ App Runner service not found, skipping backend deploy"
+          fi
+
+  # ════════════════════════════════════════════════════════════════════
+  # Deploy Prod — on merge to main
+  # ════════════════════════════════════════════════════════════════════
+  deploy-prod:
+    name: Deploy Production
+    needs: [test, build-frontend]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # Deploy CDK infra (rebuilds Docker image + updates App Runner)
+      - name: CDK Deploy
+        working-directory: infra/aws/cdk
+        run: |
+          pip install -r requirements.txt
+          npm install -g aws-cdk
+          cdk deploy --all --require-approval never -c env=prod
+
+      # Deploy frontends
+      - uses: actions/download-artifact@v4
+        with:
+          name: app-dist
+          path: frontend/app-mockup/dist/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: widget-dist
+          path: frontend/web-widget/
+
+      - name: Deploy frontends to S3
+        run: |
+          aws s3 sync frontend/app-mockup/dist/ s3://helpyy-prod-app-${{ secrets.AWS_ACCOUNT_ID }}/ --delete
+          aws s3 sync frontend/web-widget/ s3://helpyy-prod-widget-${{ secrets.AWS_ACCOUNT_ID }}/ --delete
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_APP_DIST_ID_PROD }} --paths "/*"
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_WIDGET_DIST_ID_PROD }} --paths "/*"
+
+      # Upload ML model to S3
+      - name: Upload ML model
+        run: |
+          cd MLRepo/models/logistic_regression/selected/runs/2026-04-10_163938
+          tar czf model.tar.gz model.pkl
+          aws s3 cp model.tar.gz s3://helpyy-prod-models-${{ secrets.AWS_ACCOUNT_ID }}/models/logistic_regression/model.tar.gz

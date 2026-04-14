@@ -38,19 +38,9 @@ _DECREASE_THRESHOLD = 0.02      # p_default rose by >= 2pp → "decreased"
 # System prompt (for notification text generation via LLM)
 # -----------------------------------------------------------------------
 
-_SYSTEM_PROMPT = """\
-Eres el monitor proactivo de Helpyy Hand. Tu trabajo es revisar periódicamente
-el score de clientes que fueron rechazados y notificarles cuando haya mejoras.
+from backend.agents.prompt_loader import load_prompt
 
-COMPORTAMIENTO:
-- Si el score mejoró → genera notificación positiva con el progreso
-- Si el score no cambió → genera tip motivacional contextualizado
-- Si el score empeoró → genera alerta suave con recomendación
-
-FORMATO DE NOTIFICACIÓN:
-Genera un JSON con: title (corto, para push), body (expandido), type.
-
-TONO: Motivador, como un coach. Usa emojis con moderación (1-2 por mensaje)."""
+_SYSTEM_PROMPT = load_prompt("persistent_monitor")
 
 
 # -----------------------------------------------------------------------
@@ -343,17 +333,20 @@ class PersistentMonitorAgent:
     async def _get_prediction(self, user: UserRecord) -> dict | None:
         """Get ML prediction for a user."""
         if self._ml_client:
-            from backend.ml_client.schemas import (
-                PredictRequest, EmploymentType, CityType, EducationLevel,
-            )
-            request = PredictRequest(
+            from backend.ml_client.schemas import RiskRequest
+            request = RiskRequest(
                 declared_income=user.declared_income,
-                employment_type=EmploymentType.informal,
-                is_banked=user.is_banked,
+                is_banked=1 if user.is_banked else 0,
+                employment_type="informal",
                 age=30,
-                city_type=CityType.urban,
-                education_level=EducationLevel.secondary,
-                household_size=3,
+                city_type="urban",
+                total_sessions=0,
+                pct_conversion=0.0,
+                tx_income_pct=0.0,
+                payments_count=0,
+                on_time_rate=0.5,
+                overdue_rate=0.0,
+                avg_decision_score=0.5,
             )
             pred = await self._ml_client.predict(request)
             return {
