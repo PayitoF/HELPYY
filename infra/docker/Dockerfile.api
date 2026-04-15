@@ -5,7 +5,7 @@ WORKDIR /app
 COPY pyproject.toml .
 COPY backend/ backend/
 
-RUN pip install --no-cache-dir . joblib scikit-learn pandas
+RUN pip install --no-cache-dir . joblib scikit-learn==1.7.2 pandas
 
 EXPOSE 8000
 

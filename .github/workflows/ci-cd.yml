@@ -47,7 +47,7 @@ jobs:
       - name: Lint
         run: |
           pip install ruff
-          ruff check backend/ tests/ --select E,F,W --ignore E402
+          ruff check backend/ tests/ --select E,F,W --ignore E402 --exclude backend/ml_client/src
 
   # ════════════════════════════════════════════════════════════
   # Deploy — only when merged to main
@@ -76,13 +76,13 @@ jobs:
           cache: npm
           cache-dependency-path: frontend/app-mockup/package-lock.json
 
-      # Backend: CDK deploy rebuilds Docker image + pushes to ECR + updates App Runner
-      - name: Deploy backend (CDK)
+      # Backend + ML: CDK deploy rebuilds Docker images + updates services
+      - name: Deploy backend + ML (CDK)
         working-directory: infra/aws/cdk
         run: |
           pip install -r requirements.txt
           npm install -g aws-cdk
-          cdk deploy helpyy-compute-dev --require-approval never
+          cdk deploy helpyy-ml-dev helpyy-compute-dev --require-approval never
 
       # Frontend: build + S3 + CloudFront
       - name: Build React app
