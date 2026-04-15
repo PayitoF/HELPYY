@@ -14,13 +14,15 @@ dev-local:
 	@uvicorn backend.ml_client.mock_server:app --host 0.0.0.0 --port 8001 --reload &
 	@echo "Starting frontend on :5173..."
 	@cd frontend/app-mockup && npm run dev &
+	@echo "Starting web widget on :3000..."
+	@cd frontend/web-widget && python3 -m http.server 3000 &
 	@echo ""
 	@echo "Helpyy Hand (local, no Ollama):"
-	@echo "  Frontend:  http://localhost:5173"
-	@echo "  API docs:  http://localhost:8000/docs"
-	@echo "  ML Mock:   http://localhost:8001/docs"
+	@echo "  App mobile:  http://localhost:5173"
+	@echo "  Web widget:  http://localhost:3000"
+	@echo "  API docs:    http://localhost:8000/docs"
+	@echo "  ML Mock:     http://localhost:8001/docs"
 	@echo ""
-	@echo "To stop: kill %1 %2 %3"
 	@wait
 
 test:
