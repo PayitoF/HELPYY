@@ -87,6 +87,7 @@ export default function useChat(sessionId, { isBanked = true, onMetadata } = {})
                 _streaming: false,
                 suggestedActions: data.suggested_actions || [],
                 handoffTo: data.handoff_to,
+                metadata: data.metadata || {},
               }];
             }
             return prev;
