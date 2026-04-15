@@ -47,10 +47,15 @@ class MLClient:
     # ------------------------------------------------------------------
 
     async def predict(self, request: RiskRequest) -> CreditPrediction:
-        """POST /risk-score → CreditPrediction (internal model for agents)."""
+        """POST /risk-score → CreditPrediction. Falls back to embedded model."""
         import time as _time
         t0 = _time.perf_counter()
-        data = await self._post("/risk-score", request.model_dump(mode="json"))
+        try:
+            data = await self._post("/risk-score", request.model_dump(mode="json"))
+        except ConnectionError:
+            logger.warning("ML service unavailable — using embedded predictor")
+            from backend.ml_client.embedded_predictor import predict_embedded
+            data = predict_embedded(request.model_dump(mode="json"))
         resp = RiskResponse(**data)
         latency = (_time.perf_counter() - t0) * 1000
         logger.info("ML predict: %.0fms category=%s decision=%s", latency, resp.risk_category, resp.decision)

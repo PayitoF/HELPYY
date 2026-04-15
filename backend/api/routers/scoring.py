@@ -124,7 +124,7 @@ async def evaluate_loan(req: LoanApplicationRequest):
             },
         )
 
-    # Not eligible — get real improvement factors from ML
+    # Get real improvement factors from ML
     real_improvements = await client.get_improvement_factors(risk_req, prediction)
 
     improvement_factors = [
