@@ -223,10 +223,13 @@ class TestMLClientPredict:
             MockClient.return_value = mock_http
 
             with patch("backend.ml_client.client.asyncio.sleep", new_callable=AsyncMock):
-                with pytest.raises(ConnectionError, match="failed after 3 attempts"):
-                    await client.predict(good_request)
+                # After 3 retries, falls back to embedded predictor
+                result = await client.predict(good_request)
 
         assert mock_http.post.call_count == 3
+        # Fallback should still return a valid prediction
+        assert result.p_default >= 0
+        assert result.decision in ("APPROVE", "REVIEW", "REJECT")
 
 
 # =======================================================================
