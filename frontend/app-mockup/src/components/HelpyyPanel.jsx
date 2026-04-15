@@ -473,7 +473,6 @@ function ProgressTab({ missions = [], onCompleteMission }) {
                       style={{ width: `${Math.min((m.ml_current / m.ml_target) * 100, 100)}%` }} />
                   </div>
                 )}
-                </div>
               </div>
             </div>
           </motion.div>
