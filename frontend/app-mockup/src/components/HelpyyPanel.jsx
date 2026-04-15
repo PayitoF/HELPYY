@@ -62,13 +62,8 @@ export default function HelpyyPanel({ onClose }) {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isStreaming]);
 
-  // Detect show_loan_form metadata from backend
-  useEffect(() => {
-    const last = messages[messages.length - 1];
-    if (last?.metadata?.show_loan_form && loanFlow === null) {
-      setLoanFlow('form');
-    }
-  }, [messages]);
+  // Detect show_loan_form metadata — don't auto-open, let the button handle it
+  const showLoanButton = messages[messages.length - 1]?.metadata?.show_loan_form && loanFlow === null;
 
   async function handleLoanSubmit(formData) {
     try {
@@ -218,6 +213,14 @@ export default function HelpyyPanel({ onClose }) {
                     />
                     {msg.suggestedActions?.length > 0 && (
                       <SuggestionChips actions={msg.suggestedActions} onSelect={handleSend} />
+                    )}
+                    {msg.metadata?.show_loan_form && loanFlow === null && (
+                      <button
+                        onClick={() => setLoanFlow('form')}
+                        className="mt-2 w-full py-3 rounded-xl bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 active:scale-[0.98] transition-all"
+                      >
+                        📋 Completar solicitud de crédito
+                      </button>
                     )}
                   </>
                 )}
