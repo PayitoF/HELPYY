@@ -34,20 +34,23 @@ def _load_model():
         logger.warning("model.pkl not found — using heuristic scoring")
         return False
 
-    import sys
-    # The model.pkl was pickled with MLRepo/src in the path
-    mlrepo_root = model_dir.parent.parent.parent.parent.parent
-    if str(mlrepo_root) not in sys.path:
-        sys.path.insert(0, str(mlrepo_root))
+    try:
+        import sys
+        mlrepo_root = model_dir.parent.parent.parent.parent.parent
+        if str(mlrepo_root) not in sys.path:
+            sys.path.insert(0, str(mlrepo_root))
 
-    import joblib
-    _pipeline = joblib.load(model_dir / "model.pkl")
+        import joblib
+        _pipeline = joblib.load(model_dir / "model.pkl")
 
-    sf_path = model_dir / "selected_features.json"
-    if sf_path.exists():
-        _selected_features = json.loads(sf_path.read_text())
-    logger.info("ML model loaded from %s", model_dir)
-    return True
+        sf_path = model_dir / "selected_features.json"
+        if sf_path.exists():
+            _selected_features = json.loads(sf_path.read_text())
+        logger.info("ML model loaded from %s", model_dir)
+        return True
+    except Exception as e:
+        logger.warning("Failed to load model.pkl: %s — using heuristic", e)
+        return False
 
 
 def predict_embedded(request_data: dict) -> dict:
