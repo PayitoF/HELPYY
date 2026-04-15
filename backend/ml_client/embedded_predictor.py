@@ -19,6 +19,7 @@ _MODEL_SEARCH_PATHS = [
 
 _pipeline = None
 _selected_features = None
+_load_attempted = False
 
 
 def _find_model_dir() -> Path | None:
@@ -36,6 +37,13 @@ def _load_model():
         return False
 
     try:
+        import sys
+        # The model.pkl references src.training.preprocess — make it resolvable
+        src_shim = Path(__file__).resolve().parent / "src"
+        parent = src_shim.parent
+        if str(parent) not in sys.path:
+            sys.path.insert(0, str(parent))
+
         import joblib
         _pipeline = joblib.load(model_dir / "model.pkl")
 
@@ -51,10 +59,13 @@ def _load_model():
 
 def predict_embedded(request_data: dict) -> dict:
     """Predict using embedded model. Returns same format as MLRepo API."""
-    global _pipeline
+    global _pipeline, _load_attempted
+    if _pipeline is None and not _load_attempted:
+        _load_attempted = True
+        _load_model()
+
     if _pipeline is None:
-        if not _load_model():
-            return _heuristic_predict(request_data)
+        return _heuristic_predict(request_data)
 
     import pandas as pd
     df = pd.DataFrame([request_data])
