@@ -71,7 +71,7 @@ export default function HelpyyPanel({ onClose }) {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* ─── Header ─── */}
-      <div className="bg-gradient-to-r from-emerald-500 to-teal-600 px-4 pt-12 pb-3 flex-shrink-0">
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 px-4 pt-12 pb-3 flex-shrink-0">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
@@ -82,7 +82,7 @@ export default function HelpyyPanel({ onClose }) {
             <div>
               <h2 className="text-white font-bold text-lg">Helpyy Hand</h2>
               <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-300 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-blue-300 animate-pulse" />
                 <span className="text-white/80 text-xs">
                   {connectionState === 'connected' ? 'En linea'
                     : connectionState === 'error' ? 'Error de conexion'
@@ -113,7 +113,7 @@ export default function HelpyyPanel({ onClose }) {
               onClick={() => setActiveTab(tab)}
               className={`flex-1 py-1.5 rounded-md text-sm font-medium transition-all ${
                 activeTab === tab
-                  ? 'bg-white text-emerald-700 shadow-sm'
+                  ? 'bg-white text-blue-800 shadow-sm'
                   : 'text-white/70 hover:text-white'
               }`}
             >
@@ -194,7 +194,7 @@ export default function HelpyyPanel({ onClose }) {
               onKeyDown={handleKeyDown}
               placeholder="Escribe tu mensaje..."
               rows={1}
-              className="flex-1 resize-none border border-gray-200 rounded-2xl px-4 py-2.5 text-sm outline-none focus:border-emerald-400 transition-colors max-h-24 overflow-y-auto"
+              className="flex-1 resize-none border border-gray-200 rounded-2xl px-4 py-2.5 text-sm outline-none focus:border-blue-400 transition-colors max-h-24 overflow-y-auto"
               style={{ height: 'auto', minHeight: '40px' }}
               onInput={(e) => {
                 e.target.style.height = 'auto';
@@ -204,7 +204,7 @@ export default function HelpyyPanel({ onClose }) {
             <button
               onClick={() => handleSend()}
               disabled={!input.trim() || isStreaming}
-              className="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white flex-shrink-0 disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-emerald-600 active:scale-95 transition-all"
+              className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white flex-shrink-0 disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 active:scale-95 transition-all"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
@@ -229,7 +229,7 @@ function MessageBubble({ role, content, agent, streaming }) {
       <div
         className={`max-w-[80%] px-3.5 py-2.5 text-sm leading-relaxed ${
           isUser
-            ? 'bg-emerald-500 text-white rounded-2xl rounded-br-md'
+            ? 'bg-blue-600 text-white rounded-2xl rounded-br-md'
             : 'bg-white text-gray-800 rounded-2xl rounded-bl-md border border-gray-100 shadow-sm'
         }`}
       >
@@ -240,7 +240,7 @@ function MessageBubble({ role, content, agent, streaming }) {
         )}
         <p className="whitespace-pre-wrap">{content}</p>
         {streaming && (
-          <span className="inline-block w-1.5 h-4 bg-emerald-400 rounded-sm animate-pulse ml-0.5 align-text-bottom" />
+          <span className="inline-block w-1.5 h-4 bg-blue-400 rounded-sm animate-pulse ml-0.5 align-text-bottom" />
         )}
         <p className={`text-[10px] mt-1 ${isUser ? 'text-white/60 text-right' : 'text-gray-400'}`}>
           {new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })}
@@ -257,7 +257,7 @@ function SuggestionChips({ actions, onSelect }) {
         <button
           key={i}
           onClick={() => onSelect(text)}
-          className="px-3 py-1.5 text-xs font-medium border border-emerald-400 text-emerald-600 rounded-full bg-white hover:bg-emerald-50 active:bg-emerald-100 transition-colors"
+          className="px-3 py-1.5 text-xs font-medium border border-blue-400 text-blue-700 rounded-full bg-white hover:bg-blue-50 active:bg-blue-100 transition-colors"
         >
           {text}
         </button>
@@ -297,7 +297,7 @@ function ProgressTab() {
   return (
     <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
       {/* Level card */}
-      <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-5 text-white">
+      <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-5 text-white">
         <div className="flex items-center justify-between mb-3">
           <div>
             <p className="text-white/70 text-xs">Tu nivel</p>
@@ -325,11 +325,11 @@ function ProgressTab() {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.08 }}
-            className={`bg-white rounded-xl p-4 border ${m.done ? 'border-emerald-200' : 'border-gray-100'} shadow-sm`}
+            className={`bg-white rounded-xl p-4 border ${m.done ? 'border-blue-200' : 'border-gray-100'} shadow-sm`}
           >
             <div className="flex items-start gap-3">
               <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                m.done ? 'bg-emerald-500' : 'bg-gray-200'
+                m.done ? 'bg-blue-600' : 'bg-gray-200'
               }`}>
                 {m.done ? (
                   <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -340,12 +340,12 @@ function ProgressTab() {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className={`text-sm font-medium ${m.done ? 'text-emerald-700 line-through' : 'text-gray-800'}`}>
+                <p className={`text-sm font-medium ${m.done ? 'text-blue-800 line-through' : 'text-gray-800'}`}>
                   {m.title}
                 </p>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-xs text-gray-400">{m.factor}</span>
-                  <span className="text-xs font-semibold text-emerald-500">+{m.points} pts</span>
+                  <span className="text-xs font-semibold text-blue-600">+{m.points} pts</span>
                 </div>
               </div>
             </div>
