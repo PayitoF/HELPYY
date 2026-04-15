@@ -1,7 +1,7 @@
 FROM public.ecr.aws/lambda/python:3.12
 
 # Install ML dependencies
-RUN pip install --no-cache-dir joblib scikit-learn pandas
+RUN pip install --no-cache-dir joblib scikit-learn==1.7.2 pandas
 
 # Copy model files
 COPY MLRepo/models/logistic_regression/selected/runs/2026-04-15_115456/ ${LAMBDA_TASK_ROOT}/model/
