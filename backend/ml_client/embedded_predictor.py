@@ -70,21 +70,53 @@ def predict_embedded(request_data: dict) -> dict:
 
 
 def _heuristic_predict(data: dict) -> dict:
-    """Fallback when model.pkl is not available."""
+    """Fallback when model.pkl is not available.
+
+    Calibrated so new users (no history) with low income get REVIEW/REJECT.
+    Thresholds: APPROVE < 0.40, REVIEW < 0.65, REJECT >= 0.65
+    """
     import math
     income = data.get("declared_income", 1_000_000)
     income_norm = min(income / 3_000_000, 1.0)
-    logit = -0.5
-    logit += -0.54 * data.get("on_time_rate", 0.5)
-    logit += -0.35 * data.get("is_banked", 1)
-    logit += -0.31 * data.get("pct_conversion", 0.0)
-    logit += 0.24 * (1.0 if data.get("city_type") == "rural" else 0.0)
-    logit += 0.20 * data.get("overdue_rate", 0.0)
-    logit += -0.15 * income_norm
+
+    # Start with high base risk for new users
+    logit = 0.8
+
+    # Income is the strongest factor for new users
+    logit += -1.5 * income_norm
+
+    # Payment history (new users have 0.5 default = neutral)
+    on_time = data.get("on_time_rate", 0.5)
+    logit += -2.0 * (on_time - 0.5)  # only helps if above 0.5
+
+    # Banking status
+    logit += -0.3 * data.get("is_banked", 0)
+
+    # Digital engagement
+    logit += -0.5 * data.get("pct_conversion", 0.0)
+
+    # Risk factors
+    logit += 0.4 * (1.0 if data.get("city_type") == "rural" else 0.0)
+    logit += 1.0 * data.get("overdue_rate", 0.0)
+
+    # Employment type
+    emp = data.get("employment_type", "informal")
+    if emp == "formal":
+        logit += -0.4
+    elif emp == "independent":
+        logit += -0.2
+
+    # Age (young = more risk)
+    age = data.get("age", 30)
+    if age < 25:
+        logit += 0.3
+    elif age > 40:
+        logit += -0.2
+
     p = 1.0 / (1.0 + math.exp(-logit))
     return {
         "probability_of_default": round(p, 6),
         "risk_category": "LOW" if p < 0.30 else "MEDIUM" if p < 0.60 else "HIGH",
         "decision": "APPROVE" if p < 0.40 else "REVIEW" if p < 0.65 else "REJECT",
-        "top_features": ["on_time_rate", "is_banked", "pct_conversion"],
+        "top_features": ["on_time_rate", "is_banked", "pct_conversion", "declared_income", "overdue_rate"],
     }
