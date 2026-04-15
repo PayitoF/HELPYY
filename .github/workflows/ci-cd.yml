@@ -52,8 +52,8 @@ jobs:
   # ════════════════════════════════════════════════════════════
   # Deploy — only when merged to main
   # ════════════════════════════════════════════════════════════
-  build-and-deploy:
-    name: Build & Deploy
+  deploy:
+    name: Deploy to AWS
     needs: [test]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -66,12 +66,25 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN_QA }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
           cache-dependency-path: frontend/app-mockup/package-lock.json
 
+      # Backend: CDK deploy rebuilds Docker image + pushes to ECR + updates App Runner
+      - name: Deploy backend (CDK)
+        working-directory: infra/aws/cdk
+        run: |
+          pip install -r requirements.txt
+          npm install -g aws-cdk
+          cdk deploy helpyy-compute-dev --require-approval never
+
+      # Frontend: build + S3 + CloudFront
       - name: Build React app
         working-directory: frontend/app-mockup
         run: |
@@ -87,13 +100,3 @@ jobs:
         run: |
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_APP_DIST_ID }} --paths "/*"
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CF_WIDGET_DIST_ID }} --paths "/*"
-
-      - name: Deploy backend (App Runner)
-        run: |
-          SERVICE_ARN=$(aws apprunner list-services --query "ServiceSummaryList[?ServiceName=='helpyy-dev-api'].ServiceArn" --output text)
-          if [ -n "$SERVICE_ARN" ]; then
-            aws apprunner start-deployment --service-arn "$SERVICE_ARN"
-            echo "Backend deployment triggered: $SERVICE_ARN"
-          else
-            echo "⚠️ App Runner service not found, skipping backend deploy"
-          fi

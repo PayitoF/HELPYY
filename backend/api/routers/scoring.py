@@ -93,20 +93,7 @@ async def evaluate_loan(req: LoanApplicationRequest):
     )
 
     client = MLClient()
-    try:
-        prediction = await client.predict(risk_req)
-    except ConnectionError:
-        # ML service unavailable — use mock scoring
-        from backend.ml_client.mock_server import _compute_probability, _resolve_risk_category, _resolve_decision
-        p = _compute_probability(risk_req)
-        mock_resp_data = {
-            "probability_of_default": round(p, 6),
-            "risk_category": _resolve_risk_category(p),
-            "decision": _resolve_decision(p),
-            "top_features": ["on_time_rate", "is_banked", "pct_conversion"],
-        }
-        from backend.ml_client.schemas import RiskResponse
-        prediction = client._to_credit_prediction(RiskResponse(**mock_resp_data), risk_req)
+    prediction = await client.predict(risk_req)
 
     factors = [
         {"name": f.name, "impact": f.impact, "weight": f.weight}
@@ -138,10 +125,7 @@ async def evaluate_loan(req: LoanApplicationRequest):
         )
 
     # Get real improvement factors from ML
-    try:
-        real_improvements = await client.get_improvement_factors(risk_req, prediction)
-    except ConnectionError:
-        real_improvements = []
+    real_improvements = await client.get_improvement_factors(risk_req, prediction)
 
     improvement_factors = [
         {
