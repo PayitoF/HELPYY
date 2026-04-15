@@ -1,4 +1,4 @@
-"""Scoring router — credit evaluation and loan acceptance endpoints."""
+"""Scoring router — loan evaluation + acceptance endpoints."""
 
 import uuid
 
@@ -32,11 +32,13 @@ class LoanApplicationRequest(BaseModel):
 
 class LoanEvaluationResponse(BaseModel):
     eligible: bool
+    p_default: float | None = None
     max_amount: float | None = None
     score_band: str
     options: list[dict] = []
     missions: list[dict] = []
     factors: list[dict] = []
+    improvement_factors: list[dict] = []
     rejection_reasons: list[str] = []
     contract_template: dict | None = None
 
@@ -56,31 +58,25 @@ class LoanAcceptanceResponse(BaseModel):
 
 
 # -----------------------------------------------------------------------
-# Factor humanization for rejection reasons
+# Factor → human-readable reason mapping
 # -----------------------------------------------------------------------
 
 _FACTOR_REASONS = {
     "on_time_rate": "Tu historial de pagos puntuales necesita mejorar",
-    "is_banked": "No cuentas con suficiente actividad bancaria",
+    "is_banked": "Necesitas más actividad con productos bancarios",
     "pct_conversion": "Tu actividad digital con el banco es baja",
     "overdue_rate": "Tienes pagos atrasados en tu historial",
-    "declared_income": "Tus ingresos declarados son insuficientes para el monto solicitado",
+    "declared_income": "Tus ingresos declarados son bajos para el monto solicitado",
 }
 
 
 # -----------------------------------------------------------------------
-# Endpoints
+# POST /scoring/evaluate
 # -----------------------------------------------------------------------
-
-@router.post("/score")
-async def score(data: dict):
-    """Legacy endpoint — kept for backwards compatibility."""
-    pass
-
 
 @router.post("/evaluate", response_model=LoanEvaluationResponse)
 async def evaluate_loan(req: LoanApplicationRequest):
-    """Evaluate a loan application: ML scoring + missions if rejected."""
+    """Evaluate a loan application: ML scoring + dynamic missions if rejected."""
     risk_req = RiskRequest(
         declared_income=req.declared_income,
         employment_type=req.employment_type,
@@ -99,13 +95,17 @@ async def evaluate_loan(req: LoanApplicationRequest):
     client = MLClient()
     prediction = await client.predict(risk_req)
 
-    factors = [{"name": f.name, "impact": f.impact, "weight": f.weight} for f in prediction.factors]
+    factors = [
+        {"name": f.name, "impact": f.impact, "weight": f.weight}
+        for f in prediction.factors
+    ]
 
     if prediction.eligible:
         max_amount = prediction.max_amount or 500_000
         options = build_options_table(max_amount)
         return LoanEvaluationResponse(
             eligible=True,
+            p_default=prediction.p_default,
             max_amount=max_amount,
             score_band=prediction.score_band.value,
             options=options,
@@ -124,23 +124,65 @@ async def evaluate_loan(req: LoanApplicationRequest):
             },
         )
 
-    # Not eligible — build missions from negative factors
-    negative = [f for f in factors if f["impact"] == "negative"]
+    # Not eligible — get real improvement factors from ML
+    real_improvements = await client.get_improvement_factors(risk_req, prediction)
+
     improvement_factors = [
-        {"factor_name": f["name"], "current_value": 0, "target_value": 1.0, "potential_reduction": 0.05}
+        {
+            "factor_name": f.factor_name,
+            "current_value": f.current_value,
+            "target_value": f.target_value,
+            "impact_weight": f.impact_weight,
+            "potential_reduction": f.potential_reduction,
+            "suggestion": f.suggestion,
+        }
+        for f in real_improvements
+    ]
+
+    # Build missions from real ML factors (linked to model thresholds)
+    # Occupation maps to personalized tips in the mission catalog
+    occupation_map = {
+        "vendedor ambulante": "vendedor_ambulante",
+        "trabajador doméstico": "trabajador_domestico",
+        "conductor": "independiente",
+        "comerciante": "independiente",
+        "peluquero/a": "independiente",
+        "cocinero/a": "vendedor_ambulante",
+    }
+    occ = occupation_map.get(req.occupation.lower(), "default")
+    missions = build_plan(improvement_factors, occupation=occ)
+
+    # Enrich missions with ML context
+    for mission in missions:
+        matching = next(
+            (f for f in improvement_factors if f["factor_name"] == mission.get("factor")),
+            None,
+        )
+        if matching:
+            mission["ml_current"] = matching["current_value"]
+            mission["ml_target"] = matching["target_value"]
+            mission["ml_suggestion"] = matching["suggestion"]
+
+    negative = [f for f in factors if f["impact"] == "negative"]
+    rejection_reasons = [
+        _FACTOR_REASONS.get(f["name"], f"Factor: {f['name']}")
         for f in negative
     ]
-    missions = build_plan(improvement_factors, occupation=req.occupation)
-    rejection_reasons = [_FACTOR_REASONS.get(f["name"], f"Factor: {f['name']}") for f in negative]
 
     return LoanEvaluationResponse(
         eligible=False,
+        p_default=prediction.p_default,
         score_band=prediction.score_band.value,
         factors=factors,
+        improvement_factors=improvement_factors,
         missions=missions,
         rejection_reasons=rejection_reasons,
     )
 
+
+# -----------------------------------------------------------------------
+# POST /scoring/accept-loan
+# -----------------------------------------------------------------------
 
 @router.post("/accept-loan", response_model=LoanAcceptanceResponse)
 async def accept_loan(req: AcceptLoanRequest):
@@ -148,6 +190,6 @@ async def accept_loan(req: AcceptLoanRequest):
     return LoanAcceptanceResponse(
         success=True,
         loan_id=str(uuid.uuid4()),
-        message=f"Préstamo de ${req.amount:,.0f} a {req.term_months} meses aprobado exitosamente.",
+        message=f"Préstamo de ${req.amount:,.0f} a {req.term_months} meses aprobado.",
         disbursement_date="En las próximas 24 horas",
     )

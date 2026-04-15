@@ -464,6 +464,16 @@ function ProgressTab({ missions = [], onCompleteMission }) {
                     </button>
                   )}
                 </div>
+                {m.ml_suggestion && m.status !== 'completed' && (
+                  <p className="text-[11px] text-gray-400 mt-1">{m.ml_suggestion}</p>
+                )}
+                {m.ml_current !== undefined && m.status !== 'completed' && (
+                  <div className="mt-1.5 w-full bg-gray-100 rounded-full h-1.5">
+                    <div className="h-full rounded-full bg-blue-400 transition-all"
+                      style={{ width: `${Math.min((m.ml_current / m.ml_target) * 100, 100)}%` }} />
+                  </div>
+                )}
+                </div>
               </div>
             </div>
           </motion.div>
