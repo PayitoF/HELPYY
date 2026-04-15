@@ -324,7 +324,9 @@ export default function HelpyyPanel({ onClose }) {
       )}
 
       {/* ─── Progress Tab ─── */}
-      {activeTab === 'progreso' && <ProgressTab missions={missions} />}
+      {activeTab === 'progreso' && <ProgressTab missions={missions} onCompleteMission={(idx) => {
+        setMissions((prev) => prev.map((m, i) => i === idx ? { ...m, status: 'completed' } : m));
+      }} />}
     </div>
   );
 }
@@ -390,7 +392,7 @@ function TypingDots() {
   );
 }
 
-function ProgressTab({ missions = [] }) {
+function ProgressTab({ missions = [], onCompleteMission }) {
   if (missions.length === 0) {
     return (
       <div className="flex-1 flex items-center justify-center px-6">
@@ -455,6 +457,12 @@ function ProgressTab({ missions = [] }) {
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-xs text-gray-400">{m.factor}</span>
                   <span className="text-xs font-semibold text-blue-600">+{m.points} pts</span>
+                  {m.status !== 'completed' && onCompleteMission && (
+                    <button onClick={() => onCompleteMission(i)}
+                      className="ml-auto text-[10px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-semibold hover:bg-blue-200 transition-colors">
+                      ✓ Completar
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
