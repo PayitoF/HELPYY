@@ -19,15 +19,17 @@ tags = {"project": "helpyy-hand", "environment": env_name}
 data = DataStack(app, f"helpyy-data-{env_name}",
     env=aws_env, env_name=env_name)
 
-compute = ComputeStack(app, f"helpyy-compute-{env_name}",
-    env=aws_env, env_name=env_name,
-    tables=data.tables, model_bucket=data.model_bucket)
-compute.add_dependency(data)
-
 ml = MLStack(app, f"helpyy-ml-{env_name}",
     env=aws_env, env_name=env_name,
     model_bucket=data.model_bucket)
 ml.add_dependency(data)
+
+compute = ComputeStack(app, f"helpyy-compute-{env_name}",
+    env=aws_env, env_name=env_name,
+    tables=data.tables, model_bucket=data.model_bucket,
+    ml_service_url=ml.ml_url)
+compute.add_dependency(data)
+compute.add_dependency(ml)
 
 # Security (WAF) must be deployed before frontend so we can pass the ARN
 security = SecurityStack(app, f"helpyy-security-{env_name}",

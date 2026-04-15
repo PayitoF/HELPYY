@@ -25,7 +25,8 @@ def handler(event, ctx):
 
 class ComputeStack(cdk.Stack):
     def __init__(self, scope: Construct, id: str, *, env_name: str,
-                 tables: dict[str, ddb.ITable], model_bucket: s3.IBucket, **kwargs):
+                 tables: dict[str, ddb.ITable], model_bucket: s3.IBucket,
+                 ml_service_url: str = "", **kwargs):
         super().__init__(scope, id, **kwargs)
 
         image_asset = ecr_assets.DockerImageAsset(self, "ApiImage",
@@ -69,6 +70,7 @@ class ComputeStack(cdk.Stack):
                             apprunner.CfnService.KeyValuePairProperty(name="DYNAMODB_TABLE_PREFIX", value=f"helpyy-{env_name}-"),
                             apprunner.CfnService.KeyValuePairProperty(name="LOG_LEVEL", value="INFO"),
                             apprunner.CfnService.KeyValuePairProperty(name="AWS_DEFAULT_REGION", value=self.region),
+                            apprunner.CfnService.KeyValuePairProperty(name="ML_SERVICE_URL", value=ml_service_url),
                         ]))),
             instance_configuration=apprunner.CfnService.InstanceConfigurationProperty(
                 cpu="1024", memory="2048",
