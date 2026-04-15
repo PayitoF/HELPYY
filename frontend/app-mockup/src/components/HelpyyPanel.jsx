@@ -30,6 +30,7 @@ const UNBANKED_SUGGESTIONS = [
 export default function HelpyyPanel({ onClose }) {
   const {
     messages,
+    setMessages,
     isStreaming,
     currentAgent,
     sendMessage,
@@ -67,6 +68,7 @@ export default function HelpyyPanel({ onClose }) {
 
   async function handleLoanSubmit(formData) {
     try {
+      setLoanFlow(null); // close form while loading
       const resp = await fetch(`${API_ROOT}/api/v1/scoring/evaluate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -79,6 +81,16 @@ export default function HelpyyPanel({ onClose }) {
       } else {
         setMissions(data.missions || []);
         setLoanFlow(null);
+        // Add rejection message to chat
+        const reasons = (data.rejection_reasons || []).join(', ') || 'tu perfil aún no cumple los requisitos';
+        setMessages((prev) => [...prev, {
+          role: 'assistant',
+          agent: 'credit_evaluator',
+          content: `Revisamos tu solicitud y por ahora aún no calificas para el microcrédito. ${reasons.charAt(0).toUpperCase() + reasons.slice(1)}.\n\nPero no te preocupes — te hemos creado un plan personalizado con misiones que te ayudarán a mejorar tu perfil. Revisa la pestaña "Mi Progreso" para ver tus misiones. ¡Cada paso cuenta!`,
+          suggestedActions: ['Ver mi plan de mejora'],
+        }]);
+        // Switch to progress tab
+        setActiveTab('progreso');
       }
     } catch {
       setLoanFlow(null);
