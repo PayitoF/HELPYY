@@ -68,38 +68,67 @@ export default function HelpyyPanel({ onClose }) {
 
   async function handleLoanSubmit(formData) {
     try {
-      setLoanFlow(null); // close form while loading
+      setLoanFlow(null);
+
+      // Step 1: Show analyzing animation
+      const steps = [
+        '🔍 Analizando tu perfil financiero...',
+        '📊 Consultando el modelo de riesgo...',
+        '🧮 Calculando tu elegibilidad...',
+      ];
+      let si = 0;
+      setMessages((prev) => [...prev, {
+        role: 'assistant', agent: 'credit_evaluator', content: steps[0], _analyzing: true,
+      }]);
+      const iv = setInterval(() => {
+        si++;
+        if (si < steps.length) {
+          setMessages((prev) => {
+            const l = prev[prev.length - 1];
+            return l?._analyzing ? [...prev.slice(0, -1), { ...l, content: steps[si] }] : prev;
+          });
+        }
+      }, 1200);
+
+      // Step 2: Call API
       const resp = await fetch(`${API_ROOT}/api/v1/scoring/evaluate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ session_id: sessionId, ...formData }),
       });
       const data = await resp.json();
+      clearInterval(iv);
+
+      // Step 3: Show final step
+      setMessages((prev) => {
+        const l = prev[prev.length - 1];
+        return l?._analyzing ? [...prev.slice(0, -1), {
+          ...l, content: data.eligible ? '✅ ¡Resultado listo!' : '📋 Generando tu plan personalizado...',
+        }] : prev;
+      });
+      await new Promise((r) => setTimeout(r, 1500));
+
+      // Step 4: Remove animation, show result
+      setMessages((prev) => prev.filter((m) => !m._analyzing));
+
       if (data.eligible) {
         setLoanData(data);
         setLoanFlow('offer');
       } else {
         setMissions(data.missions || []);
-        setLoanFlow(null);
         const reasons = (data.rejection_reasons || []).join(', ') || 'tu perfil aún no cumple los requisitos';
         const amt = formData.requested_amount ? `$${(formData.requested_amount).toLocaleString('es-CO')}` : 'el monto solicitado';
         setMessages((prev) => [...prev, {
           role: 'assistant',
           agent: 'credit_evaluator',
-          content: `Revisamos tu solicitud de ${amt} y por ahora aún no calificas para el microcrédito 😔\n\n📋 **Razones:** ${reasons}.\n\nPero no te preocupes — te creamos un plan con ${(data.missions || []).length} misiones concretas para mejorar tu perfil. Revisa "Mi Progreso" para empezar 🎯\n\n¿Quieres que nuestro asesor financiero te guíe paso a paso para cumplir estas metas?`,
+          content: `Revisamos tu solicitud de ${amt} y por ahora aún no calificas para el microcrédito 😔\n\n📋 Razones: ${reasons}.\n\nPero no te preocupes — te creamos un plan con ${(data.missions || []).length} misiones concretas para mejorar tu perfil 🎯\n\n¿Quieres que nuestro asesor financiero te guíe paso a paso?`,
           suggestedActions: [],
           metadata: {
             show_advisor_prompt: true,
-            user_data: {
-              ...formData,
-              p_default: data.p_default,
-              score_band: data.score_band,
-              rejection_reasons: data.rejection_reasons,
-              improvement_factors: data.improvement_factors,
-            },
+            user_data: { ...formData, p_default: data.p_default, score_band: data.score_band, rejection_reasons: data.rejection_reasons, improvement_factors: data.improvement_factors },
           },
         }]);
-        setActiveTab('progreso');
+        setTimeout(() => setActiveTab('progreso'), 2500);
       }
     } catch {
       setLoanFlow(null);
