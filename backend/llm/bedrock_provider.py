@@ -27,9 +27,11 @@ class BedrockProvider(LLMProvider):
 
         import boto3
 
-        self._client = boto3.client(
-            "bedrock-runtime", region_name=self.region
+        session = boto3.Session(
+            profile_name=os.getenv("AWS_PROFILE"),
+            region_name=self.region,
         )
+        self._client = session.client("bedrock-runtime")
 
     # ------------------------------------------------------------------
     # generate (non-streaming)

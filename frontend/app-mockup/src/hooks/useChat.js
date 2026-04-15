@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 
-const API_URL = '/api/v1/chat';
+const API_BASE = import.meta.env.VITE_API_URL || '';
+const API_URL = `${API_BASE}/api/v1/chat`;
 
 /**
  * Connection states for UI feedback.
@@ -29,7 +30,8 @@ export default function useChat(sessionId, { isBanked = true, onMetadata } = {})
     setConnectionState('connecting');
 
     const proto = location.protocol === 'https:' ? 'wss' : 'ws';
-    const ws = new WebSocket(`${proto}://${location.host}/api/v1/ws/chat/${sessionId}`);
+    const wsHost = API_BASE ? new URL(API_BASE).host : location.host;
+    const ws = new WebSocket(`${proto}://${wsHost}/api/v1/ws/chat/${sessionId}`);
     wsRef.current = ws;
 
     ws.onopen = () => {

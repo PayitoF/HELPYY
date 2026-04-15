@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAgent } from '../contexts/AgentContext';
 import CameraCapture from './CameraCapture';
 
-const API_BASE = '/api/v1/onboarding';
+const API_ROOT = import.meta.env.VITE_API_URL || '';
+const API_BASE = `${API_ROOT}/api/v1/onboarding`;
 
 const INCOME_OPTIONS = [
   { label: 'Menos de $500.000', value: 300000 },
