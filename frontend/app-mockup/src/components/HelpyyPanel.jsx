@@ -82,12 +82,22 @@ export default function HelpyyPanel({ onClose }) {
         setMissions(data.missions || []);
         setLoanFlow(null);
         const reasons = (data.rejection_reasons || []).join(', ') || 'tu perfil aún no cumple los requisitos';
+        const amt = formData.requested_amount ? `$${(formData.requested_amount).toLocaleString('es-CO')}` : 'el monto solicitado';
         setMessages((prev) => [...prev, {
           role: 'assistant',
           agent: 'credit_evaluator',
-          content: `Revisamos tu solicitud y por ahora aún no calificas para el microcrédito. ${reasons.charAt(0).toUpperCase() + reasons.slice(1)}.\n\nPero no te preocupes — te hemos creado un plan personalizado con ${(data.missions || []).length} misiones concretas que te ayudarán a mejorar tu perfil crediticio. Revisa la pestaña "Mi Progreso" para ver tus misiones.\n\nSi quieres, también puedes hablar con nuestro asesor financiero, un agente especializado que te guiará paso a paso para cumplir estas metas y calificar al crédito.`,
+          content: `Revisamos tu solicitud de ${amt} y por ahora aún no calificas para el microcrédito 😔\n\n📋 **Razones:** ${reasons}.\n\nPero no te preocupes — te creamos un plan con ${(data.missions || []).length} misiones concretas para mejorar tu perfil. Revisa "Mi Progreso" para empezar 🎯\n\n¿Quieres que nuestro asesor financiero te guíe paso a paso para cumplir estas metas?`,
           suggestedActions: [],
-          metadata: { show_advisor_prompt: true, user_data: formData },
+          metadata: {
+            show_advisor_prompt: true,
+            user_data: {
+              ...formData,
+              p_default: data.p_default,
+              score_band: data.score_band,
+              rejection_reasons: data.rejection_reasons,
+              improvement_factors: data.improvement_factors,
+            },
+          },
         }]);
         setActiveTab('progreso');
       }
@@ -238,17 +248,19 @@ export default function HelpyyPanel({ onClose }) {
                         <button
                           onClick={() => {
                             setActiveTab('chat');
-                            sendMessage('Quiero hablar con el asesor financiero para mejorar mi perfil');
+                            const ud = msg.metadata.user_data || {};
+                            const ctx = `Quiero hablar con el asesor financiero. Mis datos: ingreso $${(ud.declared_income||0).toLocaleString('es-CO')}, ${ud.employment_type||'informal'}, ${ud.age||''} años, ${ud.city_type||'urbano'}, ocupación: ${ud.occupation||''}. Pedí $${(ud.requested_amount||0).toLocaleString('es-CO')} de crédito pero no califiqué. Razones: ${(ud.rejection_reasons||[]).join(', ')}. Ayúdame a mejorar.`;
+                            sendMessage(ctx);
                           }}
                           className="flex-1 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-all"
                         >
-                          Sí, quiero un asesor
+                          Sí, quiero un asesor 💬
                         </button>
                         <button
                           onClick={() => setActiveTab('progreso')}
                           className="flex-1 py-2.5 rounded-xl border border-gray-300 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all"
                         >
-                          Ver mis misiones
+                          Ver mis misiones 📋
                         </button>
                       </div>
                     )}

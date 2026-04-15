@@ -4,6 +4,9 @@ import { motion } from 'framer-motion';
 const INCOME_STEPS = [0, 200000, 400000, 600000, 800000, 1000000, 1500000, 2000000, 3000000, 5000000, 7000000, 10000000];
 const formatCOP = (v) => v >= 10000000 ? '$10M+' : v >= 1000000 ? `$${(v / 1000000).toFixed(1)}M` : `$${(v / 1000).toFixed(0)}K`;
 
+const AMOUNT_STEPS = [100000, 200000, 300000, 500000, 750000, 1000000, 1500000, 2000000];
+const formatCOPShort = (v) => v >= 1000000 ? `$${(v / 1000000).toFixed(1)}M` : `$${(v / 1000).toFixed(0)}K`;
+
 const OCCUPATIONS = ['Vendedor ambulante', 'Trabajador doméstico', 'Conductor', 'Comerciante', 'Peluquero/a', 'Cocinero/a', 'Otro'];
 const PURPOSES = ['Capital de trabajo', 'Emergencia', 'Educación', 'Mejora de vivienda', 'Compra de inventario'];
 
@@ -12,6 +15,7 @@ const labelCls = 'text-xs font-semibold text-gray-500';
 
 export default function LoanApplicationForm({ onSubmit, onCancel }) {
   const [incomeIdx, setIncomeIdx] = useState(5);
+  const [amountIdx, setAmountIdx] = useState(3);
   const [form, setForm] = useState({
     employment_type: '', age: '', city_type: '',
     occupation: '', other_occupation: '', dependents: '0',
@@ -20,6 +24,7 @@ export default function LoanApplicationForm({ onSubmit, onCancel }) {
 
   const set = (k, v) => setForm((p) => ({ ...p, [k]: v }));
   const income = INCOME_STEPS[incomeIdx];
+  const requestedAmount = AMOUNT_STEPS[amountIdx];
 
   const valid = income > 0 && form.employment_type && form.age >= 18 && form.city_type
     && (form.occupation && (form.occupation !== 'Otro' || form.other_occupation)) && form.purpose;
@@ -29,6 +34,7 @@ export default function LoanApplicationForm({ onSubmit, onCancel }) {
     const occ = form.occupation === 'Otro' ? form.other_occupation : form.occupation;
     onSubmit({
       declared_income: income >= 10000000 ? 10000000 : income,
+      requested_amount: requestedAmount,
       employment_type: form.employment_type === 'Independiente' ? 'independent' : form.employment_type.toLowerCase(),
       age: Number(form.age),
       city_type: form.city_type === 'Urbana' ? 'urban' : 'rural',
@@ -52,6 +58,15 @@ export default function LoanApplicationForm({ onSubmit, onCancel }) {
           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
         <div className="flex justify-between text-[10px] text-gray-400">
           <span>$0</span><span>$2M</span><span>$5M</span><span>$10M+</span>
+        </div>
+
+        {/* Requested amount slider */}
+        <label className={labelCls}>¿Cuánto necesitas? <span className="text-blue-700 font-bold">{formatCOPShort(requestedAmount)}</span></label>
+        <input type="range" min={0} max={AMOUNT_STEPS.length - 1} value={amountIdx}
+          onChange={(e) => setAmountIdx(Number(e.target.value))}
+          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
+        <div className="flex justify-between text-[10px] text-gray-400">
+          <span>$100K</span><span>$500K</span><span>$1M</span><span>$2M</span>
         </div>
 
         <label className={labelCls}>Tipo de empleo</label>
