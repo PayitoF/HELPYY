@@ -81,15 +81,14 @@ export default function HelpyyPanel({ onClose }) {
       } else {
         setMissions(data.missions || []);
         setLoanFlow(null);
-        // Add rejection message to chat
         const reasons = (data.rejection_reasons || []).join(', ') || 'tu perfil aún no cumple los requisitos';
         setMessages((prev) => [...prev, {
           role: 'assistant',
           agent: 'credit_evaluator',
-          content: `Revisamos tu solicitud y por ahora aún no calificas para el microcrédito. ${reasons.charAt(0).toUpperCase() + reasons.slice(1)}.\n\nPero no te preocupes — te hemos creado un plan personalizado con misiones que te ayudarán a mejorar tu perfil. Revisa la pestaña "Mi Progreso" para ver tus misiones. ¡Cada paso cuenta!`,
-          suggestedActions: ['Ver mi plan de mejora'],
+          content: `Revisamos tu solicitud y por ahora aún no calificas para el microcrédito. ${reasons.charAt(0).toUpperCase() + reasons.slice(1)}.\n\nPero no te preocupes — te hemos creado un plan personalizado con ${(data.missions || []).length} misiones concretas que te ayudarán a mejorar tu perfil crediticio. Revisa la pestaña "Mi Progreso" para ver tus misiones.\n\nSi quieres, también puedes hablar con nuestro asesor financiero, un agente especializado que te guiará paso a paso para cumplir estas metas y calificar al crédito.`,
+          suggestedActions: [],
+          metadata: { show_advisor_prompt: true, user_data: formData },
         }]);
-        // Switch to progress tab
         setActiveTab('progreso');
       }
     } catch {
@@ -233,6 +232,25 @@ export default function HelpyyPanel({ onClose }) {
                       >
                         📋 Completar solicitud de crédito
                       </button>
+                    )}
+                    {msg.metadata?.show_advisor_prompt && (
+                      <div className="mt-3 flex gap-2">
+                        <button
+                          onClick={() => {
+                            setActiveTab('chat');
+                            sendMessage('Quiero hablar con el asesor financiero para mejorar mi perfil');
+                          }}
+                          className="flex-1 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-all"
+                        >
+                          Sí, quiero un asesor
+                        </button>
+                        <button
+                          onClick={() => setActiveTab('progreso')}
+                          className="flex-1 py-2.5 rounded-xl border border-gray-300 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all"
+                        >
+                          Ver mis misiones
+                        </button>
+                      </div>
                     )}
                   </>
                 )}

@@ -69,27 +69,27 @@ def compute_level(total_points: int) -> dict:
 # {occupation} is replaced at plan-build time with the user's actual occupation.
 
 MISSION_CATALOG: list[dict] = [
-    # --- on_time_rate missions (most impactful factor, weight 2.6) ---
+    # --- on_time_rate missions (most impactful factor) ---
     {
         "id_prefix": "deposit_constant",
         "factor": "on_time_rate",
         "points": 15,
-        "title": "Depósito Constante",
-        "description": "Deposita en tu cuenta al menos {deposit_count} veces esta semana. "
+        "title": "Deposita $50.000 esta semana",
+        "description": "Haz al menos un depósito de $50.000 o más en tu cuenta BBVA esta semana. "
                        "{occupation_tip}",
-        "criteria": "deposit_count >= {deposit_count} en 7 días",
+        "criteria": "1 depósito >= $50.000 en 7 días",
         "weeks": 1,
         "difficulty": "easy",
-        "deposit_count": 3,
+        "deposit_count": 1,
     },
     {
         "id_prefix": "salary_registered",
         "factor": "on_time_rate",
         "points": 25,
-        "title": "Ingreso Registrado",
-        "description": "Recibe tu pago o ingreso principal directamente en tu cuenta BBVA. "
+        "title": "Recibe tu ingreso en la cuenta",
+        "description": "Recibe al menos un pago o ingreso directamente en tu cuenta BBVA. "
                        "{occupation_tip}",
-        "criteria": "ingreso >= 80% del ingreso declarado recibido en cuenta",
+        "criteria": "1 ingreso recibido en cuenta en 14 días",
         "weeks": 2,
         "difficulty": "medium",
     },
@@ -97,34 +97,33 @@ MISSION_CATALOG: list[dict] = [
         "id_prefix": "on_time_payment",
         "factor": "on_time_rate",
         "points": 30,
-        "title": "Pago Puntual",
-        "description": "Paga todas tus obligaciones antes de la fecha de vencimiento "
-                       "durante {weeks} semanas consecutivas.",
-        "criteria": "0 pagos vencidos durante el periodo",
-        "weeks": 3,
-        "difficulty": "medium",
+        "title": "Paga un servicio a tiempo",
+        "description": "Paga un recibo de servicio (agua, luz, gas o celular) "
+                       "antes de la fecha de vencimiento desde la app.",
+        "criteria": "1 pago de servicio a tiempo",
+        "weeks": 1,
+        "difficulty": "easy",
     },
-    # --- overdue_rate missions (weight 1.9) ---
+    # --- overdue_rate missions ---
     {
         "id_prefix": "zero_overdue",
         "factor": "overdue_rate",
         "points": 35,
-        "title": "Cero Atrasos",
-        "description": "Mantén cero pagos en mora durante {weeks} semanas. "
-                       "Si tienes pagos atrasados, ponte al día primero.",
-        "criteria": "overdue_count == 0 durante {weeks} semanas",
-        "weeks": 4,
-        "difficulty": "hard",
+        "title": "Mantén tus pagos al día por 2 semanas",
+        "description": "No tengas ningún pago vencido durante 2 semanas seguidas. "
+                       "Si tienes algo pendiente, ponte al día primero.",
+        "criteria": "0 pagos vencidos durante 14 días",
+        "weeks": 2,
+        "difficulty": "medium",
     },
-    # --- pct_conversion / digital engagement missions (weight 1.0) ---
+    # --- pct_conversion / digital engagement missions ---
     {
         "id_prefix": "digital_explorer",
         "factor": "pct_conversion",
         "points": 10,
-        "title": "Explorador Digital",
-        "description": "Usa la app BBVA al menos 3 veces esta semana: consulta tu saldo, "
-                       "haz una transferencia, paga un servicio.",
-        "criteria": "sessions >= 3 en 7 días con al menos 1 transacción",
+        "title": "Consulta tu saldo 3 veces",
+        "description": "Abre la app BBVA y consulta tu saldo al menos 3 veces esta semana.",
+        "criteria": "3 consultas de saldo en 7 días",
         "weeks": 1,
         "difficulty": "easy",
     },
@@ -132,32 +131,32 @@ MISSION_CATALOG: list[dict] = [
         "id_prefix": "payment_digital",
         "factor": "pct_conversion",
         "points": 15,
-        "title": "Pago Digital",
-        "description": "Haz al menos 2 pagos de servicios (agua, luz, gas, celular) "
-                       "a través de la app BBVA.",
-        "criteria": "bill_payments >= 2 en 14 días via app",
-        "weeks": 2,
+        "title": "Paga un servicio desde la app",
+        "description": "Haz un pago de servicio público (agua, luz, gas o celular) "
+                       "directamente desde la app BBVA.",
+        "criteria": "1 pago de servicio via app",
+        "weeks": 1,
         "difficulty": "easy",
     },
-    # --- is_banked / balance missions (weight 0.2 but visible to user) ---
+    # --- is_banked / balance missions ---
     {
         "id_prefix": "safety_cushion",
         "factor": "is_banked",
         "points": 25,
-        "title": "Colchón de Seguridad",
-        "description": "Mantén un saldo mayor a $200.000 en tu cuenta durante {weeks} semanas.",
-        "criteria": "saldo_minimo_diario >= 200000 durante {weeks} semanas",
-        "weeks": 2,
+        "title": "Mantén $200.000 en tu cuenta por 1 semana",
+        "description": "Deposita y mantén un saldo de al menos $200.000 durante 7 días.",
+        "criteria": "saldo >= $200.000 durante 7 días",
+        "weeks": 1,
         "difficulty": "medium",
     },
     {
         "id_prefix": "savings_habit",
         "factor": "is_banked",
         "points": 40,
-        "title": "Hábito de Ahorro",
-        "description": "Separa al menos el 10% de cada ingreso en tu cuenta de ahorro "
-                       "durante {weeks} semanas.",
-        "criteria": "ahorro >= 10% de ingresos durante {weeks} semanas",
+        "title": "Ahorra el 10% de tu ingreso este mes",
+        "description": "Separa al menos el 10% de tu próximo ingreso y déjalo en tu cuenta "
+                       "de ahorro sin tocarlo durante 2 semanas.",
+        "criteria": "ahorro >= 10% de ingreso durante 14 días",
         "weeks": 4,
         "difficulty": "hard",
     },
