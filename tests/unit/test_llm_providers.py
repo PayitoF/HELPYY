@@ -225,9 +225,9 @@ class TestBedrockGenerate:
 
     @pytest.mark.asyncio
     async def test_returns_content(self):
-        with patch("boto3.client") as mock_boto:
+        with patch("boto3.Session") as mock_session:
             mock_client = MagicMock()
-            mock_boto.return_value = mock_client
+            mock_session.return_value.client.return_value = mock_client
             mock_client.converse.return_value = {
                 "output": {
                     "message": {
@@ -242,9 +242,9 @@ class TestBedrockGenerate:
 
     @pytest.mark.asyncio
     async def test_sends_system_separately(self):
-        with patch("boto3.client") as mock_boto:
+        with patch("boto3.Session") as mock_session:
             mock_client = MagicMock()
-            mock_boto.return_value = mock_client
+            mock_session.return_value.client.return_value = mock_client
             mock_client.converse.return_value = {
                 "output": {"message": {"role": "assistant", "content": [{"text": "ok"}]}}
             }
@@ -263,9 +263,9 @@ class TestBedrockGenerate:
     async def test_retries_on_throttle(self):
         from botocore.exceptions import ClientError
 
-        with patch("boto3.client") as mock_boto:
+        with patch("boto3.Session") as mock_session:
             mock_client = MagicMock()
-            mock_boto.return_value = mock_client
+            mock_session.return_value.client.return_value = mock_client
 
             call_count = 0
 
@@ -294,9 +294,9 @@ class TestBedrockGenerate:
     async def test_raises_non_throttle_errors(self):
         from botocore.exceptions import ClientError
 
-        with patch("boto3.client") as mock_boto:
+        with patch("boto3.Session") as mock_session:
             mock_client = MagicMock()
-            mock_boto.return_value = mock_client
+            mock_session.return_value.client.return_value = mock_client
             mock_client.converse.side_effect = ClientError(
                 {"Error": {"Code": "ValidationException", "Message": "bad request"}},
                 "Converse",
@@ -311,9 +311,9 @@ class TestBedrockStream:
 
     @pytest.mark.asyncio
     async def test_yields_tokens(self):
-        with patch("boto3.client") as mock_boto:
+        with patch("boto3.Session") as mock_session:
             mock_client = MagicMock()
-            mock_boto.return_value = mock_client
+            mock_session.return_value.client.return_value = mock_client
             mock_client.converse_stream.return_value = {
                 "stream": [
                     {"contentBlockDelta": {"delta": {"text": "Hola"}}},
@@ -334,9 +334,9 @@ class TestBedrockToolCalling:
 
     @pytest.mark.asyncio
     async def test_tool_use_response(self):
-        with patch("boto3.client") as mock_boto:
+        with patch("boto3.Session") as mock_session:
             mock_client = MagicMock()
-            mock_boto.return_value = mock_client
+            mock_session.return_value.client.return_value = mock_client
             mock_client.converse.return_value = {
                 "output": {
                     "message": {
@@ -362,9 +362,9 @@ class TestBedrockToolCalling:
 
     @pytest.mark.asyncio
     async def test_text_response_when_no_tool(self):
-        with patch("boto3.client") as mock_boto:
+        with patch("boto3.Session") as mock_session:
             mock_client = MagicMock()
-            mock_boto.return_value = mock_client
+            mock_session.return_value.client.return_value = mock_client
             mock_client.converse.return_value = {
                 "output": {
                     "message": {
@@ -381,9 +381,9 @@ class TestBedrockToolCalling:
 
     @pytest.mark.asyncio
     async def test_tools_sent_in_payload(self):
-        with patch("boto3.client") as mock_boto:
+        with patch("boto3.Session") as mock_session:
             mock_client = MagicMock()
-            mock_boto.return_value = mock_client
+            mock_session.return_value.client.return_value = mock_client
             mock_client.converse.return_value = {
                 "output": {"message": {"role": "assistant", "content": [{"text": "ok"}]}}
             }
@@ -412,7 +412,7 @@ class TestConfig:
             assert isinstance(p, OllamaProvider)
 
     def test_bedrock_returns_bedrock(self):
-        with patch("boto3.client"):
+        with patch("boto3.Session"):
             with patch.dict("os.environ", {"LLM_PROVIDER": "bedrock"}):
                 from backend.llm.config import get_llm_provider
 

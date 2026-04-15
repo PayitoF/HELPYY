@@ -7,6 +7,22 @@ setup:
 dev:
 	@./scripts/run_local.sh
 
+dev-local:
+	@echo "Starting backend API on :8000..."
+	@uvicorn backend.api.main:app --host 0.0.0.0 --port 8000 --reload &
+	@echo "Starting ML mock on :8001..."
+	@uvicorn backend.ml_client.mock_server:app --host 0.0.0.0 --port 8001 --reload &
+	@echo "Starting frontend on :5173..."
+	@cd frontend/app-mockup && npm run dev &
+	@echo ""
+	@echo "Helpyy Hand (local, no Ollama):"
+	@echo "  Frontend:  http://localhost:5173"
+	@echo "  API docs:  http://localhost:8000/docs"
+	@echo "  ML Mock:   http://localhost:8001/docs"
+	@echo ""
+	@echo "To stop: kill %1 %2 %3"
+	@wait
+
 test:
 	pytest tests/ -v --cov=backend
 
