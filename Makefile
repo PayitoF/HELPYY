@@ -10,8 +10,8 @@ dev:
 dev-local:
 	@echo "Starting backend API on :8000..."
 	@uvicorn backend.api.main:app --host 0.0.0.0 --port 8000 --reload &
-	@echo "Starting ML mock on :8001..."
-	@uvicorn backend.ml_client.mock_server:app --host 0.0.0.0 --port 8001 --reload &
+	@echo "Starting ML API (real model) on :8001..."
+	@cd MLRepo && MODEL_PATH=models/logistic_regression/selected/runs/2026-04-15_115456/model.pkl MODEL_LOGS_PATH=models/logistic_regression/selected/runs/2026-04-15_115456/model_logs.json SELECTED_FEATURES_PATH=models/logistic_regression/selected/runs/2026-04-15_115456/selected_features.json uvicorn src.api.app:app --host 0.0.0.0 --port 8001 --reload &
 	@echo "Starting frontend on :5173..."
 	@cd frontend/app-mockup && npm run dev &
 	@echo "Starting web widget on :3000..."
@@ -21,7 +21,7 @@ dev-local:
 	@echo "  App mobile:  http://localhost:5173"
 	@echo "  Web widget:  http://localhost:3000"
 	@echo "  API docs:    http://localhost:8000/docs"
-	@echo "  ML Mock:     http://localhost:8001/docs"
+	@echo "  ML API:      http://localhost:8001/docs (real model)"
 	@echo ""
 	@wait
 

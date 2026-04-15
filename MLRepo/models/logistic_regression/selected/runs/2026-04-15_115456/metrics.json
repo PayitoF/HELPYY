@@ -1,0 +1,11 @@
+{
+  "model_name": "logistic_regression",
+  "training_mode": "selected",
+  "metrics": {
+    "accuracy": 0.6775,
+    "precision": 0.844,
+    "recall": 0.7009966777408638,
+    "f1": 0.7658802177858439,
+    "roc_auc": 0.6911976911976911
+  }
+}
