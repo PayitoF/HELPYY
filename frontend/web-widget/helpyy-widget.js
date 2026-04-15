@@ -452,7 +452,7 @@
   }
 
   function spawnConfetti(container) {
-    var colors = ['#00a870', '#00897b', '#fbbf24', '#ef4444', '#3b82f6', '#8b5cf6'];
+    var colors = ['#0727b5', '#1a3fd1', '#fbbf24', '#ef4444', '#3b82f6', '#8b5cf6'];
     for (var i = 0; i < 30; i++) {
       var dot = document.createElement('i');
       var angle = (Math.random() * 360) * Math.PI / 180;
@@ -802,7 +802,7 @@
   }
 
   function spawnFormConfetti(container) {
-    var colors = ['#00a870', '#00897b', '#fbbf24', '#ef4444', '#3b82f6', '#a78bfa'];
+    var colors = ['#0727b5', '#1a3fd1', '#fbbf24', '#ef4444', '#3b82f6', '#a78bfa'];
     for (var i = 0; i < 22; i++) {
       var dot = document.createElement('i');
       dot.className = 'hw-form-confetti-dot';
@@ -843,10 +843,10 @@
           '<rect x="44" y="156" width="312" height="196" rx="14" fill="black"/></mask></defs>' +
           '<rect width="400" height="500" fill="rgba(0,0,0,0.58)" mask="url(#hw-cg-mask)"/>' +
           '<rect x="44" y="156" width="312" height="196" rx="14" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.5"/>' +
-          '<path d="M44,178 L44,156 L66,156" fill="none" stroke="#00a870" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>' +
-          '<path d="M334,156 L356,156 L356,178" fill="none" stroke="#00a870" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>' +
-          '<path d="M356,330 L356,352 L334,352" fill="none" stroke="#00a870" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>' +
-          '<path d="M66,352 L44,352 L44,330" fill="none" stroke="#00a870" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+          '<path d="M44,178 L44,156 L66,156" fill="none" stroke="#0727b5" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+          '<path d="M334,156 L356,156 L356,178" fill="none" stroke="#0727b5" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+          '<path d="M356,330 L356,352 L334,352" fill="none" stroke="#0727b5" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+          '<path d="M66,352 L44,352 L44,330" fill="none" stroke="#0727b5" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>' +
           '<text x="200" y="134" text-anchor="middle" fill="rgba(255,255,255,0.88)" font-size="13.5" font-family="sans-serif" font-weight="600">' +
             (stepType === 'id_front' ? 'Alinea el frente de tu cédula' : 'Alinea el reverso de tu cédula') +
           '</text>' +

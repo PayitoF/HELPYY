@@ -311,10 +311,10 @@ export default function BankDashboard() {
                     className="flex flex-col items-center gap-2 flex-1"
                   >
                     <div className="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md"
-                      style={{ background: 'linear-gradient(135deg, #00a870, #007a52)' }}>
+                      style={{ background: 'linear-gradient(135deg, #0727b5, #051d8a)' }}>
                       {Icons.helpyy}
                     </div>
-                    <span className="text-[10px] text-center font-semibold leading-tight" style={{ color: '#00a870' }}>
+                    <span className="text-[10px] text-center font-semibold leading-tight" style={{ color: '#0727b5' }}>
                       Helpyy
                     </span>
                   </motion.button>
@@ -408,7 +408,7 @@ export default function BankDashboard() {
                   >
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-6 h-6 rounded-full flex items-center justify-center"
-                        style={{ background: '#00a870' }}>
+                        style={{ background: '#0727b5' }}>
                         <svg className="w-3 h-3 text-white" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" />
                         </svg>
@@ -421,7 +421,7 @@ export default function BankDashboard() {
                         animate={{ width: '65%' }}
                         transition={{ duration: 1, delay: 0.5 }}
                         className="h-full rounded-full"
-                        style={{ background: '#00a870' }}
+                        style={{ background: '#0727b5' }}
                       />
                     </div>
                     <div className="flex justify-between text-xs" style={{ color: '#059669' }}>
