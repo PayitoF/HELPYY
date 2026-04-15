@@ -218,6 +218,18 @@ class CreditEvaluatorAgent(BaseAgent):
                 "max_amount": max_amount,
                 "product": product,
                 "options": options,
+                "contract_template": {
+                    "max_amount": max_amount,
+                    "options": options,
+                    "monthly_rate": MONTHLY_RATE_DEFAULT,
+                    "conditions": [
+                        "Tasa efectiva anual: ~34.5%",
+                        "Sin codeudor requerido para montos hasta $500.000",
+                        "Desembolso en 24 horas hábiles",
+                        "Pago mensual por débito automático o en sucursal",
+                        "Seguro de vida incluido sin costo adicional",
+                    ],
+                },
             },
         )
 
@@ -257,6 +269,15 @@ class CreditEvaluatorAgent(BaseAgent):
                 "eligible": False,
                 "rejection_factors": factor_names,
                 "factors_detail": negative_factors,
+                "improvement_factors": [
+                    {
+                        "factor_name": f.get("name", ""),
+                        "current_value": 0,
+                        "target_value": 1.0,
+                        "potential_reduction": 0.05,
+                    }
+                    for f in negative_factors
+                ],
             },
         )
 

@@ -648,6 +648,10 @@ class FinancialAdvisorAgent(BaseAgent):
         # Factors may come from credit evaluator handoff or direct context
         factors = context.get("improvement_factors", [])
         if not factors:
+            # Check metadata from credit evaluator handoff
+            metadata = context.get("metadata", {})
+            factors = metadata.get("improvement_factors", [])
+        if not factors:
             # Try to derive from rejection factors
             rejection = context.get("rejection_factors", [])
             if rejection:
@@ -657,6 +661,10 @@ class FinancialAdvisorAgent(BaseAgent):
                     for name in rejection
                 ]
         return factors
+
+    def generate_missions_for_rejection(self, factors: list[dict], occupation: str = "default") -> list[dict]:
+        """Generate missions from ML factors. Called by scoring endpoint."""
+        return build_plan(factors, occupation=occupation)
 
     @staticmethod
     def _progress_actions(in_progress: list, pending: list) -> list[str]:

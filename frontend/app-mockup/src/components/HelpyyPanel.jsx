@@ -2,6 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAgent } from '../contexts/AgentContext';
 import AgentBadge from './AgentBadge';
+import LoanApplicationForm from './LoanApplicationForm';
+import LoanOfferCard from './LoanOfferCard';
+import LoanContract from './LoanContract';
+
+const API_ROOT = import.meta.env.VITE_API_URL || '';
 
 function getGreeting(name) {
   const displayName = name ? name.split(' ')[0] : null;
@@ -33,6 +38,7 @@ export default function HelpyyPanel({ onClose }) {
     connectionState,
     userProfile,
     isBanked,
+    sessionId,
   } = useAgent();
 
   const greeting = getGreeting(userProfile?.name);
@@ -43,6 +49,11 @@ export default function HelpyyPanel({ onClose }) {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
+  // Loan flow state
+  const [loanFlow, setLoanFlow] = useState(null);
+  const [loanData, setLoanData] = useState(null);
+  const [missions, setMissions] = useState([]);
+
   useEffect(() => {
     connect();
   }, [connect]);
@@ -50,6 +61,51 @@ export default function HelpyyPanel({ onClose }) {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isStreaming]);
+
+  // Detect show_loan_form metadata from backend
+  useEffect(() => {
+    const last = messages[messages.length - 1];
+    if (last?.metadata?.show_loan_form && loanFlow === null) {
+      setLoanFlow('form');
+    }
+  }, [messages]);
+
+  async function handleLoanSubmit(formData) {
+    try {
+      const resp = await fetch(`${API_ROOT}/api/v1/scoring/evaluate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId, ...formData }),
+      });
+      const data = await resp.json();
+      if (data.eligible) {
+        setLoanData(data);
+        setLoanFlow('offer');
+      } else {
+        setMissions(data.missions || []);
+        setLoanFlow(null);
+      }
+    } catch {
+      setLoanFlow(null);
+    }
+  }
+
+  function handleSelectOption(option) {
+    setLoanData((prev) => ({ ...prev, selectedOption: option }));
+    setLoanFlow('contract');
+  }
+
+  async function handleAcceptLoan(option) {
+    try {
+      await fetch(`${API_ROOT}/api/v1/scoring/accept-loan`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId, loan_option: option }),
+      });
+    } catch { /* PoC — ignore */ }
+    setLoanFlow('success');
+    setTimeout(() => setLoanFlow(null), 5000);
+  }
 
   function handleSend(text) {
     const msg = (text || input).trim();
@@ -107,7 +163,7 @@ export default function HelpyyPanel({ onClose }) {
 
         {/* Tabs */}
         <div className="flex gap-1 mt-3 bg-white/10 rounded-lg p-0.5">
-          {['chat', 'progreso'].map((tab) => (
+          {['chat', ...(missions.length > 0 ? ['progreso'] : [])].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -185,6 +241,44 @@ export default function HelpyyPanel({ onClose }) {
             <div ref={messagesEndRef} />
           </div>
 
+          {/* ─── Loan Flow Overlay ─── */}
+          <AnimatePresence>
+            {loanFlow === 'form' && (
+              <div className="flex-shrink-0 px-4 py-2">
+                <LoanApplicationForm onSubmit={handleLoanSubmit} onCancel={() => setLoanFlow(null)} />
+              </div>
+            )}
+            {loanFlow === 'offer' && loanData && (
+              <div className="flex-shrink-0 px-4 py-2">
+                <LoanOfferCard
+                  maxAmount={loanData.max_amount}
+                  options={loanData.options || []}
+                  onSelectOption={handleSelectOption}
+                  onCancel={() => setLoanFlow(null)}
+                />
+              </div>
+            )}
+            {loanFlow === 'contract' && loanData?.selectedOption && (
+              <div className="flex-shrink-0 px-4 py-2">
+                <LoanContract
+                  loanOption={loanData.selectedOption}
+                  conditions={loanData.contract_template?.conditions || loanData.conditions || []}
+                  onAccept={handleAcceptLoan}
+                  onCancel={() => setLoanFlow('offer')}
+                />
+              </div>
+            )}
+            {loanFlow === 'success' && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                className="flex-shrink-0 px-4 py-2">
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-md p-6 text-center">
+                  <p className="text-3xl">✅</p>
+                  <p className="text-sm font-bold text-blue-800 mt-2">¡Crédito aprobado exitosamente!</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           {/* ─── Input Bar ─── */}
           <div className="flex-shrink-0 bg-white border-t border-gray-100 px-4 py-3 flex items-end gap-2">
             <textarea
@@ -215,7 +309,7 @@ export default function HelpyyPanel({ onClose }) {
       )}
 
       {/* ─── Progress Tab ─── */}
-      {activeTab === 'progreso' && <ProgressTab />}
+      {activeTab === 'progreso' && <ProgressTab missions={missions} />}
     </div>
   );
 }
@@ -281,18 +375,18 @@ function TypingDots() {
   );
 }
 
-function ProgressTab() {
-  const missions = [
-    { title: 'Deposita tus ingresos semanales', points: 15, done: true, factor: 'Ingresos' },
-    { title: 'Manten saldo > $200.000 por 2 semanas', points: 25, done: true, factor: 'Estabilidad' },
-    { title: 'Paga un servicio desde la app', points: 10, done: false, factor: 'Actividad' },
-    { title: 'Completa tu perfil financiero', points: 20, done: false, factor: 'Perfil' },
-    { title: 'Ahorra $50.000 este mes', points: 30, done: false, factor: 'Ahorro' },
-  ];
+function ProgressTab({ missions = [] }) {
+  if (missions.length === 0) {
+    return (
+      <div className="flex-1 flex items-center justify-center px-6">
+        <p className="text-sm text-gray-400 text-center">No tienes misiones activas. Solicita un préstamo para activar tu plan de mejora.</p>
+      </div>
+    );
+  }
 
-  const earned = missions.filter((m) => m.done).reduce((s, m) => s + m.points, 0);
-  const total = missions.reduce((s, m) => s + m.points, 0);
-  const level = earned >= 100 ? 'Disciplinado' : earned >= 50 ? 'Aprendiz' : 'Principiante';
+  const earned = missions.filter((m) => m.status === 'completed').reduce((s, m) => s + (m.points || 0), 0);
+  const total = missions.reduce((s, m) => s + (m.points || 0), 0);
+  const level = earned >= 300 ? 'Experto' : earned >= 150 ? 'Disciplinado' : earned >= 50 ? 'Aprendiz' : 'Principiante';
 
   return (
     <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
@@ -325,13 +419,13 @@ function ProgressTab() {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.08 }}
-            className={`bg-white rounded-xl p-4 border ${m.done ? 'border-blue-200' : 'border-gray-100'} shadow-sm`}
+            className={`bg-white rounded-xl p-4 border ${m.status === 'completed' ? 'border-blue-200' : 'border-gray-100'} shadow-sm`}
           >
             <div className="flex items-start gap-3">
               <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                m.done ? 'bg-blue-600' : 'bg-gray-200'
+                m.status === 'completed' ? 'bg-blue-600' : 'bg-gray-200'
               }`}>
-                {m.done ? (
+                {m.status === 'completed' ? (
                   <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                   </svg>
@@ -340,7 +434,7 @@ function ProgressTab() {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className={`text-sm font-medium ${m.done ? 'text-blue-800 line-through' : 'text-gray-800'}`}>
+                <p className={`text-sm font-medium ${m.status === 'completed' ? 'text-blue-800 line-through' : 'text-gray-800'}`}>
                   {m.title}
                 </p>
                 <div className="flex items-center gap-2 mt-1">
