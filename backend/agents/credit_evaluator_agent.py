@@ -160,18 +160,25 @@ class CreditEvaluatorAgent(BaseAgent):
     # ------------------------------------------------------------------
 
     async def process(self, message: str, context: dict, *, original_message: str | None = None) -> AgentResponse:
-        # If we already have a prediction in context, use it directly
+        # If we already have a prediction (from /scoring/evaluate), present result
         prediction = context.get("prediction_result")
 
-        if prediction is None:
-            # Call ML service
-            prediction = await self._get_prediction(context)
-            context["prediction_result"] = prediction
+        if prediction is not None:
+            if prediction.get("eligible"):
+                return await self._handle_approved(message, context, prediction)
+            else:
+                return await self._handle_rejected(message, context, prediction)
 
-        if prediction.get("eligible"):
-            return await self._handle_approved(message, context, prediction)
-        else:
-            return await self._handle_rejected(message, context, prediction)
+        # No prediction yet — ask user to fill the loan form
+        return AgentResponse(
+            content="¡Claro! Para evaluar tu solicitud de microcrédito necesito "
+                    "algunos datos. Completa el formulario que te aparece a continuación "
+                    "y en segundos te doy una respuesta.",
+            agent_name=self.name,
+            agent_type="evaluator",
+            suggested_actions=[],
+            metadata={"show_loan_form": True},
+        )
 
     async def process_stream(self, message: str, context: dict, *, original_message: str | None = None):
         response = await self.process(message, context, original_message=original_message)
@@ -218,6 +225,18 @@ class CreditEvaluatorAgent(BaseAgent):
                 "max_amount": max_amount,
                 "product": product,
                 "options": options,
+                "contract_template": {
+                    "max_amount": max_amount,
+                    "options": options,
+                    "monthly_rate": MONTHLY_RATE_DEFAULT,
+                    "conditions": [
+                        "Tasa efectiva anual: ~34.5%",
+                        "Sin codeudor requerido para montos hasta $500.000",
+                        "Desembolso en 24 horas hábiles",
+                        "Pago mensual por débito automático o en sucursal",
+                        "Seguro de vida incluido sin costo adicional",
+                    ],
+                },
             },
         )
 
@@ -251,12 +270,21 @@ class CreditEvaluatorAgent(BaseAgent):
             content=content,
             agent_name=self.name,
             agent_type="evaluator",
-            handoff_to="financial_advisor",
-            suggested_actions=["Ver plan de mejora", "Hablar con asesor financiero"],
+            handoff_to=None,
+            suggested_actions=["Ver mi plan de mejora", "Hablar con asesor financiero"],
             metadata={
                 "eligible": False,
                 "rejection_factors": factor_names,
                 "factors_detail": negative_factors,
+                "improvement_factors": [
+                    {
+                        "factor_name": f.get("name", ""),
+                        "current_value": 0,
+                        "target_value": 1.0,
+                        "potential_reduction": 0.05,
+                    }
+                    for f in negative_factors
+                ],
             },
         )
 

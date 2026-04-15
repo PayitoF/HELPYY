@@ -20,11 +20,18 @@ logging.basicConfig(
 from backend.api.routers import chat, onboarding, scoring, notifications
 from backend.api.routers import observability
 
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from backend.api.middleware.rate_limiter import limiter
+
 app = FastAPI(
     title="Helpyy Hand API",
     description="Multi-agent financial inclusion platform for BBVA Colombia",
     version="0.1.0",
 )
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # CORS
 app.add_middleware(
@@ -39,13 +46,10 @@ app.add_middleware(
 from backend.api.middleware.pii_filter import PIIFilterMiddleware
 app.add_middleware(PIIFilterMiddleware)
 
-# TODO: Add rate limiter middleware
-# TODO: Add auth middleware
-
 # Routers
 app.include_router(chat.router, prefix="/api/v1", tags=["chat"])
 app.include_router(onboarding.router, prefix="/api/v1/onboarding", tags=["onboarding"])
-app.include_router(scoring.router, prefix="/api/v1", tags=["scoring"])
+app.include_router(scoring.router, prefix="/api/v1/scoring", tags=["scoring"])
 app.include_router(notifications.router, prefix="/api/v1", tags=["notifications"])
 app.include_router(observability.router, prefix="/api/v1", tags=["observability"])
 

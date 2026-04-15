@@ -401,7 +401,7 @@ class TestAdvisorProgress:
         agent = FinancialAdvisorAgent(llm)
         ctx = {
             "plan": [
-                {"title": "Depósito Constante", "points": 15, "status": "completed",
+                {"title": "Deposita $50.000 esta semana", "points": 15, "status": "completed",
                  "progress": 1.0, "mission_id": "m1"},
                 {"title": "Colchón de Seguridad", "points": 25, "status": "pending",
                  "progress": 0.0, "mission_id": "m2"},
@@ -555,7 +555,7 @@ class TestToolHandlers:
 
         import json
         parsed = json.loads(result)
-        assert parsed["title"] == "Depósito Constante"
+        assert parsed["title"] == "Deposita $50.000 esta semana"
         assert len(ctx["plan"]) == 1
 
     @pytest.mark.asyncio

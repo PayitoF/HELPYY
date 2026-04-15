@@ -10,7 +10,7 @@ from constructs import Construct
 
 class FrontendStack(cdk.Stack):
     def __init__(self, scope: Construct, id: str, *, env_name: str,
-                 api_url: str, **kwargs):
+                 api_url: str, web_acl_arn: str | None = None, **kwargs):
         super().__init__(scope, id, **kwargs)
         r = cdk.RemovalPolicy.DESTROY
 
@@ -22,6 +22,7 @@ class FrontendStack(cdk.Stack):
         app_bucket.grant_read(app_oai)
         self.app_dist = cf.Distribution(self, "AppDist",
             comment=f"Helpyy App ({env_name})",
+            web_acl_id=web_acl_arn,
             default_behavior=cf.BehaviorOptions(
                 origin=origins.S3Origin(app_bucket, origin_access_identity=app_oai),
                 viewer_protocol_policy=cf.ViewerProtocolPolicy.REDIRECT_TO_HTTPS),
@@ -38,6 +39,7 @@ class FrontendStack(cdk.Stack):
         widget_bucket.grant_read(widget_oai)
         self.widget_dist = cf.Distribution(self, "WidgetDist",
             comment=f"Helpyy Widget ({env_name})",
+            web_acl_id=web_acl_arn,
             default_behavior=cf.BehaviorOptions(
                 origin=origins.S3Origin(widget_bucket, origin_access_identity=widget_oai),
                 viewer_protocol_policy=cf.ViewerProtocolPolicy.REDIRECT_TO_HTTPS),

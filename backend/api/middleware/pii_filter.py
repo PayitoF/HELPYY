@@ -18,7 +18,7 @@ from backend.security.audit_logger import log_pii_access
 # /api/v1/chat is handled by the chat router directly (it needs the
 # original untokenized message for OnboardingAgent data extraction).
 _SKIP_PREFIXES = ("/health", "/docs", "/openapi.json", "/redoc",
-                  "/api/v1/chat", "/api/v1/onboarding")
+                  "/api/v1/chat", "/api/v1/onboarding", "/api/v1/scoring")
 
 
 class PIIFilterMiddleware(BaseHTTPMiddleware):

@@ -31,7 +31,14 @@ def _approved_context(income: float = 2_000_000) -> dict:
     """Context where the user is eligible."""
     return {
         "user_data": {"income": income},
-        "prediction_eligible": True,
+        "prediction_result": {
+            "eligible": True,
+            "p_default": 0.15,
+            "max_amount": min(income * 2, 2_000_000),
+            "recommended_product": "micro",
+            "score_band": "low_risk",
+            "factors": [{"name": "declared_income", "impact": "positive", "weight": 0.2}],
+        },
     }
 
 
@@ -39,7 +46,17 @@ def _rejected_context(income: float = 400_000) -> dict:
     """Context where the user is NOT eligible."""
     return {
         "user_data": {"income": income},
-        "prediction_eligible": False,
+        "prediction_result": {
+            "eligible": False,
+            "p_default": 0.65,
+            "max_amount": None,
+            "recommended_product": None,
+            "score_band": "high_risk",
+            "factors": [
+                {"name": "declared_income", "impact": "negative", "weight": 0.2},
+                {"name": "on_time_rate", "impact": "negative", "weight": 0.6},
+            ],
+        },
     }
 
 
@@ -252,7 +269,7 @@ class TestRejectedFlow:
 
         response = await agent.process("quiero un crédito", ctx)
 
-        assert response.handoff_to == "financial_advisor"
+        assert response.handoff_to is None
 
     @pytest.mark.asyncio
     async def test_rejected_metadata_has_factors(self):
@@ -468,6 +485,15 @@ class TestMLClientIntegration:
 
         response = await agent.process("evaluar crédito", ctx)
 
-        ml_client.predict.assert_called_once()
-        assert response.metadata["eligible"] is True
-        assert response.metadata["max_amount"] == 1_500_000
+        # Without prediction_result in context, agent asks for loan form
+        assert response.metadata.get("show_loan_form") is True
+
+        # With prediction_result, agent uses it directly
+        ctx["prediction_result"] = {
+            "eligible": True, "max_amount": 1_500_000,
+            "recommended_product": "micro", "score_band": "low_risk",
+            "factors": [{"name": "declared_income", "impact": "positive", "weight": 0.2}],
+        }
+        response2 = await agent.process("evaluar crédito", ctx)
+        assert response2.metadata["eligible"] is True
+        assert response2.metadata["max_amount"] == 1_500_000
