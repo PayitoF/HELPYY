@@ -54,6 +54,7 @@ export default function HelpyyPanel({ onClose }) {
   const [loanFlow, setLoanFlow] = useState(null);
   const [loanData, setLoanData] = useState(null);
   const [missions, setMissions] = useState([]);
+  const [tabSparkle, setTabSparkle] = useState(false);
 
   useEffect(() => {
     connect();
@@ -116,6 +117,7 @@ export default function HelpyyPanel({ onClose }) {
         setLoanFlow('offer');
       } else {
         setMissions(data.missions || []);
+        setTabSparkle(true);
         const reasons = (data.rejection_reasons || []).join(', ') || 'tu perfil aún no cumple los requisitos';
         const amt = formData.requested_amount ? `$${(formData.requested_amount).toLocaleString('es-CO')}` : 'el monto solicitado';
         setMessages((prev) => [...prev, {
@@ -128,7 +130,7 @@ export default function HelpyyPanel({ onClose }) {
             user_data: { ...formData, p_default: data.p_default, score_band: data.score_band, rejection_reasons: data.rejection_reasons, improvement_factors: data.improvement_factors },
           },
         }]);
-        setTimeout(() => setActiveTab('progreso'), 2500);
+        // Don't auto-switch — let user click the tab
       }
     } catch {
       setLoanFlow(null);
@@ -211,14 +213,20 @@ export default function HelpyyPanel({ onClose }) {
           {['chat', ...(missions.length > 0 ? ['progreso'] : [])].map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-1.5 rounded-md text-sm font-medium transition-all ${
+              onClick={() => { setActiveTab(tab); if (tab === 'progreso') setTabSparkle(false); }}
+              className={`flex-1 py-1.5 rounded-md text-sm font-medium transition-all relative ${
                 activeTab === tab
                   ? 'bg-white text-blue-800 shadow-sm'
                   : 'text-white/70 hover:text-white'
               }`}
             >
-              {tab === 'chat' ? 'Chat' : 'Mi Progreso'}
+              {tab === 'chat' ? 'Chat' : '✨ Mi Progreso'}
+              {tab === 'progreso' && tabSparkle && (
+                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-300 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-yellow-400" />
+                </span>
+              )}
             </button>
           ))}
         </div>
