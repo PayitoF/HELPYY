@@ -8,7 +8,8 @@ so this module applies PII processing directly in the WS handler.
 import json
 import logging
 
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Request
+from backend.api.middleware.rate_limiter import limiter
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
@@ -113,7 +114,8 @@ class ChatResponse(BaseModel):
 
 
 @router.post("/chat")
-async def chat(request: ChatRequest):
+@limiter.limit("30/minute")
+async def chat(request: Request, body: ChatRequest):
     """Process a chat message through the orchestrator.
 
     If stream=true, returns SSE text/event-stream.
@@ -125,17 +127,17 @@ async def chat(request: ChatRequest):
     orchestrator = _get_orchestrator()
 
     user = UserState(
-        user_id=request.user_id or request.session_id,
-        is_banked=request.is_banked,
+        user_id=body.user_id or body.session_id,
+        is_banked=body.is_banked,
     )
 
     # Tokenize here (not in middleware) so we keep access to the original
-    raw_message = request.message
-    tokenized_message = _tokenize_text(raw_message, request.session_id)
+    raw_message = body.message
+    tokenized_message = _tokenize_text(raw_message, body.session_id)
     logger.info("[HTTP] POST /chat: session=%s | is_banked=%s | stream=%s | msg=%.50s",
-                request.session_id, request.is_banked, request.stream, raw_message[:50])
+                body.session_id, body.is_banked, body.stream, raw_message[:50])
 
-    if request.stream:
+    if body.stream:
         return StreamingResponse(
             _stream_response(orchestrator, request, user, tokenized_message, raw_message),
             media_type="text/event-stream",
@@ -147,18 +149,18 @@ async def chat(request: ChatRequest):
 
     # Non-streaming: full response
     response = await orchestrator.handle_message(
-        tokenized_message, request.session_id, user,
+        tokenized_message, body.session_id, user,
         original_message=raw_message,
     )
 
     # Detokenize response content and metadata (middleware is skipped for /chat)
-    safe_content = _detokenize_text(response.content, request.session_id)
+    safe_content = _detokenize_text(response.content, body.session_id)
     raw_meta = response.metadata or {}
     safe_meta = {
-        k: _detokenize_text(str(v), request.session_id) if isinstance(v, str) else v
+        k: _detokenize_text(str(v), body.session_id) if isinstance(v, str) else v
         for k, v in raw_meta.items()
     }
-    safe_meta = _maybe_generate_activation_code(safe_meta, request.session_id)
+    safe_meta = _maybe_generate_activation_code(safe_meta, body.session_id)
 
     return ChatResponse(
         content=safe_content,
@@ -174,22 +176,22 @@ async def _stream_response(orchestrator, request, user, tokenized_message, raw_m
     """SSE generator using orchestrator streaming with PII detokenization."""
     try:
         async for event in orchestrator.handle_message_stream(
-            tokenized_message, request.session_id, user,
+            tokenized_message, body.session_id, user,
             original_message=raw_message,
         ):
             if event["type"] == "token":
                 # Detokenize each token chunk
-                content = _detokenize_text(event["content"], request.session_id)
+                content = _detokenize_text(event["content"], body.session_id)
                 data = json.dumps({"token": content, "agent": event.get("agent")})
                 yield f"data: {data}\n\n"
 
             elif event["type"] == "done":
                 raw_meta = event.get("metadata", {})
                 safe_meta = {
-                    k: _detokenize_text(str(v), request.session_id) if isinstance(v, str) else v
+                    k: _detokenize_text(str(v), body.session_id) if isinstance(v, str) else v
                     for k, v in raw_meta.items()
                 }
-                safe_meta = _maybe_generate_activation_code(safe_meta, request.session_id)
+                safe_meta = _maybe_generate_activation_code(safe_meta, body.session_id)
                 final = json.dumps({
                     "token": "",
                     "done": True,

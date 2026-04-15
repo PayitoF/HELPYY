@@ -1,15 +1,6 @@
-"""Rate limiting middleware — per-user request throttling."""
+"""Rate limiting — slowapi wrapper for FastAPI."""
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 
-from fastapi import Request, Response
-from starlette.middleware.base import BaseHTTPMiddleware
-
-
-class RateLimiterMiddleware(BaseHTTPMiddleware):
-    """Rate limiting per user to prevent abuse."""
-
-    async def dispatch(self, request: Request, call_next) -> Response:
-        # TODO: extract user_id from request
-        # TODO: check rate limit (sliding window)
-        # TODO: return 429 if exceeded
-        response = await call_next(request)
-        return response
+# 30 requests/minute per IP on chat, 60 on other endpoints
+limiter = Limiter(key_func=get_remote_address, default_limits=["60/minute"])
