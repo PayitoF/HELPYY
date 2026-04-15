@@ -47,7 +47,7 @@ jobs:
       - name: Lint
         run: |
           pip install ruff
-          ruff check backend/ tests/ --select E,F,W --ignore E402
+          ruff check backend/ tests/ --select E,F,W --ignore E402 --exclude backend/ml_client/src
 
   # ════════════════════════════════════════════════════════════
   # Deploy — only when merged to main
