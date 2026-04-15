@@ -497,7 +497,7 @@ class OnboardingAgent(BaseAgent):
             )
             return self._respond(
                 content, context,
-                handoff_to="financial_advisor",
+                handoff_to=None,
                 suggested_actions=["Ver mi plan de mejora", "Activar monitoreo"],
                 metadata={
                     "helpyy_enabled": True,

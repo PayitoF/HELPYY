@@ -160,18 +160,25 @@ class CreditEvaluatorAgent(BaseAgent):
     # ------------------------------------------------------------------
 
     async def process(self, message: str, context: dict, *, original_message: str | None = None) -> AgentResponse:
-        # If we already have a prediction in context, use it directly
+        # If we already have a prediction (from /scoring/evaluate), present result
         prediction = context.get("prediction_result")
 
-        if prediction is None:
-            # Call ML service
-            prediction = await self._get_prediction(context)
-            context["prediction_result"] = prediction
+        if prediction is not None:
+            if prediction.get("eligible"):
+                return await self._handle_approved(message, context, prediction)
+            else:
+                return await self._handle_rejected(message, context, prediction)
 
-        if prediction.get("eligible"):
-            return await self._handle_approved(message, context, prediction)
-        else:
-            return await self._handle_rejected(message, context, prediction)
+        # No prediction yet — ask user to fill the loan form
+        return AgentResponse(
+            content="¡Claro! Para evaluar tu solicitud de microcrédito necesito "
+                    "algunos datos. Completa el formulario que te aparece a continuación "
+                    "y en segundos te doy una respuesta.",
+            agent_name=self.name,
+            agent_type="evaluator",
+            suggested_actions=[],
+            metadata={"show_loan_form": True},
+        )
 
     async def process_stream(self, message: str, context: dict, *, original_message: str | None = None):
         response = await self.process(message, context, original_message=original_message)
@@ -263,8 +270,8 @@ class CreditEvaluatorAgent(BaseAgent):
             content=content,
             agent_name=self.name,
             agent_type="evaluator",
-            handoff_to="financial_advisor",
-            suggested_actions=["Ver plan de mejora", "Hablar con asesor financiero"],
+            handoff_to=None,
+            suggested_actions=["Ver mi plan de mejora", "Hablar con asesor financiero"],
             metadata={
                 "eligible": False,
                 "rejection_factors": factor_names,

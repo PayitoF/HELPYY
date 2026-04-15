@@ -200,6 +200,7 @@ export default function useChat(sessionId, { isBanked = true, onMetadata } = {})
           agent: data.agent_name,
           suggestedActions: data.suggested_actions || [],
           handoffTo: data.handoff_to,
+          metadata: data.metadata || {},
         }]);
       }
     } catch {
@@ -302,6 +303,7 @@ async function _handleSSE(resp, setMessages, setCurrentAgent, onMetadata) {
                 agent: parsed.agent_name,
                 suggestedActions: parsed.suggested_actions || [],
                 handoffTo: parsed.handoff_to,
+                metadata: parsed.metadata || {},
               }];
             }
             return prev;
