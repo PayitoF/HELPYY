@@ -4,8 +4,6 @@ WORKDIR /app
 
 COPY pyproject.toml .
 COPY backend/ backend/
-COPY MLRepo/models/ MLRepo/models/
-COPY MLRepo/src/ MLRepo/src/
 
 RUN pip install --no-cache-dir . joblib scikit-learn pandas
 
