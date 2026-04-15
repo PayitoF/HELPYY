@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const AGENT_CONFIG = {
   helpyy_general: {
     label: 'Helpyy Hand',
-    color: 'bg-emerald-500',
+    color: 'bg-blue-600',
     textColor: 'text-white',
     icon: (
       <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
@@ -24,7 +24,7 @@ const AGENT_CONFIG = {
   },
   financial_advisor: {
     label: 'Asesor Financiero',
-    color: 'bg-emerald-600',
+    color: 'bg-blue-700',
     textColor: 'text-white',
     icon: (
       <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">

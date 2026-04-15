@@ -48,7 +48,7 @@ export default function NotificationBell() {
                       setHelpyyPanelOpen(true);
                       setShowDropdown(false);
                     }}
-                    className={`w-full text-left px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition-colors ${!n.read ? 'bg-emerald-50/50' : ''}`}
+                    className={`w-full text-left px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition-colors ${!n.read ? 'bg-blue-50/50' : ''}`}
                   >
                     <p className="text-sm font-medium text-gray-800">{n.title}</p>
                     <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{n.body}</p>

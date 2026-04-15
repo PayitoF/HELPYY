@@ -12,7 +12,7 @@ export default function OnboardingFlow({ onActivate, onDismiss }) {
       id: i,
       x: (Math.random() - 0.5) * 200,
       y: (Math.random() - 0.5) * 200 - 60,
-      color: ['#00a870', '#00897b', '#fbbf24', '#ef4444', '#3b82f6', '#8b5cf6'][i % 6],
+      color: ['#0727b5', '#1a3fd1', '#fbbf24', '#ef4444', '#3b82f6', '#8b5cf6'][i % 6],
       delay: Math.random() * 0.3,
     }));
     setConfetti(dots);
@@ -39,7 +39,7 @@ export default function OnboardingFlow({ onActivate, onDismiss }) {
             className="bg-white rounded-2xl p-8 mx-6 max-w-sm w-full text-center shadow-2xl"
           >
             {/* Helpyy icon */}
-            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-400 to-indigo-700 flex items-center justify-center shadow-lg shadow-blue-600/30">
               <svg className="w-10 h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z" />
                 <path d="M7 9h10v2H7zm0-3h10v2H7zm0 6h7v2H7z" />
@@ -50,14 +50,14 @@ export default function OnboardingFlow({ onActivate, onDismiss }) {
               Tu cuenta ha sido creada
             </h2>
             <p className="text-gray-500 text-sm mb-6 leading-relaxed">
-              Activa <span className="font-semibold text-emerald-600">Helpyy Hand</span>,
+              Activa <span className="font-semibold text-blue-700">Helpyy Hand</span>,
               tu asistente personal que te acompaña en tu camino financiero.
               Te ayuda con microprestamos, tips y mucho mas.
             </p>
 
             <button
               onClick={handleActivate}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-600 text-white font-semibold text-base shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-shadow active:scale-[0.98]"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-400 to-indigo-700 text-white font-semibold text-base shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 transition-shadow active:scale-[0.98]"
             >
               Activar Helpyy Hand
             </button>
@@ -93,7 +93,7 @@ export default function OnboardingFlow({ onActivate, onDismiss }) {
               initial={{ scale: 0 }}
               animate={{ scale: [0, 1.2, 1] }}
               transition={{ duration: 0.5, times: [0, 0.6, 1] }}
-              className="w-24 h-24 rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center shadow-2xl"
+              className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-indigo-700 flex items-center justify-center shadow-2xl"
             >
               <svg className="w-12 h-12 text-white" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />

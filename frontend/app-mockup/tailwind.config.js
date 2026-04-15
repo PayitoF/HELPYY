@@ -10,9 +10,9 @@ export default {
           light: '#1A8FD1',
         },
         helpyy: {
-          primary: '#00a870',
-          dark: '#008c5a',
-          teal: '#00897b',
+          primary: '#0727b5',
+          dark: '#0b1650',
+          teal: '#1a3fd1',
         },
       },
       fontFamily: {

@@ -156,7 +156,7 @@ function PhotoStep({ subtitle, capture, photo, onPhoto, onSimulate }) {
         width: capture === 'user' ? 180 : 260,
         height: capture === 'user' ? 180 : 150,
         borderRadius: capture === 'user' ? '50%' : 16,
-        border: photo ? '3px solid #00a870' : '2px dashed #c9cce0',
+        border: photo ? '3px solid #0727b5' : '2px dashed #c9cce0',
         background: photo ? 'transparent' : '#f8fafc',
         overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center',
         position: 'relative',
@@ -174,7 +174,7 @@ function PhotoStep({ subtitle, capture, photo, onPhoto, onSimulate }) {
           </div>
         )}
         {photo && (
-          <div style={{ position: 'absolute', bottom: 6, right: 6, width: 28, height: 28, borderRadius: '50%', background: '#00a870', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ position: 'absolute', bottom: 6, right: 6, width: 28, height: 28, borderRadius: '50%', background: '#0727b5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width={16} height={16} fill="none" stroke="white" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
