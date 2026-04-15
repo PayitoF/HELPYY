@@ -1,0 +1,32 @@
+[
+  {
+    "feature": "on_time_rate",
+    "coefficient": -0.5417193285684426,
+    "abs_coefficient": 0.5417193285684426,
+    "rank": 1
+  },
+  {
+    "feature": "is_banked",
+    "coefficient": -0.3456409668362221,
+    "abs_coefficient": 0.3456409668362221,
+    "rank": 2
+  },
+  {
+    "feature": "pct_conversion",
+    "coefficient": -0.3063432746961346,
+    "abs_coefficient": 0.3063432746961346,
+    "rank": 3
+  },
+  {
+    "feature": "city_type_rural",
+    "coefficient": 0.2376355428575856,
+    "abs_coefficient": 0.2376355428575856,
+    "rank": 4
+  },
+  {
+    "feature": "overdue_rate",
+    "coefficient": 0.19695222282680713,
+    "abs_coefficient": 0.19695222282680713,
+    "rank": 5
+  }
+]

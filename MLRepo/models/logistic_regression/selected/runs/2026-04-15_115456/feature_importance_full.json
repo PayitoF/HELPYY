@@ -1,0 +1,92 @@
+[
+  {
+    "feature": "on_time_rate",
+    "coefficient": -0.5417193285684426,
+    "abs_coefficient": 0.5417193285684426,
+    "rank": 1
+  },
+  {
+    "feature": "is_banked",
+    "coefficient": -0.3456409668362221,
+    "abs_coefficient": 0.3456409668362221,
+    "rank": 2
+  },
+  {
+    "feature": "pct_conversion",
+    "coefficient": -0.3063432746961346,
+    "abs_coefficient": 0.3063432746961346,
+    "rank": 3
+  },
+  {
+    "feature": "city_type_rural",
+    "coefficient": 0.2376355428575856,
+    "abs_coefficient": 0.2376355428575856,
+    "rank": 4
+  },
+  {
+    "feature": "overdue_rate",
+    "coefficient": 0.19695222282680713,
+    "abs_coefficient": 0.19695222282680713,
+    "rank": 5
+  },
+  {
+    "feature": "employment_type_informal",
+    "coefficient": 0.1627103810976469,
+    "abs_coefficient": 0.1627103810976469,
+    "rank": 6
+  },
+  {
+    "feature": "avg_decision_score",
+    "coefficient": -0.15103750338061958,
+    "abs_coefficient": 0.15103750338061958,
+    "rank": 7
+  },
+  {
+    "feature": "city_type_urban",
+    "coefficient": -0.10407399177659253,
+    "abs_coefficient": 0.10407399177659253,
+    "rank": 8
+  },
+  {
+    "feature": "payments_count",
+    "coefficient": 0.07697858429577302,
+    "abs_coefficient": 0.07697858429577302,
+    "rank": 9
+  },
+  {
+    "feature": "employment_type_formal",
+    "coefficient": -0.03687012823817576,
+    "abs_coefficient": 0.03687012823817576,
+    "rank": 10
+  },
+  {
+    "feature": "tx_income_pct",
+    "coefficient": 0.02641295113744693,
+    "abs_coefficient": 0.02641295113744693,
+    "rank": 11
+  },
+  {
+    "feature": "total_sessions",
+    "coefficient": -0.018970556547230084,
+    "abs_coefficient": 0.018970556547230084,
+    "rank": 12
+  },
+  {
+    "feature": "age",
+    "coefficient": 0.012186729408718788,
+    "abs_coefficient": 0.012186729408718788,
+    "rank": 13
+  },
+  {
+    "feature": "employment_type_independent",
+    "coefficient": 0.007721298221634298,
+    "abs_coefficient": 0.007721298221634298,
+    "rank": 14
+  },
+  {
+    "feature": "declared_income",
+    "coefficient": 0.0,
+    "abs_coefficient": 0.0,
+    "rank": 15
+  }
+]
