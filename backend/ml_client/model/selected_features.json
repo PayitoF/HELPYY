@@ -1,0 +1,33 @@
+{
+  "training_mode": "selected",
+  "top_k": 5,
+  "selected_features": [
+    "on_time_rate",
+    "is_banked",
+    "pct_conversion",
+    "city_type_rural",
+    "overdue_rate"
+  ],
+  "feature_origin": [
+    {
+      "feature": "on_time_rate",
+      "source_table": "clients"
+    },
+    {
+      "feature": "is_banked",
+      "source_table": "clients"
+    },
+    {
+      "feature": "pct_conversion",
+      "source_table": "clients"
+    },
+    {
+      "feature": "city_type_rural",
+      "source_table": "clients"
+    },
+    {
+      "feature": "overdue_rate",
+      "source_table": "clients"
+    }
+  ]
+}

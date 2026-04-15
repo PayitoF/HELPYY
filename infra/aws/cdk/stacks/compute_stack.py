@@ -32,8 +32,7 @@ class ComputeStack(cdk.Stack):
             directory="../../..",
             file="infra/docker/Dockerfile.api",
             platform=ecr_assets.Platform.LINUX_AMD64,
-            exclude=["cdk.out", "node_modules", ".git", "MLRepo/data", "MLRepo/notebooks",
-                      "MLRepo/descriptives",
+            exclude=["cdk.out", "node_modules", ".git", "MLRepo",
                       "frontend", "tests", "docs", "*.bak", "__pycache__",
                       ".pytest_cache", "infra/aws/cdk/cdk.out",
                       "helpyy_hand.egg-info", ".github"])

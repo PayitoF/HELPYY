@@ -12,8 +12,9 @@ logger = logging.getLogger(__name__)
 
 # Search paths for the model (repo root or relative to this file)
 _MODEL_SEARCH_PATHS = [
+    Path(__file__).resolve().parent / "model",
+    Path("backend/ml_client/model"),
     Path("MLRepo/models/logistic_regression/selected/runs/2026-04-15_115456"),
-    Path(__file__).resolve().parent.parent.parent / "MLRepo/models/logistic_regression/selected/runs/2026-04-15_115456",
 ]
 
 _pipeline = None
@@ -35,11 +36,6 @@ def _load_model():
         return False
 
     try:
-        import sys
-        mlrepo_root = model_dir.parent.parent.parent.parent.parent
-        if str(mlrepo_root) not in sys.path:
-            sys.path.insert(0, str(mlrepo_root))
-
         import joblib
         _pipeline = joblib.load(model_dir / "model.pkl")
 
