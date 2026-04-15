@@ -289,7 +289,7 @@ export default function HelpyyPanel({ onClose }) {
           {/* ─── Loan Flow Overlay ─── */}
           <AnimatePresence>
             {loanFlow === 'form' && (
-              <div className="flex-shrink-0 px-4 py-2">
+              <div className="overflow-y-auto max-h-[70vh] px-4 py-2">
                 <LoanApplicationForm onSubmit={handleLoanSubmit} onCancel={() => setLoanFlow(null)} />
               </div>
             )}
