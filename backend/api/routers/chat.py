@@ -139,7 +139,7 @@ async def chat(request: Request, body: ChatRequest):
 
     if body.stream:
         return StreamingResponse(
-            _stream_response(orchestrator, request, user, tokenized_message, raw_message),
+            _stream_response(orchestrator, body, user, tokenized_message, raw_message),
             media_type="text/event-stream",
             headers={
                 "Cache-Control": "no-cache",
@@ -172,7 +172,7 @@ async def chat(request: Request, body: ChatRequest):
     )
 
 
-async def _stream_response(orchestrator, request, user, tokenized_message, raw_message):
+async def _stream_response(orchestrator, body, user, tokenized_message, raw_message):
     """SSE generator using orchestrator streaming with PII detokenization."""
     try:
         async for event in orchestrator.handle_message_stream(
