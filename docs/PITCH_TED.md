@@ -1,45 +1,45 @@
-# Helpyy Hand — Pitch (3 minutos)
+# Helpyy Hand — Pitch Final (3 minutos)
 
 ---
 
-## Parte 1 — El problema y la oportunidad
+Salir de la oficina a las 5 de la tarde y decir *"me provoca una empanadita"* — todos lo hemos hecho.
 
-Empiezo con un dato: **el 45% de la población adulta en Colombia no está bancarizada.** Son millones de personas que trabajan, que pagan, que ahorran debajo del colchón — pero que para el sistema financiero no existen.
+Y hay alguien que lleva 12 años vendiéndolas en esa esquina. Que trabaja de lunes a domingo. Que nunca ha dejado de pagar el arriendo. Pero que cuando va al banco a pedir un préstamo de quinientos mil pesos para comprar una vitrina nueva, le dicen que no. Que no tiene historial. Que no tiene nómina.
 
-Hoy con Helpyy Hand lo que buscamos es atacar esa exclusión crediticia de la **"Población Invisible"** y convertir ese nicho en los clientes más fieles de BBVA.
+Esa persona no vuelve al banco. Va donde el gota a gota.
 
-Aquí nace Helpyy Hand como motor de **Social AI** que utiliza un modelo de Scoring Alternativo. En lugar de mirar el pasado — lo que no han pagado — mira hacia los lados: cómo pagan sus servicios públicos, con qué frecuencia recargan su celular, cómo gestionan su liquidez.
-
-Y aquí viene la magia: **si el usuario no es apto para un crédito hoy, no lo rechazamos con un mensaje frío.** El agente se convierte en su Coach Financiero y le asigna misiones: *"Paga tu factura de energía a tiempo este mes"*, *"Mantén un saldo de $50.000 para tus servicios"*. Al cumplir estas misiones, el usuario mejora su score y desbloquea su primer crédito en semanas.
-
-Lo educamos para que nos pague bien. Y lo fidelizamos desde la base.
+**Esa persona es el cliente que nadie ve. Y es exactamente el cliente que nosotros queremos.**
 
 ---
 
-## Parte 2 — Alineación estratégica
+El **45% de la población adulta en Colombia no está bancarizada.** No porque no trabajen. Sino porque el sistema nunca fue diseñado para ellos.
 
-Helpyy Hand va totalmente alineado con nuestro foco estratégico **RCP** — Radical Customer Perspective. Eliminamos la fricción desde el primer momento: sin formularios, sin filas, sin jerga financiera. Una conversación natural con IA que se adapta al usuario, no al revés.
+Nosotros lo vemos diferente. Lo vemos como el océano azul más grande de la década.
 
-Pero esto no es caridad. Lo vemos como el **Océano Azul más grande de la década.** Proyectamos que con solo 500.000 clientes captaríamos **$25.000 millones en depósitos** de bajo costo y colocaríamos una cartera de **$200.000 millones** — con un costo de adquisición **80% menor** al tradicional.
+Con una adopción conservadora de 500.000 clientes, estamos hablando de **$25.000 millones en depósitos** de bajo costo y una cartera de **$200.000 millones** — con un costo de adquisición **80% menor** al canal tradicional.
+
+Pero hay algo más valioso que los números. Algo intrínseco a Helpyy.
 
 ---
 
-## Parte 3 — La tecnología
+**¿Qué pasaría si en vez de pedirle al cliente que venga al banco, el banco fuera hacia él?**
 
-Siempre pensamos que las personas vienen a nuestro banco. Pero ¿qué pasaría si el banco fuera hacia ellos?
+Desde esa pregunta nace Helpyy Hand. Una plataforma de IA conversacional que elimina la fricción desde el primer segundo. Sin formularios. Sin filas. Sin jerga financiera. Una conversación natural que abre cuentas, evalúa créditos y acompaña al usuario en su camino financiero.
 
-Desde esa pregunta nace Helpyy. Construimos una plataforma de IA conversacional con cinco agentes especializados que trabajan juntos:
+Y aquí viene lo que nos diferencia: **si hoy no calificas para un crédito, Helpyy no te rechaza.** Se convierte en tu coach. Te asigna misiones concretas: *"Paga tu factura de energía a tiempo este mes"*, *"Mantén un saldo de $50.000 para tus servicios"*. Cada misión mejora tu perfil real. Y cuando estás listo, Helpyy te avisa.
 
-Uno te **abre la cuenta** en una conversación — sin papeles. Otro **evalúa tu crédito** con Machine Learning en tiempo real. Otro se convierte en tu **coach financiero** con misiones gamificadas. Y otro te **monitorea** y te avisa cuando ya estás listo.
+No es un "no". Es un "todavía no — pero aquí estoy para ayudarte a llegar".
 
-Todo esto anticipándonos a las necesidades del cliente, detectando puntos de fricción y eliminándolos — exactamente lo que RCP nos pide.
+---
 
-Una persona llega a la web de BBVA, habla con Helpyy, abre su cuenta, pide un crédito, y si hoy no califica, sale con un plan de acción personalizado. No con un "no". Con un "todavía no, pero te voy a ayudar a llegar".
+Esto es RCP en su máxima expresión. Detectamos el punto de fricción más grande de la banca — la exclusión — y lo convertimos en una oportunidad. Nos anticipamos a las necesidades del cliente antes de que él mismo las identifique. Y construimos una relación desde el primer paso, no desde el primer producto.
 
-**Eso es Helpyy Hand. La mano que la banca nunca le dio.**
+Porque queremos que cada vez que alguien piense en BBVA, piense en que ahí estuvo Helpyy. En ese momento en que nadie más le tendió la mano.
+
+**Eso es Helpyy Hand. La banca que se mueve hacia las personas.**
 
 Gracias.
 
 ---
 
-*~3 minutos · Helpyy Hand · BBVA Colombia*
+*~3 minutos · Helpyy Hand · BBVA Colombia · OutBox*
