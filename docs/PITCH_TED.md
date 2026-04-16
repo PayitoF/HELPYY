@@ -2,15 +2,13 @@
 
 ---
 
-Todos los días, a las 10 de la mañana, alguien toca a la puerta de la oficina con un termo en la mano.
+Piensen en Carlos. Un colombiano del común. Trabaja duro, paga sus cuentas, cuida a su familia. Como cualquiera de nosotros, o como alguien que conocemos.
 
-*"¿El tinto?"*
-
-Don Carlos lleva 8 años recorriendo los pisos de este edificio. Conoce el nombre de cada uno. Sabe quién lo quiere sin azúcar, quién lo quiere con leche. Nunca ha faltado un día.
-
-Pero Don Carlos nunca ha tenido una cuenta de ahorros. Nunca ha podido ahorrar para el futuro de sus hijos. Nunca ha sabido si puede pedir un crédito, ni cómo funciona una CDT, ni qué hacer cuando le sobra algo de plata al final del mes.
+Carlos nunca ha tenido una cuenta de ahorros. Nunca ha podido ahorrar para el futuro de sus hijos. Nunca ha sabido si puede pedir un crédito, ni cómo funciona una CDT, ni qué hacer cuando le sobra algo de plata al final del mes.
 
 No porque no quiera. Sino porque nadie se lo ha explicado. Porque el banco siempre se ha sentido como un lugar que no es para él.
+
+Carlos podría ser tu vecino. Tu primo. El señor del parqueadero. El conductor del bus. Cualquiera.
 
 **Eso es lo que queremos cambiar.**
 
