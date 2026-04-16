@@ -2,13 +2,17 @@
 
 ---
 
-Salir de la oficina a las 5 de la tarde y decir *"me provoca una empanadita"* — todos lo hemos hecho.
+Todos los días, a las 10 de la mañana, alguien toca a la puerta de la oficina con un termo en la mano.
 
-Y hay alguien que lleva 12 años vendiéndolas en esa esquina. Que trabaja de lunes a domingo. Que nunca ha dejado de pagar el arriendo. Pero que cuando va al banco a pedir un préstamo de quinientos mil pesos para comprar una vitrina nueva, le dicen que no. Que no tiene historial. Que no tiene nómina.
+*"¿El tinto?"*
 
-Esa persona no vuelve al banco. Va donde el gota a gota.
+Don Carlos lleva 8 años recorriendo los pisos de este edificio. Conoce el nombre de cada uno. Sabe quién lo quiere sin azúcar, quién lo quiere con leche. Nunca ha faltado un día. Nunca ha dejado de pagar el arriendo.
 
-**Esa persona es el cliente que nadie ve. Y es exactamente el cliente que nosotros queremos.**
+Pero cuando Don Carlos fue al banco a pedir un préstamo de un millón de pesos para comprar un termo nuevo y ampliar su ruta — le dijeron que no. Que no tenía historial crediticio. Que no tenía nómina.
+
+Don Carlos no volvió al banco. Fue donde el gota a gota.
+
+**Don Carlos es el cliente que nadie ve. Y es exactamente el cliente que nosotros queremos.**
 
 ---
 
