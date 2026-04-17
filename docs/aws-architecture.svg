@@ -1,0 +1,332 @@
+<svg viewBox="0 0 1300 820" xmlns="http://www.w3.org/2000/svg" font-family="'Amazon Ember', Arial, sans-serif">
+  <defs>
+    <!-- AWS Orange gradient -->
+    <linearGradient id="awsBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <!-- Group backgrounds -->
+    <linearGradient id="groupBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.06"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.02"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <!-- Arrow markers -->
+    <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#4d9fff"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#ff9900"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7aa116"/>
+    </marker>
+    <marker id="arrowWhite" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="rgba(255,255,255,0.5)"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1300" height="820" fill="url(#awsBg)"/>
+
+  <!-- Title -->
+  <text x="650" y="38" text-anchor="middle" font-size="22" font-weight="700" fill="white">Helpyy Hand — Arquitectura AWS</text>
+  <text x="650" y="60" text-anchor="middle" font-size="12" fill="#ff9900" letter-spacing="2">BBVA COLOMBIA · us-east-1</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- USERS (left) -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <g transform="translate(30, 120)">
+    <!-- User icon -->
+    <circle cx="40" cy="30" r="18" fill="#4d9fff" opacity="0.2"/>
+    <circle cx="40" cy="22" r="10" fill="#4d9fff"/>
+    <path d="M20,55 Q40,42 60,55" fill="#4d9fff"/>
+    <text x="40" y="75" text-anchor="middle" font-size="11" fill="white">Usuario</text>
+    <text x="40" y="90" text-anchor="middle" font-size="10" fill="#93b4ff">Web / Móvil</text>
+  </g>
+
+  <!-- Arrow users → CloudFront -->
+  <path d="M 130,165 L 185,165" stroke="#4d9fff" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowBlue)"/>
+  <text x="157" y="158" text-anchor="middle" font-size="9" fill="#4d9fff">HTTPS</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- CLOUDFRONT + WAF GROUP -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="185" y="90" width="220" height="160" rx="10" fill="url(#groupBg)" stroke="#8c4fff" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="295" y="108" text-anchor="middle" font-size="10" fill="#8c4fff" letter-spacing="1">EDGE</text>
+
+  <!-- WAF icon -->
+  <g transform="translate(200, 115)">
+    <rect width="44" height="44" rx="8" fill="#dd344c"/>
+    <text x="22" y="28" text-anchor="middle" font-size="20">🛡️</text>
+    <text x="22" y="52" text-anchor="middle" font-size="9" fill="white">WAF</text>
+    <text x="22" y="64" text-anchor="middle" font-size="8" fill="#ffb3bc">AWS WAFv2</text>
+  </g>
+
+  <!-- CloudFront icon -->
+  <g transform="translate(270, 115)">
+    <rect width="44" height="44" rx="8" fill="#8c4fff"/>
+    <text x="22" y="28" text-anchor="middle" font-size="20">🌐</text>
+    <text x="22" y="52" text-anchor="middle" font-size="9" fill="white">CloudFront</text>
+    <text x="22" y="64" text-anchor="middle" font-size="8" fill="#d4b3ff">CDN Global</text>
+  </g>
+
+  <!-- S3 App -->
+  <g transform="translate(200, 195)">
+    <rect width="44" height="44" rx="8" fill="#3f8624"/>
+    <text x="22" y="28" text-anchor="middle" font-size="20">🪣</text>
+    <text x="22" y="52" text-anchor="middle" font-size="9" fill="white">S3 App</text>
+    <text x="22" y="64" text-anchor="middle" font-size="8" fill="#b3ffb3">React Build</text>
+  </g>
+
+  <!-- S3 Widget -->
+  <g transform="translate(270, 195)">
+    <rect width="44" height="44" rx="8" fill="#3f8624"/>
+    <text x="22" y="28" text-anchor="middle" font-size="20">🪣</text>
+    <text x="22" y="52" text-anchor="middle" font-size="9" fill="white">S3 Widget</text>
+    <text x="22" y="64" text-anchor="middle" font-size="8" fill="#b3ffb3">Web Widget</text>
+  </g>
+
+  <!-- Arrow CloudFront → App Runner -->
+  <path d="M 405,165 L 460,165" stroke="#ff9900" stroke-width="2" marker-end="url(#arrowOrange)"/>
+  <text x="432" y="158" text-anchor="middle" font-size="9" fill="#ff9900">REST/WS</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- APP RUNNER GROUP -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="460" y="80" width="280" height="290" rx="10" fill="url(#groupBg)" stroke="#ff9900" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="600" y="98" text-anchor="middle" font-size="10" fill="#ff9900" letter-spacing="1">AWS APP RUNNER · FastAPI</text>
+
+  <!-- App Runner icon -->
+  <g transform="translate(530, 108)">
+    <rect width="140" height="50" rx="8" fill="#ff9900"/>
+    <text x="70" y="22" text-anchor="middle" font-size="11" font-weight="700" fill="white">🚀 App Runner</text>
+    <text x="70" y="38" text-anchor="middle" font-size="9" fill="white">helpyy-dev-api · 1vCPU 2GB</text>
+  </g>
+
+  <!-- Orchestrator -->
+  <g transform="translate(510, 170)">
+    <rect width="180" height="36" rx="6" fill="#0d47a1"/>
+    <text x="90" y="22" text-anchor="middle" font-size="11" font-weight="600" fill="white">🧠 Orchestrator</text>
+  </g>
+
+  <!-- 5 Agents mini -->
+  <g transform="translate(475, 218)">
+    <rect width="60" height="50" rx="6" fill="#1b5e20"/>
+    <text x="30" y="22" text-anchor="middle" font-size="16">🟢</text>
+    <text x="30" y="40" text-anchor="middle" font-size="8" fill="white">Onboard</text>
+  </g>
+  <g transform="translate(543, 218)">
+    <rect width="60" height="50" rx="6" fill="#0d47a1"/>
+    <text x="30" y="22" text-anchor="middle" font-size="16">🔵</text>
+    <text x="30" y="40" text-anchor="middle" font-size="8" fill="white">Evaluador</text>
+  </g>
+  <g transform="translate(611, 218)">
+    <rect width="60" height="50" rx="6" fill="#4a148c"/>
+    <text x="30" y="22" text-anchor="middle" font-size="16">🟣</text>
+    <text x="30" y="40" text-anchor="middle" font-size="8" fill="white">Asesor</text>
+  </g>
+  <g transform="translate(679, 218)">
+    <rect width="60" height="50" rx="6" fill="#b71c1c"/>
+    <text x="30" y="22" text-anchor="middle" font-size="16">🔴</text>
+    <text x="30" y="40" text-anchor="middle" font-size="8" fill="white">Monitor</text>
+  </g>
+
+  <!-- PII Middleware -->
+  <g transform="translate(475, 280)">
+    <rect width="264" height="32" rx="6" fill="#37474f"/>
+    <text x="132" y="20" text-anchor="middle" font-size="10" fill="white">🔐 PII Tokenizer · Rate Limiter</text>
+  </g>
+
+  <!-- ECR -->
+  <g transform="translate(475, 324)">
+    <rect width="264" height="32" rx="6" fill="#1a237e"/>
+    <text x="132" y="20" text-anchor="middle" font-size="10" fill="white">📦 ECR · Docker Image (linux/amd64)</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- BEDROCK -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- Arrow App Runner → Bedrock -->
+  <path d="M 600,370 L 600,420" stroke="#ff9900" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+
+  <g transform="translate(510, 420)">
+    <rect width="180" height="70" rx="10" fill="#1a237e" stroke="#4d9fff" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="90" y="24" text-anchor="middle" font-size="18">🤖</text>
+    <text x="90" y="44" text-anchor="middle" font-size="12" font-weight="700" fill="white">AWS Bedrock</text>
+    <text x="90" y="60" text-anchor="middle" font-size="9" fill="#93b4ff">Claude 3 Haiku · LLM</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- ML LAMBDA GROUP -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- Arrow App Runner → Lambda -->
+  <path d="M 740,225 L 820,225" stroke="#7aa116" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text x="780" y="218" text-anchor="middle" font-size="9" fill="#7aa116">ML_SERVICE_URL</text>
+
+  <rect x="820" y="90" width="220" height="200" rx="10" fill="url(#groupBg)" stroke="#7aa116" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="930" y="108" text-anchor="middle" font-size="10" fill="#7aa116" letter-spacing="1">ML SERVICE</text>
+
+  <!-- Lambda icon -->
+  <g transform="translate(870, 118)">
+    <rect width="120" height="50" rx="8" fill="#e65100"/>
+    <text x="60" y="22" text-anchor="middle" font-size="11" font-weight="700" fill="white">λ Lambda</text>
+    <text x="60" y="38" text-anchor="middle" font-size="9" fill="white">Docker · 512MB</text>
+  </g>
+
+  <!-- Model.pkl -->
+  <g transform="translate(850, 180)">
+    <rect width="160" height="40" rx="6" fill="#1b5e20"/>
+    <text x="80" y="25" text-anchor="middle" font-size="10" fill="white">🧮 model.pkl · sklearn 1.7.2</text>
+  </g>
+
+  <!-- Function URL -->
+  <g transform="translate(850, 232)">
+    <rect width="160" height="40" rx="6" fill="#004d40"/>
+    <text x="80" y="16" text-anchor="middle" font-size="9" fill="white">Function URL (HTTPS)</text>
+    <text x="80" y="30" text-anchor="middle" font-size="8" fill="#80cbc4">APPROVE / REVIEW / REJECT</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- DYNAMODB GROUP -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- Arrow App Runner → DynamoDB -->
+  <path d="M 600,370 L 1060,370 L 1060,300" stroke="#4d9fff" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowBlue)"/>
+
+  <rect x="1000" y="90" width="270" height="200" rx="10" fill="url(#groupBg)" stroke="#4d9fff" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="1135" y="108" text-anchor="middle" font-size="10" fill="#4d9fff" letter-spacing="1">DATA LAYER</text>
+
+  <!-- DynamoDB icon -->
+  <g transform="translate(1020, 115)">
+    <rect width="50" height="50" rx="8" fill="#1565c0"/>
+    <text x="25" y="32" text-anchor="middle" font-size="24">🗄️</text>
+    <text x="25" y="52" text-anchor="middle" font-size="8" fill="white">DynamoDB</text>
+  </g>
+
+  <!-- Tables list -->
+  <g transform="translate(1080, 115)">
+    <rect width="175" height="160" rx="6" fill="rgba(255,255,255,0.05)"/>
+    <text x="87" y="20" text-anchor="middle" font-size="10" font-weight="600" fill="#4d9fff">Tablas</text>
+    <text x="15" y="40" font-size="10" fill="#93b4ff">• helpyy-dev-users</text>
+    <text x="15" y="58" font-size="10" fill="#93b4ff">• helpyy-dev-sessions</text>
+    <text x="15" y="76" font-size="10" fill="#93b4ff">• helpyy-dev-notifications</text>
+    <text x="15" y="94" font-size="10" fill="#93b4ff">• helpyy-dev-pii-vault</text>
+    <text x="15" y="112" font-size="10" fill="#93b4ff">• helpyy-dev-missions</text>
+    <text x="15" y="135" font-size="9" fill="#4d9fff">PAY_PER_REQUEST · TTL</text>
+    <text x="15" y="150" font-size="9" fill="#4d9fff">GSI: cedula-index</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- EVENTBRIDGE + LAMBDA MONITOR -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="820" y="320" width="220" height="130" rx="10" fill="url(#groupBg)" stroke="#e74c3c" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="930" y="338" text-anchor="middle" font-size="10" fill="#e74c3c" letter-spacing="1">MONITOR CRON</text>
+
+  <!-- EventBridge -->
+  <g transform="translate(835, 345)">
+    <rect width="85" height="50" rx="8" fill="#880e4f"/>
+    <text x="42" y="22" text-anchor="middle" font-size="16">⏰</text>
+    <text x="42" y="40" text-anchor="middle" font-size="9" fill="white">EventBridge</text>
+  </g>
+
+  <!-- Arrow EventBridge → Lambda Monitor -->
+  <path d="M 920,370 L 945,370" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+  <!-- Lambda Monitor -->
+  <g transform="translate(945, 345)">
+    <rect width="80" height="50" rx="8" fill="#e65100"/>
+    <text x="40" y="22" text-anchor="middle" font-size="16">λ</text>
+    <text x="40" y="40" text-anchor="middle" font-size="9" fill="white">Monitor</text>
+  </g>
+
+  <text x="930" y="420" text-anchor="middle" font-size="9" fill="#e74c3c">Cada 6 horas · POST /monitor/run</text>
+  <text x="930" y="435" text-anchor="middle" font-size="9" fill="#e74c3c">helpyy-dev-monitor</text>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- SNS + CLOUDWATCH -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="820" y="470" width="220" height="110" rx="10" fill="url(#groupBg)" stroke="#ff9900" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="930" y="488" text-anchor="middle" font-size="10" fill="#ff9900" letter-spacing="1">OBSERVABILIDAD</text>
+
+  <g transform="translate(835, 498)">
+    <rect width="85" height="50" rx="8" fill="#e65100"/>
+    <text x="42" y="22" text-anchor="middle" font-size="16">📢</text>
+    <text x="42" y="40" text-anchor="middle" font-size="9" fill="white">SNS Alerts</text>
+  </g>
+
+  <g transform="translate(940, 498)">
+    <rect width="85" height="50" rx="8" fill="#1565c0"/>
+    <text x="42" y="22" text-anchor="middle" font-size="16">📊</text>
+    <text x="42" y="40" text-anchor="middle" font-size="9" fill="white">CloudWatch</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- IAM + OIDC (bottom) -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="185" y="520" width="600" height="90" rx="10" fill="url(#groupBg)" stroke="#ff9900" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="485" y="538" text-anchor="middle" font-size="10" fill="#ff9900" letter-spacing="1">CI/CD · GITHUB ACTIONS</text>
+
+  <g transform="translate(200, 548)">
+    <rect width="80" height="44" rx="6" fill="#1a237e"/>
+    <text x="40" y="20" text-anchor="middle" font-size="14">🔑</text>
+    <text x="40" y="36" text-anchor="middle" font-size="8" fill="white">OIDC Role</text>
+  </g>
+
+  <path d="M 280,570 L 310,570" stroke="#ff9900" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+
+  <g transform="translate(310, 548)">
+    <rect width="80" height="44" rx="6" fill="#e65100"/>
+    <text x="40" y="20" text-anchor="middle" font-size="14">λ</text>
+    <text x="40" y="36" text-anchor="middle" font-size="8" fill="white">CDK Deploy</text>
+  </g>
+
+  <path d="M 390,570 L 420,570" stroke="#ff9900" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+
+  <g transform="translate(420, 548)">
+    <rect width="80" height="44" rx="6" fill="#3f8624"/>
+    <text x="40" y="20" text-anchor="middle" font-size="14">🪣</text>
+    <text x="40" y="36" text-anchor="middle" font-size="8" fill="white">S3 Sync</text>
+  </g>
+
+  <path d="M 500,570 L 530,570" stroke="#ff9900" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+
+  <g transform="translate(530, 548)">
+    <rect width="80" height="44" rx="6" fill="#8c4fff"/>
+    <text x="40" y="20" text-anchor="middle" font-size="14">🌐</text>
+    <text x="40" y="36" text-anchor="middle" font-size="8" fill="white">CloudFront</text>
+  </g>
+
+  <path d="M 610,570 L 640,570" stroke="#ff9900" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+
+  <g transform="translate(640, 548)">
+    <rect width="130" height="44" rx="6" fill="#0d47a1"/>
+    <text x="65" y="20" text-anchor="middle" font-size="14">🚀</text>
+    <text x="65" y="36" text-anchor="middle" font-size="8" fill="white">App Runner + Lambda ML</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- S3 MODELS BUCKET -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <g transform="translate(1060, 420)">
+    <rect width="200" height="60" rx="10" fill="url(#groupBg)" stroke="#3f8624" stroke-width="1" stroke-dasharray="5,3"/>
+    <text x="100" y="20" text-anchor="middle" font-size="10" fill="#7aa116">S3 Models Bucket</text>
+    <text x="100" y="38" text-anchor="middle" font-size="9" fill="#93b4ff">helpyy-dev-models-622247620363</text>
+    <text x="100" y="52" text-anchor="middle" font-size="9" fill="#93b4ff">model.tar.gz · Artifacts</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- LEGEND -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <rect x="30" y="640" width="1240" height="60" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <text x="650" y="660" text-anchor="middle" font-size="11" fill="#ff9900" letter-spacing="1">REGIÓN: us-east-1 · CUENTA: 622247620363 · BBVA Colombia · OutBox 2026</text>
+  <text x="650" y="682" text-anchor="middle" font-size="10" fill="#93b4ff">
+    App Runner (helpyy-dev-api) · Lambda ML (helpyy-dev-ml-scoring) · Lambda Monitor (helpyy-dev-monitor) · DynamoDB (5 tablas) · CloudFront (2 distribuciones)
+  </text>
+
+</svg>
