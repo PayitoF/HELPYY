@@ -1,196 +1,153 @@
-<svg viewBox="0 0 1100 820" xmlns="http://www.w3.org/2000/svg" font-family="Inter, Arial, sans-serif">
+<svg viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" font-family="Inter, Arial, sans-serif">
 
-  <!-- Background -->
-  <rect width="1100" height="820" fill="#f0f4ff" rx="12"/>
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0b1650"/>
+      <stop offset="100%" style="stop-color:#0727b5"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.12"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.05"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
 
-  <!-- Title -->
-  <text x="550" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#0727b5">Helpyy Hand — Arquitectura Funcional y Técnica</text>
-  <text x="550" y="58" text-anchor="middle" font-size="11" fill="#5d688b">BBVA Colombia · Multi-Agent AI Platform · AWS</text>
+  <rect width="1200" height="675" fill="url(#bg)"/>
 
-  <!-- ═══════════════════════════════════════════════════════ -->
-  <!-- CAPA 1: PRESENTACIÓN -->
-  <!-- ═══════════════════════════════════════════════════════ -->
-  <rect x="20" y="72" width="1060" height="130" rx="10" fill="#e8eeff" stroke="#0727b5" stroke-width="1.5"/>
-  <text x="36" y="92" font-size="11" font-weight="700" fill="#0727b5" letter-spacing="1">CAPA DE PRESENTACIÓN</text>
+  <!-- Subtle grid lines -->
+  <line x1="0" y1="337" x2="1200" y2="337" stroke="white" stroke-opacity="0.04" stroke-width="1"/>
+  <line x1="600" y1="0" x2="600" y2="675" stroke="white" stroke-opacity="0.04" stroke-width="1"/>
 
-  <!-- Web Widget -->
-  <rect x="50" y="100" width="220" height="88" rx="8" fill="#0727b5"/>
-  <text x="160" y="122" text-anchor="middle" font-size="13" font-weight="700" fill="white">🌐 Web Widget</text>
-  <text x="160" y="140" text-anchor="middle" font-size="10" fill="#c8d4ff">BBVA Web Pública</text>
-  <text x="160" y="155" text-anchor="middle" font-size="10" fill="#c8d4ff">Vanilla JS · Standalone</text>
-  <text x="160" y="170" text-anchor="middle" font-size="10" fill="#c8d4ff">CloudFront · dryy62wia55ws.cloudfront.net</text>
+  <!-- ── HEADER ── -->
+  <text x="600" y="52" text-anchor="middle" font-size="32" font-weight="800" fill="white" letter-spacing="-0.5">Helpyy Hand</text>
+  <text x="600" y="78" text-anchor="middle" font-size="14" fill="#93b4ff" letter-spacing="3">PLATAFORMA DE IA CONVERSACIONAL · BBVA COLOMBIA</text>
 
-  <!-- Arrow between frontends -->
-  <text x="290" y="148" text-anchor="middle" font-size="18" fill="#0727b5">⟷</text>
-  <text x="290" y="163" text-anchor="middle" font-size="9" fill="#5d688b">Código HLP-</text>
+  <!-- Divider -->
+  <rect x="480" y="90" width="240" height="2" rx="1" fill="#0727b5" opacity="0.6"/>
+  <rect x="540" y="90" width="120" height="2" rx="1" fill="#4d8bff"/>
 
-  <!-- App Móvil -->
-  <rect x="320" y="100" width="220" height="88" rx="8" fill="#0b1650"/>
-  <text x="430" y="122" text-anchor="middle" font-size="13" font-weight="700" fill="white">📱 App Bancaria</text>
-  <text x="430" y="140" text-anchor="middle" font-size="10" fill="#c8d4ff">React 18 · Tailwind · Vite</text>
-  <text x="430" y="155" text-anchor="middle" font-size="10" fill="#c8d4ff">Auth · Dashboard · Chat</text>
-  <text x="430" y="170" text-anchor="middle" font-size="10" fill="#c8d4ff">CloudFront · duerut86hk6v3.cloudfront.net</text>
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- ROW 1: 3 main pillars -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
 
-  <!-- S3 + CloudFront label -->
-  <rect x="570" y="108" width="180" height="72" rx="6" fill="white" stroke="#0727b5" stroke-width="1" stroke-dasharray="4"/>
-  <text x="660" y="128" text-anchor="middle" font-size="11" font-weight="600" fill="#0727b5">☁️ AWS CloudFront</text>
-  <text x="660" y="145" text-anchor="middle" font-size="10" fill="#5d688b">S3 App Bucket</text>
-  <text x="660" y="160" text-anchor="middle" font-size="10" fill="#5d688b">S3 Widget Bucket</text>
-  <text x="660" y="175" text-anchor="middle" font-size="10" fill="#5d688b">WAF + Security Headers</text>
+  <!-- PILLAR 1: Web Widget -->
+  <rect x="60" y="115" width="320" height="155" rx="16" fill="url(#card)" stroke="white" stroke-opacity="0.15" stroke-width="1" filter="url(#shadow)"/>
+  <text x="220" y="155" text-anchor="middle" font-size="36">🌐</text>
+  <text x="220" y="185" text-anchor="middle" font-size="16" font-weight="700" fill="white">Web Pública BBVA</text>
+  <text x="220" y="207" text-anchor="middle" font-size="12" fill="#93b4ff">Widget conversacional embebible</text>
+  <text x="220" y="225" text-anchor="middle" font-size="12" fill="#93b4ff">Onboarding sin fricción</text>
+  <text x="220" y="248" text-anchor="middle" font-size="11" fill="#4d8bff">Apertura de cuenta · Primer contacto</text>
 
-  <!-- Security note -->
-  <rect x="775" y="108" width="280" height="72" rx="6" fill="white" stroke="#e74c3c" stroke-width="1" stroke-dasharray="4"/>
-  <text x="915" y="128" text-anchor="middle" font-size="11" font-weight="600" fill="#e74c3c">🔒 Seguridad</text>
-  <text x="915" y="145" text-anchor="middle" font-size="10" fill="#5d688b">WAF · AWSManagedRules · Rate Limit</text>
-  <text x="915" y="160" text-anchor="middle" font-size="10" fill="#5d688b">HSTS · X-Frame-Options · CSP</text>
-  <text x="915" y="175" text-anchor="middle" font-size="10" fill="#5d688b">PII Tokenizer (cédula, nombre, teléfono)</text>
+  <!-- Arrow 1→center -->
+  <path d="M 380 192 L 440 192" stroke="#4d8bff" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr)"/>
 
-  <!-- Arrow down from presentation -->
-  <line x1="550" y1="202" x2="550" y2="225" stroke="#0727b5" stroke-width="2" marker-end="url(#arrow)"/>
-  <text x="560" y="218" font-size="9" fill="#5d688b">REST / WebSocket</text>
+  <!-- PILLAR 2: Helpyy Core (center) -->
+  <rect x="440" y="100" width="320" height="185" rx="16" fill="#0727b5" stroke="#4d8bff" stroke-width="2" filter="url(#shadow)"/>
+  <text x="600" y="148" text-anchor="middle" font-size="40">🤝</text>
+  <text x="600" y="180" text-anchor="middle" font-size="18" font-weight="800" fill="white">Helpyy Hand</text>
+  <text x="600" y="202" text-anchor="middle" font-size="12" fill="#c8d8ff">Motor de IA Conversacional</text>
+  <text x="600" y="222" text-anchor="middle" font-size="12" fill="#c8d8ff">5 Agentes Especializados</text>
+  <text x="600" y="242" text-anchor="middle" font-size="12" fill="#c8d8ff">Orquestación Inteligente</text>
+  <text x="600" y="268" text-anchor="middle" font-size="11" fill="#4d8bff">Bedrock Claude · AWS App Runner</text>
 
-  <!-- ═══════════════════════════════════════════════════════ -->
-  <!-- CAPA 2: ORQUESTACIÓN (App Runner) -->
-  <!-- ═══════════════════════════════════════════════════════ -->
-  <rect x="20" y="228" width="1060" height="310" rx="10" fill="#fff8e8" stroke="#f39c12" stroke-width="1.5"/>
-  <text x="36" y="248" font-size="11" font-weight="700" fill="#f39c12" letter-spacing="1">CAPA DE ORQUESTACIÓN · App Runner (FastAPI · Python 3.12)</text>
+  <!-- Arrow center→3 -->
+  <path d="M 760 192 L 820 192" stroke="#4d8bff" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr)"/>
 
-  <!-- Orchestrator box -->
-  <rect x="380" y="258" width="340" height="60" rx="8" fill="#f39c12"/>
-  <text x="550" y="282" text-anchor="middle" font-size="13" font-weight="700" fill="white">🧠 Orchestrator</text>
-  <text x="550" y="300" text-anchor="middle" font-size="10" fill="white">Clasifica intent · Rutea al agente correcto · Gestiona handoffs</text>
+  <!-- PILLAR 3: App Móvil -->
+  <rect x="820" y="115" width="320" height="155" rx="16" fill="url(#card)" stroke="white" stroke-opacity="0.15" stroke-width="1" filter="url(#shadow)"/>
+  <text x="980" y="155" text-anchor="middle" font-size="36">📱</text>
+  <text x="980" y="185" text-anchor="middle" font-size="16" font-weight="700" fill="white">App Bancaria</text>
+  <text x="980" y="207" text-anchor="middle" font-size="12" fill="#93b4ff">Dashboard · Chat · Gamificación</text>
+  <text x="980" y="225" text-anchor="middle" font-size="12" fill="#93b4ff">Solicitud de crédito · Misiones</text>
+  <text x="980" y="248" text-anchor="middle" font-size="11" fill="#4d8bff">Clientes bancarizados · Helpyy activo</text>
 
-  <!-- Arrows from orchestrator to agents -->
-  <line x1="430" y1="318" x2="120" y2="370" stroke="#f39c12" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
-  <line x1="470" y1="318" x2="310" y2="370" stroke="#f39c12" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
-  <line x1="550" y1="318" x2="550" y2="370" stroke="#f39c12" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
-  <line x1="630" y1="318" x2="790" y2="370" stroke="#f39c12" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
-  <line x1="670" y1="318" x2="980" y2="370" stroke="#f39c12" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- ROW 2: 5 Agents -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
 
-  <!-- Agent 1: Onboarding -->
-  <rect x="30" y="370" width="170" height="80" rx="8" fill="#27ae60"/>
-  <text x="115" y="392" text-anchor="middle" font-size="12" font-weight="700" fill="white">🟢 Onboarding</text>
-  <text x="115" y="408" text-anchor="middle" font-size="9" fill="white">Bancarización</text>
-  <text x="115" y="422" text-anchor="middle" font-size="9" fill="white">Extracción regex</text>
-  <text x="115" y="436" text-anchor="middle" font-size="9" fill="white">Crea cuenta · Activa Helpyy</text>
+  <text x="600" y="330" text-anchor="middle" font-size="12" fill="#93b4ff" letter-spacing="2">LOS 5 AGENTES</text>
 
-  <!-- Agent 2: Credit Evaluator -->
-  <rect x="220" y="370" width="170" height="80" rx="8" fill="#2980b9"/>
-  <text x="305" y="392" text-anchor="middle" font-size="12" font-weight="700" fill="white">🔵 Evaluador</text>
-  <text x="305" y="408" text-anchor="middle" font-size="9" fill="white">Scoring ML</text>
-  <text x="305" y="422" text-anchor="middle" font-size="9" fill="white">Opciones de plazo</text>
-  <text x="305" y="436" text-anchor="middle" font-size="9" fill="white">Contrato · Desembolso</text>
+  <!-- Agent cards -->
+  <!-- Onboarding -->
+  <rect x="60" y="345" width="190" height="110" rx="12" fill="url(#card)" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="155" y="378" text-anchor="middle" font-size="28">🟢</text>
+  <text x="155" y="402" text-anchor="middle" font-size="13" font-weight="700" fill="white">Onboarding</text>
+  <text x="155" y="420" text-anchor="middle" font-size="11" fill="#93b4ff">Bancarización</text>
+  <text x="155" y="438" text-anchor="middle" font-size="11" fill="#93b4ff">Apertura de cuenta</text>
 
-  <!-- Agent 3: Financial Advisor -->
-  <rect x="410" y="370" width="170" height="80" rx="8" fill="#8e44ad"/>
-  <text x="495" y="392" text-anchor="middle" font-size="12" font-weight="700" fill="white">🟣 Asesor Fin.</text>
-  <text x="495" y="408" text-anchor="middle" font-size="9" fill="white">Gamificación</text>
-  <text x="495" y="422" text-anchor="middle" font-size="9" fill="white">Misiones ML-linked</text>
-  <text x="495" y="436" text-anchor="middle" font-size="9" fill="white">Niveles · Puntos</text>
+  <!-- Credit Evaluator -->
+  <rect x="268" y="345" width="190" height="110" rx="12" fill="url(#card)" stroke="#2980b9" stroke-width="1.5"/>
+  <text x="363" y="378" text-anchor="middle" font-size="28">🔵</text>
+  <text x="363" y="402" text-anchor="middle" font-size="13" font-weight="700" fill="white">Evaluador</text>
+  <text x="363" y="420" text-anchor="middle" font-size="11" fill="#93b4ff">Scoring ML</text>
+  <text x="363" y="438" text-anchor="middle" font-size="11" fill="#93b4ff">Crédito · Contrato</text>
 
-  <!-- Agent 4: Monitor -->
-  <rect x="600" y="370" width="170" height="80" rx="8" fill="#e74c3c"/>
-  <text x="685" y="392" text-anchor="middle" font-size="12" font-weight="700" fill="white">🔴 Monitor</text>
-  <text x="685" y="408" text-anchor="middle" font-size="9" fill="white">Background cron</text>
-  <text x="685" y="422" text-anchor="middle" font-size="9" fill="white">Revisa scores</text>
-  <text x="685" y="436" text-anchor="middle" font-size="9" fill="white">Notificaciones push</text>
+  <!-- Financial Advisor -->
+  <rect x="476" y="345" width="248" height="110" rx="12" fill="#0727b5" stroke="#4d8bff" stroke-width="2"/>
+  <text x="600" y="378" text-anchor="middle" font-size="28">🟣</text>
+  <text x="600" y="402" text-anchor="middle" font-size="13" font-weight="700" fill="white">Asesor Financiero</text>
+  <text x="600" y="420" text-anchor="middle" font-size="11" fill="#c8d8ff">Misiones · Gamificación</text>
+  <text x="600" y="438" text-anchor="middle" font-size="11" fill="#c8d8ff">Plan personalizado</text>
 
-  <!-- Agent 5: General -->
-  <rect x="790" y="370" width="170" height="80" rx="8" fill="#7f8c8d"/>
-  <text x="875" y="392" text-anchor="middle" font-size="12" font-weight="700" fill="white">⚪ General</text>
-  <text x="875" y="408" text-anchor="middle" font-size="9" fill="white">FAQ · RAG TF-IDF</text>
-  <text x="875" y="422" text-anchor="middle" font-size="9" fill="white">Productos BBVA</text>
-  <text x="875" y="436" text-anchor="middle" font-size="9" fill="white">Horarios · Tarifas</text>
+  <!-- Monitor -->
+  <rect x="742" y="345" width="190" height="110" rx="12" fill="url(#card)" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="837" y="378" text-anchor="middle" font-size="28">🔴</text>
+  <text x="837" y="402" text-anchor="middle" font-size="13" font-weight="700" fill="white">Monitor</text>
+  <text x="837" y="420" text-anchor="middle" font-size="11" fill="#93b4ff">Seguimiento</text>
+  <text x="837" y="438" text-anchor="middle" font-size="11" fill="#93b4ff">Notificaciones</text>
 
-  <!-- Middleware row -->
-  <rect x="30" y="468" width="1050" height="32" rx="6" fill="#fef9e7" stroke="#f39c12" stroke-width="1"/>
-  <text x="555" y="489" text-anchor="middle" font-size="10" fill="#7d6608">
-    🔐 PII Tokenizer Middleware (entrada) · Rate Limiter (30 req/min) · PII Detokenizer (salida)
+  <!-- General -->
+  <rect x="950" y="345" width="190" height="110" rx="12" fill="url(#card)" stroke="white" stroke-opacity="0.3" stroke-width="1.5"/>
+  <text x="1045" y="378" text-anchor="middle" font-size="28">⚪</text>
+  <text x="1045" y="402" text-anchor="middle" font-size="13" font-weight="700" fill="white">General</text>
+  <text x="1045" y="420" text-anchor="middle" font-size="11" fill="#93b4ff">FAQ · Productos</text>
+  <text x="1045" y="438" text-anchor="middle" font-size="11" fill="#93b4ff">Atención 24/7</text>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- ROW 3: Bottom pillars -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+
+  <!-- ML Model -->
+  <rect x="60" y="490" width="260" height="120" rx="14" fill="url(#card)" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="190" y="528" text-anchor="middle" font-size="30">🧮</text>
+  <text x="190" y="555" text-anchor="middle" font-size="14" font-weight="700" fill="white">Modelo ML</text>
+  <text x="190" y="575" text-anchor="middle" font-size="11" fill="#93b4ff">Scoring crediticio alternativo</text>
+  <text x="190" y="593" text-anchor="middle" font-size="11" fill="#93b4ff">Señales no tradicionales</text>
+
+  <!-- Security & Privacy -->
+  <rect x="345" y="490" width="260" height="120" rx="14" fill="url(#card)" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="475" y="528" text-anchor="middle" font-size="30">🔒</text>
+  <text x="475" y="555" text-anchor="middle" font-size="14" font-weight="700" fill="white">Privacidad</text>
+  <text x="475" y="575" text-anchor="middle" font-size="11" fill="#93b4ff">PII Tokenizado</text>
+  <text x="475" y="593" text-anchor="middle" font-size="11" fill="#93b4ff">Ley 1581 · Habeas Data</text>
+
+  <!-- AWS Cloud -->
+  <rect x="630" y="490" width="260" height="120" rx="14" fill="url(#card)" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="760" y="528" text-anchor="middle" font-size="30">☁️</text>
+  <text x="760" y="555" text-anchor="middle" font-size="14" font-weight="700" fill="white">AWS Cloud</text>
+  <text x="760" y="575" text-anchor="middle" font-size="11" fill="#93b4ff">App Runner · Lambda · Bedrock</text>
+  <text x="760" y="593" text-anchor="middle" font-size="11" fill="#93b4ff">CloudFront · DynamoDB · WAF</text>
+
+  <!-- RCP Badge -->
+  <rect x="915" y="490" width="225" height="120" rx="14" fill="#0727b5" stroke="#4d8bff" stroke-width="2"/>
+  <text x="1027" y="528" text-anchor="middle" font-size="30">🎯</text>
+  <text x="1027" y="555" text-anchor="middle" font-size="14" font-weight="700" fill="white">RCP</text>
+  <text x="1027" y="575" text-anchor="middle" font-size="11" fill="#c8d8ff">Cero fricción</text>
+  <text x="1027" y="593" text-anchor="middle" font-size="11" fill="#c8d8ff">El banco va hacia ti</text>
+
+  <!-- ── FOOTER ── -->
+  <rect x="0" y="640" width="1200" height="35" fill="black" fill-opacity="0.3"/>
+  <text x="600" y="662" text-anchor="middle" font-size="11" fill="#93b4ff" letter-spacing="1">
+    BBVA Colombia · OutBox · 2026 · Inclusión financiera impulsada por IA
   </text>
 
-  <!-- LLM Gateway -->
-  <rect x="30" y="512" width="490" height="50" rx="6" fill="white" stroke="#0727b5" stroke-width="1"/>
-  <text x="275" y="532" text-anchor="middle" font-size="11" font-weight="600" fill="#0727b5">🤖 LLM Gateway</text>
-  <text x="275" y="550" text-anchor="middle" font-size="10" fill="#5d688b">Local: Ollama (Gemma 4) · Producción: AWS Bedrock Claude 3 Haiku</text>
-
-  <!-- DynamoDB -->
-  <rect x="540" y="512" width="240" height="50" rx="6" fill="white" stroke="#0727b5" stroke-width="1"/>
-  <text x="660" y="532" text-anchor="middle" font-size="11" font-weight="600" fill="#0727b5">🗄️ DynamoDB</text>
-  <text x="660" y="550" text-anchor="middle" font-size="10" fill="#5d688b">users · sessions · notifications · pii-vault · missions</text>
-
-  <!-- EventBridge -->
-  <rect x="800" y="512" width="280" height="50" rx="6" fill="white" stroke="#e74c3c" stroke-width="1"/>
-  <text x="940" y="532" text-anchor="middle" font-size="11" font-weight="600" fill="#e74c3c">⏰ EventBridge + Lambda</text>
-  <text x="940" y="550" text-anchor="middle" font-size="10" fill="#5d688b">Monitor cron cada 6h · helpyy-dev-monitor</text>
-
-  <!-- Arrow down -->
-  <line x1="550" y1="538" x2="550" y2="580" stroke="#0727b5" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <!-- ═══════════════════════════════════════════════════════ -->
-  <!-- CAPA 3: ML SERVICE -->
-  <!-- ═══════════════════════════════════════════════════════ -->
-  <rect x="20" y="582" width="1060" height="110" rx="10" fill="#e8f8f5" stroke="#27ae60" stroke-width="1.5"/>
-  <text x="36" y="602" font-size="11" font-weight="700" fill="#27ae60" letter-spacing="1">CAPA ML · Lambda Docker (sklearn 1.7.2 · model.pkl)</text>
-
-  <!-- ML Lambda -->
-  <rect x="50" y="612" width="280" height="66" rx="8" fill="#27ae60"/>
-  <text x="190" y="634" text-anchor="middle" font-size="12" font-weight="700" fill="white">🧮 ML Scoring Lambda</text>
-  <text x="190" y="650" text-anchor="middle" font-size="10" fill="white">Logistic Regression · 2000 clientes sintéticos</text>
-  <text x="190" y="665" text-anchor="middle" font-size="10" fill="white">Function URL · APPROVE / REVIEW / REJECT</text>
-
-  <!-- ML Flow -->
-  <rect x="360" y="612" width="340" height="66" rx="8" fill="white" stroke="#27ae60" stroke-width="1"/>
-  <text x="530" y="632" text-anchor="middle" font-size="11" font-weight="600" fill="#27ae60">Flujo de Scoring</text>
-  <text x="530" y="648" text-anchor="middle" font-size="10" fill="#5d688b">RiskRequest → p_default → APPROVE (&lt;0.40)</text>
-  <text x="530" y="663" text-anchor="middle" font-size="10" fill="#5d688b">REVIEW (&lt;0.65) → misiones · REJECT (≥0.65) → plan</text>
-
-  <!-- Improvement factors -->
-  <rect x="730" y="612" width="330" height="66" rx="8" fill="white" stroke="#27ae60" stroke-width="1"/>
-  <text x="895" y="632" text-anchor="middle" font-size="11" font-weight="600" fill="#27ae60">Factores de Mejora</text>
-  <text x="895" y="648" text-anchor="middle" font-size="10" fill="#5d688b">on_time_rate (0.54) · is_banked (0.35)</text>
-  <text x="895" y="663" text-anchor="middle" font-size="10" fill="#5d688b">pct_conversion (0.31) · overdue_rate (0.20)</text>
-
-  <!-- ═══════════════════════════════════════════════════════ -->
-  <!-- CAPA 4: CI/CD -->
-  <!-- ═══════════════════════════════════════════════════════ -->
-  <rect x="20" y="706" width="1060" height="96" rx="10" fill="#f5eef8" stroke="#8e44ad" stroke-width="1.5"/>
-  <text x="36" y="726" font-size="11" font-weight="700" fill="#8e44ad" letter-spacing="1">CI/CD · GitHub Actions</text>
-
-  <rect x="50" y="734" width="200" height="54" rx="6" fill="#8e44ad"/>
-  <text x="150" y="754" text-anchor="middle" font-size="11" font-weight="600" fill="white">dev branch</text>
-  <text x="150" y="770" text-anchor="middle" font-size="10" fill="#e8d5f5">Desarrollo local</text>
-  <text x="150" y="784" text-anchor="middle" font-size="10" fill="#e8d5f5">make dev-local</text>
-
-  <text x="275" y="765" text-anchor="middle" font-size="16" fill="#8e44ad">→</text>
-  <text x="275" y="778" text-anchor="middle" font-size="9" fill="#5d688b">PR + tests</text>
-
-  <rect x="300" y="734" width="200" height="54" rx="6" fill="#6c3483"/>
-  <text x="400" y="754" text-anchor="middle" font-size="11" font-weight="600" fill="white">qa branch</text>
-  <text x="400" y="770" text-anchor="middle" font-size="10" fill="#e8d5f5">Tests + lint</text>
-  <text x="400" y="784" text-anchor="middle" font-size="10" fill="#e8d5f5">pytest · ruff</text>
-
-  <text x="525" y="765" text-anchor="middle" font-size="16" fill="#8e44ad">→</text>
-  <text x="525" y="778" text-anchor="middle" font-size="9" fill="#5d688b">PR + tests</text>
-
-  <rect x="550" y="734" width="200" height="54" rx="6" fill="#4a235a"/>
-  <text x="650" y="754" text-anchor="middle" font-size="11" font-weight="600" fill="white">main (prod)</text>
-  <text x="650" y="770" text-anchor="middle" font-size="10" fill="#e8d5f5">CDK deploy ML + Backend</text>
-  <text x="650" y="784" text-anchor="middle" font-size="10" fill="#e8d5f5">S3 sync + CloudFront</text>
-
-  <text x="775" y="765" text-anchor="middle" font-size="16" fill="#8e44ad">→</text>
-
-  <rect x="800" y="734" width="260" height="54" rx="6" fill="white" stroke="#8e44ad" stroke-width="1"/>
-  <text x="930" y="754" text-anchor="middle" font-size="11" font-weight="600" fill="#8e44ad">AWS (producción)</text>
-  <text x="930" y="770" text-anchor="middle" font-size="10" fill="#5d688b">App Runner · Lambda ML · CloudFront</text>
-  <text x="930" y="784" text-anchor="middle" font-size="10" fill="#5d688b">DynamoDB · WAF · Bedrock</text>
-
-  <!-- Arrow markers -->
+  <!-- Arrow marker -->
   <defs>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#0727b5"/>
-    </marker>
-    <marker id="arrow-orange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#f39c12"/>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#4d8bff"/>
     </marker>
   </defs>
 
